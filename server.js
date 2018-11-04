@@ -25,3 +25,5 @@ mongoose.connect('mongodb://localhost/kakao_talk',{useNewUrlParser:true});
 const server=app.listen(3000,function(){
     console.log('Express Start');
 });
+
+//supervisor server.js
