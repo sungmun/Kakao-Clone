@@ -1,4 +1,5 @@
-var mongoose=require('mongoose');
+import mongoose from 'mongoose';
+
 var Schema=mongoose.Schema;
 
 var memberSchema=new Schema({
@@ -8,4 +9,4 @@ var memberSchema=new Schema({
     photos:String
 });
 
-module.exports=mongoose.model('Member',memberSchema);
+export default mongoose.model('Member',memberSchema);
