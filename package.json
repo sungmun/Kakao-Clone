@@ -4,7 +4,10 @@
   "description": "Node.js 를 이용한 Kakao RestFul Server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf build public/bundle.js",
+    "build": "babel server --out-dir build && webpack",
+    "start": "set NODE_ENV=production node ./build/server.js",
+    "development": "set NODE_ENV=development node ./build/server.js"
   },
   "author": "sungmun",
   "license": "MIT",
