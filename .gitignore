@@ -62,3 +62,5 @@ typings/
 # next.js build output
 .next
 >>>>>>> 69308d993202e74ca46e44091beab85e453dce1f
+build/
+dist/
