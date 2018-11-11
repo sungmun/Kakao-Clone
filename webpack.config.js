@@ -1,3 +1,4 @@
+const HtmlWebPackPlugin=require('html-webpack-plugin');
 module.exports={
     mode: 'development',
     /* 이 부분은 entry와 output의 기본값으로 생략 가능합니다.
@@ -30,5 +31,11 @@ module.exports={
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebPackPlugin({
+            template: './src/index.html',
+            filename: './index.html'
+        })
+    ]
 }
