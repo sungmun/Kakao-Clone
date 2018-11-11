@@ -35,14 +35,23 @@ export default class OAuth{
     }
 
     onLoginSuccess(platforName, socialId, nickName, photos){
-        var member=new Member();
-        member.platforName=platforName;
-        member.socialId=socialId;
-        member.nickName=nickName;
-        member.photos=photos;
-        
-        var service=new memberService();
-        service.save(member);
+        Member.findOne({
+            platforName:platforName,
+            socialId:socialId
+        },(err,member)=>{
+            if(err) return done(err);
+
+            if(member) return done(err,member);
+            
+            const service=new memberService();
+            service.save(new Member({
+                platforName:platforName,
+                socialId:socialId,
+                nickName:nickName,
+                photos:photos
+            }));
+            
+        });
     }
 }
 
