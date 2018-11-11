@@ -11,8 +11,7 @@ export default (onloginSuccess,passport)=>{
             scope: ['https://www.googleapis.com/auth/plus.me']
         },(accessToken,refreshToken,profile,done)=>{
             process.nextTick(() =>{
-                onloginSuccess('google',profile.id,profile.displayName,profile.photos[0].value);
-                return done(null,profile);
+                return onloginSuccess('google',profile.id,profile.displayName,profile.photos[0].value);
             });
         }
     ));
