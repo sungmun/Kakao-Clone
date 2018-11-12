@@ -7,7 +7,7 @@
     "clean": "rm -rf build public/bundle.js",
     "build": "babel server --out-dir build && webpack",
     "start": "set NODE_ENV=production node ./build/server.js",
-    "development": "set NODE_ENV=development node ./build/server.js"
+    "dev": "node_modules/.bin/babel server/src --watch --out-dir server/build && supervisor server/build/server.js"
   },
   "author": "sungmun",
   "license": "MIT",
