@@ -32,5 +32,13 @@
     "react-hot-loader": "^4.4.0",
     "style-loader": "^0.23.1",
     "webpack-dev-server": "^3.1.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sungmun/Kakao-Clone-Server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sungmun/Kakao-Clone-Server/issues"
+  },
+  "homepage": "https://github.com/sungmun/Kakao-Clone-Server#readme"
 }
