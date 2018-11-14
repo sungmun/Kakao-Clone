@@ -1,12 +1,11 @@
 const HtmlWebPackPlugin=require('html-webpack-plugin');
 module.exports={
     mode: 'development',
-    /* 이 부분은 entry와 output의 기본값으로 생략 가능합니다.
-    entry: './src/index.js',
+    entry: './client/src/index.js',
     output: {
-      filename: 'main.js',
-      path: path.resolve(__dirname, 'dist')
-    }, */
+        path: __dirname+ '/client/build',
+        filename: 'main.js'
+    },
     module: {
         rules: [
             {
@@ -34,7 +33,7 @@ module.exports={
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: './src/index.html',
+            template: './client/src/index.html',
             filename: './index.html'
         })
     ]
