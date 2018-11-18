@@ -4,6 +4,8 @@ import mongoose from'mongoose';
 import router from './router/main';
 import OAuth from './auth/oauth';
 import next from 'next';
+import morgan from 'morgan';
+
 const dev = process.env.NODE_ENV !== 'production'
 
 const app = next({dev});
@@ -20,6 +22,7 @@ app.prepare()
         
         server.use('/api',router);
 
+        server.use(morgan('dev'));
          
         var oauth=new OAuth(server);
         server.use('/api/auth',oauth.googleOAuth())
