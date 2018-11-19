@@ -34,7 +34,7 @@ export default class OAuth{
         // app.use('/oauth',googleOAuthRoute());
     }
 
-    onLoginSuccess(platforName, socialId, nickName, photos){
+    onLoginSuccess(platforName, socialId, nickName, photos, done){
         Member.findOne({
             platforName:platforName,
             socialId:socialId

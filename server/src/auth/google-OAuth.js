@@ -1,4 +1,4 @@
-import config from '../../.config/google-api-key.json';
+import config from '../../../google-api-key.json';
 import google from 'passport-google-oauth20'
 
 export default (onloginSuccess,passport)=>{
@@ -11,7 +11,7 @@ export default (onloginSuccess,passport)=>{
             scope: ['https://www.googleapis.com/auth/plus.me']
         },(accessToken,refreshToken,profile,done)=>{
             process.nextTick(() =>{
-                return onloginSuccess('google',profile.id,profile.displayName,profile.photos[0].value);
+                return onloginSuccess('google',profile.id,profile.displayName,profile.photos[0].value,done);
             });
         }
     ));
