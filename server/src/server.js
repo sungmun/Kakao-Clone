@@ -1,49 +1,37 @@
-import express from 'express';
-import bodyParser from'body-parser';
-import mongoose from'mongoose';
-import router from './router/main';
-import OAuth from './auth/oauth';
-import next from 'next';
-import morgan from 'morgan';
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import next from "next";
+import morgan from "morgan";
 
-const dev = process.env.NODE_ENV !== 'production'
+const dev = process.env.NODE_ENV !== "production";
+const port = 3000;
 
-const app = next({dev});
+const app = next({ dev, dir: "./src" });
+const server = express();
 
-const handle=app.getRequestHandler();
+server.set("jwt-secret", "tester");
 
-const port =3001;
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
 
-app.prepare()
-    .then(()=>{
-        const server=express();
-        server.use(bodyParser.json());
-        server.use(bodyParser.urlencoded({extended:true}));
-        
-        server.use('/api',router);
+const handle = app.getRequestHandler();
 
-        server.use(morgan('dev'));
-         
-        var oauth=new OAuth(server);
-        server.use('/api/auth',oauth.googleOAuth())
+const db = mongoose.connection;
+db.on("error", console.error);
+db.once("open", () => console.log("Connected to Mongodb Server"));
 
-        // server.get('*',Auth,(req,res)=>handle(req,res));
-        server.get('*',(req,res,next)=>{
-            if(req.isAuthenticated()) {
-                return app.render(req, res);
-            }
-            return app.render(req, res, '/login');
-        });
-        const db=mongoose.connection;
-        db.on('error',console.error);
-        db.once('open',()=>console.log('Connected to Mongodb Server'));
-        
-        mongoose.connect('mongodb://localhost/kakao_talk',{useNewUrlParser:true});
-        
-        server.listen(port,(err)=>console.log('Express listening on port', port));
-    });
+mongoose.connect(
+    "mongodb://localhost/kakao_talk",
+    { useNewUrlParser: true }
+);
 
+server.use(morgan("dev"));
 
+app.prepare().then(() => {
+    server.get("*", (req, res) => handle(req, res));
+    server.listen(port, err => console.log("Express listening on port", port));
+});
 
-
+export default app;
 //supervisor server.js
