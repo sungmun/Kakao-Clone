@@ -45,3 +45,34 @@ exports.login = (req, res, next) => {
         .then(respond)
         .catch(OnError);
 };
+
+exports.check = (req, res) => {
+    const token = req.headers["x-access-token"] || req.query.token;
+    if (!token) {
+        return res.status(403).json({
+            success: false,
+            message: "not loggged in"
+        });
+    }
+
+    const p = new Promise((resolve, reject) => {
+        jwt.verify(token, req.app.get("jwt-secret"), (err, decoded) => {
+            if (err) reject(err);
+            resolve(decoded);
+        });
+    });
+
+    res.json({
+        success: true,
+        info: token
+    });
+
+    const onError = error => {
+        res.status(403).json({
+            success: false,
+            message: error.message
+        });
+    };
+
+    p.then(respond).catch(onError);
+};
