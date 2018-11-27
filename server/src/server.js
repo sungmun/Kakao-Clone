@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import next from "next";
 import morgan from "morgan";
+import route from "./router";
 
 const dev = process.env.NODE_ENV !== "production";
 const port = 3000;
@@ -27,6 +28,8 @@ mongoose.connect(
 );
 
 server.use(morgan("dev"));
+
+server.use("/", route);
 
 app.prepare().then(() => {
     server.get("*", (req, res) => handle(req, res));
