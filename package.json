@@ -17,6 +17,7 @@
         "jsonwebtoken": "^8.4.0",
         "morgan": "^1.9.1",
         "next": "^7.0.2",
+        "next-redux-wrapper": "^2.0.0",
         "react": "^16.6.3",
         "react-dom": "^16.6.3",
         "react-google-login": "^4.0.0",
