@@ -15,10 +15,14 @@ class MyApp extends App {
             }
         };
     }
+
+    isToken = token => (token === "" || token == undefined ? false : true);
+
     componentDidMount() {
         if (window.location.href === "/login") return;
 
         const token = getToken();
+        if (!this.islogin(token)) Router.push({ pathname: "/login" });
     }
 
     render() {
