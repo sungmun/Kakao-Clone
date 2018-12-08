@@ -22,7 +22,7 @@ class MyApp extends App {
     LoginAjax = (token, successCall) => {
         axios
             .get("/user", { params: { token } })
-            .then(res => successCall(res.data.info))
+            .then(res => successCall(res.data))
             .catch(err => console.error(err));
     };
 
@@ -35,7 +35,10 @@ class MyApp extends App {
         if (!this.isToken(token)) Router.push({ pathname: "/login" });
 
         const store = this.props.store;
-        this.LoginAjax(token, user => store.dispatch(login(user)));
+
+        if (store.user === undefined) {
+            this.LoginAjax(token, user => store.dispatch(login(user)));
+        }
     }
 
     render() {
