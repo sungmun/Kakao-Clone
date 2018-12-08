@@ -1,15 +1,10 @@
 import styled from "styled-components";
 import Layout from "../components/layout";
 import Profile from "../components/profileItem";
-import Router from "next/router";
+
 import { connect } from "react-redux";
 
 class Index extends React.Component {
-    static async getInitialProps({ store, isServer }) {}
-    componentDidMount() {
-        const token = this.props.user.token;
-        if (token === "") Router.push({ pathname: "/login" });
-    }
     render() {
         const { user } = this.props;
         const userProfile = user.profile;
