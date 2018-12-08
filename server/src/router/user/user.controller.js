@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Member from "../../domain/member";
 
 exports.login = (req, res, next) => {
-    const { platforName, socialId, nickName, photos } = req.body.user;
+    const profile = req.body.user;
     const secret = req.app.get("jwt-secret");
 
     const tokenIssue = member => jwt.sign({ id: member._id }, secret);
@@ -19,8 +19,8 @@ exports.login = (req, res, next) => {
     };
 
     Member.findOne({
-        platforName: platforName,
-        socialId: socialId
+        platforName: profile.platforName,
+        socialId: profile.socialId
     })
         .then(check)
         .then(respond)
