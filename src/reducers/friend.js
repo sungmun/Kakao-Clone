@@ -1,5 +1,4 @@
-import action from "../actions";
-const { ADD, CHANGE_NICKNAME, REMOVE } = action.friend;
+import { ADD, CHANGE_NICKNAME, REMOVE } from "../actions/friend";
 
 // var member = {
 //     objectId: "",

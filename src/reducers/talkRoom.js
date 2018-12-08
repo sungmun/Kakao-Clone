@@ -8,8 +8,7 @@
  * export const listen = () => ({ type: LISTEN });
  * export const speak = talk => ({ type: SPEAK, talk });
  */
-import action from "../actions";
-const { CREATE, LEAVE, CHANGE_NAME } = action.talkRoom;
+import { CREATE, LEAVE, CHANGE_NAME } from "../actions/talkRoom";
 
 export default (state = [], action) => {
     switch (action.type) {
