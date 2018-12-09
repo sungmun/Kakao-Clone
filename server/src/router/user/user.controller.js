@@ -28,7 +28,8 @@ exports.login = (req, res, next) => {
         platforName: profile.platforName,
         socialId: profile.socialId
     })
-        .then(check)
+        .then(findMember => (findMember ? findMember : register(profile)))
+        .then(tokenIssue)
         .then(respond)
         .catch(OnError);
 };
