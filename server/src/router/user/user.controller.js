@@ -61,5 +61,7 @@ exports.check = (req, res) => {
         });
     };
 
-    p.then(respond).catch(onError);
+    Member.findById(findMember.id)
+        .then(respond)
+        .catch(onError);
 };
