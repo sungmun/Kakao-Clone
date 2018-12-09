@@ -18,6 +18,12 @@ exports.login = (req, res, next) => {
         });
     };
 
+    const register = member => {
+        const newMemer = new Member(member);
+        newMemer.save();
+        return member;
+    };
+
     Member.findOne({
         platforName: profile.platforName,
         socialId: profile.socialId
