@@ -45,10 +45,14 @@ exports.check = (req, res) => {
 
     const findMember = jwt.verify(token, req.app.get("jwt-secret"));
 
-    res.json({
-        success: true,
-        info: token
-    });
+    const respond = profile => {
+        res.status(201).json({
+            platforName: profile.platforName,
+            socialId: profile.socialId,
+            nickName: profile.nickName,
+            photos: profile.photos
+        });
+    };
 
     const onError = error => {
         res.status(403).json({
