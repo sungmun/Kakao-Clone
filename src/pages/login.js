@@ -3,7 +3,7 @@ import Router from "next/router";
 import axios from "axios";
 import { connect } from "react-redux";
 
-import GoogleButton from "../components/GoogleButton";
+import GoogleButton from "../components/login/GoogleButton";
 import { setToken } from "../utils/auth";
 import { login } from "../actions/user";
 
