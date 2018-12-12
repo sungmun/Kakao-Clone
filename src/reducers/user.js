@@ -1,24 +1,27 @@
-import action from "../actions";
-const { LOGIN, CHANGE_NICKNAME } = action.user;
+import { LOGIN, CHANGE_NICKNAME } from "../actions/user";
+
 const initalState = {
-    token: "",
-    profile: {
-        platforName: "",
-        socialId: "",
-        nickName: "",
-        photos: ""
-    }
+    platforName: "",
+    socialId: "",
+    nickName: "",
+    photos: ""
 };
+
 export default (state = initalState, action) => {
     switch (action.type) {
         case LOGIN:
-            return { token: action.token, profile: action.profile };
+            return {
+                ...state,
+                platforName: action.profile.platforName,
+                socialId: action.profile.socialId,
+                nickName: action.profile.nickName,
+                photos: action.profile.photos
+            };
         case CHANGE_NICKNAME:
-            return Object.assign({}, state, {
-                profile: Object.assign({}, action.profile, {
-                    nickName: action.nickName
-                })
-            });
+            return {
+                ...state,
+                nickName: action.nickName
+            };
         default:
             return state;
     }

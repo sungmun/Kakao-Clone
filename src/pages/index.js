@@ -1,34 +1,20 @@
 import styled from "styled-components";
-import Layout from "../components/layout";
+import ListLayout from "../components/listLayout";
 import Profile from "../components/profileItem";
-import Router from "next/router";
+
 import { connect } from "react-redux";
 
 class Index extends React.Component {
-    static async getInitialProps({ store, isServer }) {}
-    componentDidMount() {
-        const token = this.props.user.token;
-        if (token === "") Router.push({ pathname: "/login" });
-    }
     render() {
         const { user } = this.props;
-        const userProfile = user.profile;
-        console.log(userProfile.photos);
 
         return (
-            <Layout>
-                <Search>
-                    <SearchIco src="/static/resource/search_icon.png" />
-                    <Input placeholder="이름검색" />
-                </Search>
+            <ListLayout>
                 <List>
-                    <Profile
-                        image={userProfile.photos}
-                        nickName={userProfile.nickName}
-                    />
+                    <Profile image={user.photos} nickName={user.nickName} />
                     <Profile image="/static/resource/img_profile40_gray.png" />
                 </List>
-            </Layout>
+            </ListLayout>
         );
     }
 }

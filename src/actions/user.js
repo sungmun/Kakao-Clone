@@ -1,17 +1,10 @@
-const CHANGE_NICKNAME = "CHANGE_NICKNAME";
-const LOGIN = "LOGIN";
+export const CHANGE_NICKNAME = "CHANGE_NICKNAME";
+export const LOGIN = "LOGIN";
 
-const login = (token, profile) => ({ type: LOGIN, token, profile });
-const changeNickname = nickname => {
+export const login = profile => ({ type: LOGIN, profile });
+export const changeNickname = nickname => {
     return {
         type: CHANGE_NICKNAME,
         nickname
     };
-};
-
-export default {
-    CHANGE_NICKNAME,
-    changeNickname,
-    LOGIN,
-    login
 };

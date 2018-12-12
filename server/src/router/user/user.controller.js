@@ -2,29 +2,10 @@ import jwt from "jsonwebtoken";
 import Member from "../../domain/member";
 
 exports.login = (req, res, next) => {
-    const { platforName, socialId, nickName, photos } = req.body.user;
+    const profile = req.body.user;
     const secret = req.app.get("jwt-secret");
 
-    const check = member => {
-        if (!member) throw Error("login failed");
-        const p = new Promise((resolve, reject) => {
-            jwt.sign(
-                {
-                    id: member.id,
-                    nickName: member.nickName,
-                    photos: member.photos,
-                    platforName: member.platforName
-                },
-                secret,
-                { expiresIn: "7d", issuer: "veloper.com", subject: "user" },
-                (err, token) => {
-                    if (err) reject(err);
-                    resolve(token);
-                }
-            );
-        });
-        return p;
-    };
+    const tokenIssue = member => jwt.sign({ id: member._id }, secret);
 
     const respond = token => {
         res.status(201);
@@ -37,11 +18,18 @@ exports.login = (req, res, next) => {
         });
     };
 
+    const register = member => {
+        const newMemer = new Member(member);
+        newMemer.save();
+        return member;
+    };
+
     Member.findOne({
-        platforName: platforName,
-        socialId: socialId
+        platforName: profile.platforName,
+        socialId: profile.socialId
     })
-        .then(check)
+        .then(findMember => (findMember ? findMember : register(profile)))
+        .then(tokenIssue)
         .then(respond)
         .catch(OnError);
 };
@@ -55,17 +43,16 @@ exports.check = (req, res) => {
         });
     }
 
-    const p = new Promise((resolve, reject) => {
-        jwt.verify(token, req.app.get("jwt-secret"), (err, decoded) => {
-            if (err) reject(err);
-            resolve(decoded);
-        });
-    });
+    const findMember = jwt.verify(token, req.app.get("jwt-secret"));
 
-    res.json({
-        success: true,
-        info: token
-    });
+    const respond = profile => {
+        res.status(201).json({
+            platforName: profile.platforName,
+            socialId: profile.socialId,
+            nickName: profile.nickName,
+            photos: profile.photos
+        });
+    };
 
     const onError = error => {
         res.status(403).json({
@@ -74,5 +61,7 @@ exports.check = (req, res) => {
         });
     };
 
-    p.then(respond).catch(onError);
+    Member.findById(findMember.id)
+        .then(respond)
+        .catch(onError);
 };

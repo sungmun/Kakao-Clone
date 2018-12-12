@@ -3,10 +3,11 @@ import Router from "next/router";
 import axios from "axios";
 import { connect } from "react-redux";
 
-import GoogleButton from "../components/GoogleButton";
-import Action from "../actions";
+import GoogleButton from "../components/login/GoogleButton";
+import { setToken } from "../utils/auth";
+import { login } from "../actions/user";
 
-const loginAction = Action.user.login;
+const loginAction = login;
 
 class Login extends React.Component {
     static async getInitialProps({ store, isServer }) {}
@@ -28,7 +29,8 @@ class Login extends React.Component {
         if (this.responseStateCheck(res.status)) return res.data.token;
     };
     saveUser = (token, profile) => {
-        this.props.loginAction(token, profile);
+        setToken(token);
+        this.props.loginAction(profile);
     };
     render() {
         return (

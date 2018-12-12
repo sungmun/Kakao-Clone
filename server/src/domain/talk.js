@@ -1,6 +1,6 @@
-import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const talkSchema = new Schema({
+const talkSchema = new mongoose.Schema({
     from: { type: Schema.Types.ObjectId, ref: "member" },
     to: { type: Schema.Types.ObjectId, ref: "member" },
     message: String,
