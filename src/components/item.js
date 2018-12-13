@@ -9,7 +9,7 @@ export default ({ image, children }) => (
 
 const Item = styled.li`
     display: flex;
-    margin: 5px 15px;
+    margin: 5px 0px;
     height: 60px;
 `;
 const ItemImage = styled.img`
