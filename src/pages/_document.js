@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
                     />
                     <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 </Head>
-                <body style={{ width: "512px", margin: "0 auto" }}>
+                <body style={{ width: "50vh", margin: "0 auto" }}>
                     <div>
                         <Main />
                     </div>
