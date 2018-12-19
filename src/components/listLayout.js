@@ -3,7 +3,7 @@ import Layout from "./layout";
 import Navigation from "./navigation";
 
 const Contents = styled.div`
-    margin: 1em;
+    margin: 0.9vh;
 `;
 const Search = styled.div`
     width: 100%;
@@ -14,13 +14,16 @@ const Search = styled.div`
 const Input = styled.input`
     font-size: 10pt;
     border: 0px;
-    width: 475px;
+    width: 45.9vh;
     padding: 0px;
     padding-left: 36px;
     border-bottom: 0.8px;
     border-style: solid;
     border-color: rgb(230, 230, 230);
     height: 36px;
+    ::focus {
+        outline: 0 none;
+    }
     ::placeholder {
         color: rgb(153, 153, 153);
     }
