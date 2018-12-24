@@ -2,6 +2,10 @@
     "name": "Kakao-RestfulAPI",
     "version": "1.0.0",
     "main": "index.js",
+    "scripts": {
+        "build": "babel --presets @babel/preset-env src --watch --out-dir build",
+        "start": "supervisor build/index"
+    },
     "license": "MIT",
     "dependencies": {
         "@babel/polyfill": "^7.0.0",
