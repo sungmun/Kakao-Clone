@@ -10,11 +10,9 @@ import { login } from "../actions/user";
 const loginAction = login;
 
 class Login extends React.Component {
-    static async getInitialProps({ store, isServer }) {}
-
     Login = profile => {
         axios
-            .post("/user", { user: profile })
+            .post("http://localhost:5000/user", { user: profile })
             .then(this.tokenExtraction)
             .then(token => this.saveUser(token, profile))
             .then(() => Router.push({ pathname: "/" }))
@@ -26,7 +24,7 @@ class Login extends React.Component {
     };
 
     tokenExtraction = res => {
-        if (this.responseStateCheck(res.status)) return res.data.token;
+        return this.responseStateCheck(res.status) ? res.data.token : false;
     };
     saveUser = (token, profile) => {
         setToken(token);
