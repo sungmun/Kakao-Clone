@@ -1,0 +1,32 @@
+{
+    "name": "Kakao-RestfulAPI",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "build": "babel --presets @babel/preset-env src --watch --out-dir build",
+        "start": "supervisor build/index"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@babel/polyfill": "^7.0.0",
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4",
+        "jsonwebtoken": "^8.4.0",
+        "morgan": "^1.9.1",
+        "cors": "^2.8.5"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.1.5",
+        "@babel/core": "^7.1.6",
+        "@babel/preset-env": "^7.1.6",
+        "mongoose": "^5.3.11"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sungmun/Kakao-Clone.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sungmun/Kakao-Clone/issues"
+    },
+    "homepage": "https://github.com/sungmun/Kakao-Clone/RestfulAPI/#readme"
+}
