@@ -18,12 +18,17 @@ class MyApp extends App {
             }
         };
     }
-
-    LoginAjax = (token, successCall) => {
+    //, user =>
+    LoginAjax = token => {
         axios
-            .get("/user", { params: { token } })
-            .then(res => successCall(res.data))
+            .get("http://localhost:5000/user", { params: { token } })
+            .then(this.isSucess)
+            .then(res => store.dispatch(login(res.data)))
             .catch(err => console.error(err));
+    };
+    isSucess = res => {
+        if (res.status == 500) Router.push({ pathname: "/login" });
+        return res;
     };
 
     isToken = token => (token === "" || token == undefined ? false : true);
@@ -37,7 +42,7 @@ class MyApp extends App {
         const store = this.props.store;
 
         if (store.user === undefined) {
-            this.LoginAjax(token, user => store.dispatch(login(user)));
+            this.LoginAjax(token);
         }
     }
 
