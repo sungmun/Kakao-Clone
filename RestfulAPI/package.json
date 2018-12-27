@@ -4,7 +4,8 @@
     "main": "index.js",
     "scripts": {
         "build": "babel --presets @babel/preset-env src --watch --out-dir build",
-        "start": "supervisor build/index"
+        "start": "supervisor build/index",
+        "test": "mocha -u tdd -w --recursive ./build/router/**/*.spec.js"
     },
     "license": "MIT",
     "dependencies": {
