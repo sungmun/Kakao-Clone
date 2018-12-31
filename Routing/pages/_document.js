@@ -30,6 +30,7 @@ export default class MyDocument extends Document {
                         content="width=device-width, initial-scale=1.0"
                     />
                     <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                    <link rel="shortcut icon" href="favicon.ico" />
                 </Head>
                 <body style={{ width: "50vh", margin: "0 auto" }}>
                     <div>

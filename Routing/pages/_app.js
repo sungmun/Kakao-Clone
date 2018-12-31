@@ -23,7 +23,7 @@ class MyApp extends App {
         axios
             .get("http://localhost:5000/user", { params: { token } })
             .then(this.isSucess)
-            .then(res => store.dispatch(login(res.data)))
+            .then(res => this.props.store.dispatch(login(res.data)))
             .catch(err => console.error(err));
     };
     isSucess = res => {
