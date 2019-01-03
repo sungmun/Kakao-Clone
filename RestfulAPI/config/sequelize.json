@@ -1,0 +1,29 @@
+{
+    "development": {
+        "username": "root",
+        "password": null,
+        "database": "kakao_talk",
+        "host": "localhost",
+        "dialect": "mariadb"
+    },
+    "test": {
+        "username": "root",
+        "password": null,
+        "database": "kakao_talk",
+        "host": "localhost",
+        "dialect": "mariadb"
+    },
+    "production": {
+        "username": "root",
+        "password": null,
+        "database": "kakao_talk",
+        "host": "localhost",
+        "dialect": "mariadb"
+    },
+    "pool": {
+        "max": 20,
+        "min": 0,
+        "idle": 5000
+    },
+    "logging": true
+}
