@@ -37,21 +37,19 @@ exports.check = (req, res) => {
     const promiss = new Promise((resolve, reject) => {
         if (!token) reject(Error("not loggged in"));
 
-        jwt.verify(token, secret, (err, decode) => {
-            err ? reject(Error("잘못된 토큰입니다.")) : resolve(decode);
-        });
+        jwt.verify(token, secret, (err, decode) =>
+            err ? reject(Error("잘못된 토큰입니다.")) : resolve(decode)
+        );
     });
 
-    const respond = profile => {
+    const respond = profile =>
         res.status(201).json(sendMessage(true, { profile }));
-    };
 
-    const onError = error => {
+    const onError = error =>
         res.status(403).json(sendMessage(false, error.message));
-    };
 
     promiss
-        .then(profile => Member.findById(profile.id))
+        .then(profile => Model.Members.findByPk(profile.id))
         .then(respond)
         .catch(onError);
 };
