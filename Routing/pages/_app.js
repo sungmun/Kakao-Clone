@@ -21,13 +21,15 @@ class MyApp extends App {
     //, user =>
     LoginAjax = token => {
         axios
-            .get("http://localhost:5000/user", { params: { token } })
+            .get("http://localhost:5000/user", {
+                headers: { "x-access-token": token }
+            })
             .then(this.isSucess)
             .then(res => this.props.store.dispatch(login(res.data)))
             .catch(err => console.error(err));
     };
     isSucess = res => {
-        if (res.status == 500) Router.push({ pathname: "/login" });
+        if (res.status == 403) Router.push({ pathname: "/login" });
         return res;
     };
 
