@@ -1,4 +1,3 @@
-import request from "supertest";
 import chai, { expect } from "chai";
 import http from "chai-http";
 
@@ -7,7 +6,7 @@ chai.use(http);
 const url = "http://localhost:5000";
 describe("User.Controller", () => {
     const user = {
-        platforName: "google",
+        platformName: "google",
         socialId: "tjdans174@gmail.com"
     };
 
@@ -77,7 +76,7 @@ describe("User.Controller", () => {
                     expect(body).have.property("message");
 
                     expect(body.success).to.be.equal(true);
-                    expect(body.message).to.be.property("token");
+                    expect(body.message).have.property("token");
 
                     chai.request(url)
                         .get("/user")
@@ -94,7 +93,7 @@ describe("User.Controller", () => {
 
                             const profile = expect(body.message.profile);
                             profile.have.property("socialId");
-                            profile.have.property("platforName");
+                            profile.have.property("platformName");
                             profile.have.property("nickName");
                             profile.have.property("photos");
 
