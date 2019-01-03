@@ -38,7 +38,7 @@ const Container = styled.div`
 class Google extends React.Component {
     responseGoogle = res => {
         const profile = {
-            platforName: "google",
+            platformName: "google",
             socialId: res.profileObj.email,
             nickName: res.profileObj.name,
             photos: res.profileObj.imageUrl

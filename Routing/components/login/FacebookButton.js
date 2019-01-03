@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import { connect } from "react-redux";
-import facebookApi from "../../api-key.json";
+import { facebookApi } from "../../api-key.json";
 const FacebookLogin = dynamic(
     () => import("react-facebook-login/dist/facebook-login-render-props"),
-    {
-        ssr: false
-    }
+    { ssr: false }
 );
 
 const FacebookButton = styled.button`
@@ -45,7 +43,7 @@ const Container = styled.div`
 class Facebook extends React.Component {
     responseFacebook = res => {
         const profile = {
-            platforName: "facebook",
+            platformName: "facebook",
             socialId: res.email,
             nickName: res.name,
             photos: res.picture.data.url
@@ -53,16 +51,14 @@ class Facebook extends React.Component {
         this.props.Login(profile);
     };
 
-    responseFail = res => {
-        console.error(res);
-    };
+    responseFail = res => console.error(res);
 
     render() {
         return (
             <Container>
                 <FacebookLogin
                     appId={facebookApi}
-                    // autoLoad
+                    autoLoad={true}
                     version="3.1"
                     callback={this.responseFacebook}
                     fields="name,email,picture"

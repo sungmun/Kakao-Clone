@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
+import models from "./models";
 import morgan from "morgan";
 import route from "./router";
 import cors from "cors";
@@ -9,19 +9,20 @@ const port = 5000;
 
 const app = express();
 
-app.set("jwt-secret", "tester");
+models.sequelize
+    .sync()
+    .then(() => {
+        console.log("✓ DB connection success.");
+        console.log("  Press CTRL-C to stop\n");
+    })
+    .catch(err => {
+        console.error(err);
+        console.log("✗ DB connection error. Please make sure DB is running.");
+        process.exit();
+    });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const db = mongoose.connection;
-db.on("error", console.error);
-db.once("open", () => console.log("Connected to Mongodb Server"));
-
-mongoose.connect(
-    "mongodb://localhost/kakao_talk",
-    { useNewUrlParser: true }
-);
 
 app.use(morgan("dev"));
 

@@ -1,4 +1,5 @@
 import App, { Container } from "next/app";
+import Router from "next/router";
 import React from "react";
 import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
@@ -21,20 +22,22 @@ class MyApp extends App {
     //, user =>
     LoginAjax = token => {
         axios
-            .get("http://localhost:5000/user", { params: { token } })
-            .then(this.isSucess)
-            .then(res => this.props.store.dispatch(login(res.data)))
-            .catch(err => console.error(err));
-    };
-    isSucess = res => {
-        if (res.status == 500) Router.push({ pathname: "/login" });
-        return res;
+            .get("http://localhost:5000/user", {
+                headers: { "x-access-token": token }
+            })
+            .then(data =>
+                this.props.store.dispatch(login(data.message.profile))
+            )
+            .catch(err => {
+                if (err.response.data.message)
+                    Router.push({ pathname: "/login" });
+            });
     };
 
     isToken = token => (token === "" || token == undefined ? false : true);
 
     componentDidMount() {
-        if (window.location.href === "/login") return;
+        if (window.location.pathname === "/login") return;
 
         const token = getToken();
         if (!this.isToken(token)) Router.push({ pathname: "/login" });
