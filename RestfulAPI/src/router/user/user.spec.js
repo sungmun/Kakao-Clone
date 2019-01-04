@@ -36,14 +36,10 @@ describe("User.Controller", () => {
         it("should return error", done => {
             chai.request(url)
                 .post("/user")
-                .end((err, res) => {
-                    expect(err).to.be.null;
-                    expect(res.body).have.property("success");
-                    expect(res.body).have.property("message");
-
-                    expect(res.body.success).to.be.equal(false);
-                    done();
-                });
+                .then(resCheack)
+                .then(res => expect(res.body.success).to.be.equal(false))
+                .then(() => done())
+                .catch(ErrorProcess);
         });
         it("should return the token", done => {
             chai.request(url)
