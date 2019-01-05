@@ -67,14 +67,11 @@ describe("User.Controller", () => {
         it("should return err", done => {
             chai.request(url)
                 .get("/user")
-                .set("x-access-token", "body")
-                .end((err, res) => {
-                    expect(err).to.be.null;
-                    expect(res.body).have.property("success");
-                    expect(res.body).have.property("message");
-                    expect(res.body.success).to.be.equal(false);
-                    done();
-                });
+                .set("x-access-token", null)
+                .then(resCheack)
+                .then(res => expect(res.body.success).to.be.equal(false))
+                .then(() => done())
+                .catch(ErrorProcess);
         });
         it("should return the profile", done => {
             chai.request(url)
