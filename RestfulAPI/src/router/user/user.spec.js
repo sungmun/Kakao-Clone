@@ -59,14 +59,10 @@ describe("User.Controller", () => {
         it("should return the not loggged in", done => {
             chai.request(url)
                 .get("/user")
-                .end((err, res) => {
-                    expect(err).to.be.null;
-                    expect(res.body).have.property("success");
-                    expect(res.body).have.property("message");
-
-                    expect(res.body.success).to.be.equal(false);
-                    done();
-                });
+                .then(resCheack)
+                .then(res => expect(res.body.success).to.be.equal(false))
+                .then(() => done())
+                .catch(ErrorProcess);
         });
         it("should return err", done => {
             chai.request(url)
