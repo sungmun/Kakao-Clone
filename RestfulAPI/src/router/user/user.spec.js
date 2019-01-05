@@ -45,15 +45,13 @@ describe("User.Controller", () => {
             chai.request(url)
                 .post("/user")
                 .send({ user })
-                .end((err, res) => {
-                    expect(err).to.be.null;
-                    expect(res.body).have.property("success");
-                    expect(res.body).have.property("message");
-
+                .then(resCheack)
+                .then(res => {
                     expect(res.body.success).to.be.equal(true);
                     expect(res.body.message).have.property("token");
-                    done();
-                });
+                })
+                .then(() => done())
+                .catch(ErrorProcess);
         });
     });
 
