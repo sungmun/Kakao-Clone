@@ -30,3 +30,22 @@ const getToken = new Promise((resolve, reject) => {
         .then(resolve)
         .catch(reject);
 });
+
+describe("friend.Controller", () => {
+    describe("save", () => {
+        it("should return success", done => {
+            getToken.then(token => {
+                chai.request(url)
+                    .post("/friend")
+                    .set("x-access-token", token)
+                    .send({ friend: 15 })
+                    .then(resCheack)
+                    .then(res => {
+                        expect(res.body.success).to.be.equal(true);
+                    })
+                    .then(() => done())
+                    .catch(ErrorProcess);
+            });
+        });
+    });
+});
