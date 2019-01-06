@@ -74,41 +74,23 @@ describe("User.Controller", () => {
                 .catch(ErrorProcess);
         });
         it("should return the profile", done => {
-            chai.request(url)
-                .post("/user")
-                .send({ user })
-                .end((err, res) => {
-                    expect(err).to.be.null;
+            getToken.then(token => {
+                chai.request(url)
+                    .get("/user")
+                    .set("x-access-token", token)
+                    .then(resCheack)
+                    .then(res => {
+                        expect(res.status).to.equal(201);
 
-                    const body = res.body;
-                    expect(body).have.property("success");
-                    expect(body).have.property("message");
-
-                    expect(body.success).to.be.equal(true);
-                    expect(body.message).have.property("token");
-
-                    chai.request(url)
-                        .get("/user")
-                        .set("x-access-token", body.message.token)
-
-                        .end((err, res) => {
-                            expect(err).to.be.null;
-
-                            expect(res.status).to.equal(201);
-
-                            const body = res.body;
-                            expect(body).have.property("success");
-                            expect(body).have.property("message");
-
-                            const profile = expect(body.message.profile);
-                            profile.have.property("socialId");
-                            profile.have.property("platformName");
-                            profile.have.property("nickName");
-                            profile.have.property("photos");
-
-                            done();
-                        });
-                });
+                        const profile = expect(res.body.message.profile);
+                        profile.have.property("socialId");
+                        profile.have.property("platformName");
+                        profile.have.property("nickName");
+                        profile.have.property("photos");
+                    })
+                    .then(() => done())
+                    .catch(ErrorProcess);
+            });
         });
     });
 });
