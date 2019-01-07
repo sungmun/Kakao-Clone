@@ -48,4 +48,19 @@ describe("friend.Controller", () => {
             });
         });
     });
+    describe("read", () => {
+        it("should return Array", done => {
+            getToken.then(token => {
+                chai.request(url)
+                    .get("/friend")
+                    .set("x-access-token", token)
+                    .then(resCheack)
+                    .then(res => {
+                        expect(res.body.success).to.be.equal(true);
+                    })
+                    .then(() => done())
+                    .catch(ErrorProcess);
+            });
+        });
+    });
 });
