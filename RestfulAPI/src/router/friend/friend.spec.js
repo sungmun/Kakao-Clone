@@ -14,7 +14,7 @@ const ErrorProcess = err => console.log(err);
 const resCheack = res => {
     expect(res.body).have.property("success");
     expect(res.body).have.property("message");
-    return res;
+    return res.body;
 };
 
 const getToken = new Promise((resolve, reject) => {
@@ -40,8 +40,8 @@ describe("friend.Controller", () => {
                     .set("x-access-token", token)
                     .send({ friend: 15 })
                     .then(resCheack)
-                    .then(res => {
-                        expect(res.body.success).to.be.equal(true);
+                    .then(body => {
+                        expect(body.success).to.be.equal(true);
                     })
                     .then(() => done())
                     .catch(ErrorProcess);
@@ -55,8 +55,12 @@ describe("friend.Controller", () => {
                     .get("/friend")
                     .set("x-access-token", token)
                     .then(resCheack)
-                    .then(res => {
-                        expect(res.body.success).to.be.equal(true);
+                    .then(body => {
+                        expect(body.success).to.be.equal(true);
+                        expect(body.message.friend).to.be.an("array");
+                        expect(body.message.friend)
+                            .to.be.an("array")
+                            .that.does.include("profile");
                     })
                     .then(() => done())
                     .catch(ErrorProcess);
@@ -72,8 +76,8 @@ describe("friend.Controller", () => {
                     .set("x-access-token", token)
                     .send({ friend: 15 })
                     .then(resCheack)
-                    .then(res => {
-                        expect(res.body.success).to.be.equal(true);
+                    .then(body => {
+                        expect(body.success).to.be.equal(true);
                     })
                     .then(() => done())
                     .catch(ErrorProcess);
