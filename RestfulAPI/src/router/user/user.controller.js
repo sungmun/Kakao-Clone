@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import Model from "../../models";
+import Model from "../../database/models";
 import { secret } from "../../../private-key.json";
 const sendMessage = (success, message) => ({ success, message });
 
