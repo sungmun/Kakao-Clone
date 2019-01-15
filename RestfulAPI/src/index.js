@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import models from "./models";
+import models from "./database/models";
 import morgan from "morgan";
 import route from "./router";
 import cors from "cors";
