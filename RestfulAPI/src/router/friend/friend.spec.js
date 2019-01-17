@@ -53,22 +53,38 @@ describe("friend.Controller", () => {
         });
     });
     describe("read", () => {
-        it("should return Array", done => {
-            getToken.then(token => {
-                chai.request(url)
-                    .get("/friend")
-                    .set("x-access-token", token)
-                    .then(resCheack)
-                    .then(body => {
-                        expect(body.success).to.be.equal(true);
-                        expect(body.message.friend).to.be.an("array");
-                        expect(body.message.friend)
-                            .to.be.an("array")
-                            .that.does.include("profile");
-                    })
-                    .then(() => done())
-                    .catch(ErrorProcess);
+        let req, res, data;
+        before(() => {
+            req = httpMocks.createRequest({
+                method: "get",
+                url: "/friend",
+                headers: { "x-access-token": token }
             });
+            res = httpMocks.createResponse();
+            check(req, res, controller.save(req, res));
+            data = JSON.parse(res._getData());
+        });
+
+        it("message type cheack", done => {
+            expect(data).to.have.all.keys("success", "message");
+            done();
+        });
+
+        it("should return success", done => {
+            expect(data.success).to.be.equal(true);
+            done();
+        });
+
+        it("should return Array", done => {
+            expect(body.message.friend).to.be.an("array");
+            done();
+        });
+
+        it("should return Array type profile", done => {
+            expect(body.message.friend)
+                .to.be.an("array")
+                .that.does.include("profile");
+            done();
         });
     });
 
