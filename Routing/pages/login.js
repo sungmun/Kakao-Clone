@@ -3,6 +3,7 @@ import Router from "next/router";
 import axios from "axios";
 import { connect } from "react-redux";
 
+import FacebookButton from "../components/login/FacebookButton";
 import GoogleButton from "../components/login/GoogleButton";
 import { setToken } from "../utils/auth";
 import { login } from "../actions/user";
@@ -13,23 +14,18 @@ class Login extends React.Component {
     Login = profile => {
         axios
             .post("http://localhost:5000/user", { user: profile })
-            .then(this.tokenExtraction)
-            .then(token => this.saveUser(token, profile))
-            .then(() => Router.push({ pathname: "/" }))
-            .catch(err => console.error(err));
+            .then(res => {
+                this.saveUser(res.data.message.toke, profile);
+                Router.push({ pathname: "/" });
+            })
+            .catch(err => console.error(err.response.data));
     };
 
-    responseStateCheck = status => {
-        return status >= 200 && status < 300;
-    };
-
-    tokenExtraction = res => {
-        return this.responseStateCheck(res.status) ? res.data.token : false;
-    };
     saveUser = (token, profile) => {
         setToken(token);
         this.props.loginAction(profile);
     };
+
     render() {
         return (
             <LoginBox>
@@ -42,7 +38,7 @@ class Login extends React.Component {
                 <SocialLoginBox>
                     <GoogleButton Login={this.Login} />
 
-                    <FacebookButton>Login with Facebook</FacebookButton>
+                    <FacebookButton Login={this.Login} />
 
                     <KakaoButton>Login with Kakao</KakaoButton>
                 </SocialLoginBox>
@@ -93,21 +89,6 @@ const SocialButton = styled.button`
     color: #fff;
 `;
 
-const FacebookButton = styled(SocialButton)`
-    background-color: #4c69ba;
-    background-image: linear-gradient(#4c69ba, #3b55a0);
-    font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;
-    text-shadow: 0 -1px 0 #354c8c;
-    :before {
-        border-right: #364e92 1px solid;
-        background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png")
-            6px 6px no-repeat;
-    }
-    :hover,
-    focus {
-        background-color: #5b7bd5;
-    }
-`;
 const KakaoButton = styled(SocialButton)`
     background: rgb(53, 24, 25);
     color: rgb(255, 243, 16);
