@@ -1,41 +1,29 @@
-import chai, { expect } from "chai";
-import http from "chai-http";
 import { expect } from "chai";
 import httpMocks from "node-mocks-http";
 import { check } from "../utile";
 import controller from "./friend.controller";
 
-chai.use(http);
-
-const url = "http://localhost:5000";
 const user = {
     platformName: "google",
     socialId: "tjdans174@gmail.com"
 };
 
-const ErrorProcess = err => console.log(err);
-
-const resCheack = res => {
-    expect(res.body).have.property("success");
-    expect(res.body).have.property("message");
-    return res.body;
-};
-
-const getToken = new Promise((resolve, reject) => {
-    chai.request(url)
-        .post("/user")
-        .send({ user })
-        .then(resCheack)
-        .then(res => {
-            expect(res.body.success).to.be.equal(true);
-            expect(res.body.message).have.property("token");
-            return res.body.message.token;
-        })
-        .then(resolve)
-        .catch(reject);
-});
-
 describe("friend.Controller", () => {
+    let token;
+
+    before(() => {
+        let req = httpMocks.createRequest({
+            method: "POST",
+            url: "/login",
+            body: { user }
+        });
+
+        let res = httpMocks.createResponse();
+        controller.login(req, res);
+
+        token = JSON.parse(res._getData()).message.token;
+    });
+
     describe("save", () => {
         let req, res, data;
         before(() => {
