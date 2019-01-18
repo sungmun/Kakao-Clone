@@ -37,19 +37,27 @@ const getToken = new Promise((resolve, reject) => {
 
 describe("friend.Controller", () => {
     describe("save", () => {
-        it("should return success", done => {
-            getToken.then(token => {
-                chai.request(url)
-                    .post("/friend")
-                    .set("x-access-token", token)
-                    .send({ friend: 15 })
-                    .then(resCheack)
-                    .then(body => {
-                        expect(body.success).to.be.equal(true);
-                    })
-                    .then(() => done())
-                    .catch(ErrorProcess);
+        let req, res, data;
+        before(() => {
+            req = httpMocks.createRequest({
+                method: "POST",
+                url: "/friend",
+                body: { friend: 2 },
+                headers: { "x-access-token": token }
             });
+            res = httpMocks.createResponse();
+            check(req, res, controller.save(req, res));
+            data = JSON.parse(res._getData());
+        });
+
+        it("message type cheack", done => {
+            expect(data).to.have.all.keys("success", "message");
+            done();
+        });
+
+        it("should return success", done => {
+            expect(data.success).to.be.equal(true);
+            done();
         });
     });
     describe("read", () => {
