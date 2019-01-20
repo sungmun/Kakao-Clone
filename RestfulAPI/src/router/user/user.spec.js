@@ -55,42 +55,63 @@ describe("User.Controller", () => {
         });
     });
 
-    describe("User login check Test", () => {
-        it("should return the not loggged in", done => {
-            chai.request(url)
-                .get("/user")
-                .then(resCheack)
-                .then(res => expect(res.body.success).to.be.equal(false))
-                .then(() => done())
-                .catch(ErrorProcess);
-        });
-        it("should return err", done => {
-            chai.request(url)
-                .get("/user")
-                .set("x-access-token", null)
-                .then(resCheack)
-                .then(res => expect(res.body.success).to.be.equal(false))
-                .then(() => done())
-                .catch(ErrorProcess);
-        });
-        it("should return the profile", done => {
-            getToken.then(token => {
-                chai.request(url)
-                    .get("/user")
-                    .set("x-access-token", token)
-                    .then(resCheack)
-                    .then(res => {
-                        expect(res.status).to.equal(201);
-
-                        const profile = expect(res.body.message.profile);
-                        profile.have.property("socialId");
-                        profile.have.property("platformName");
-                        profile.have.property("nickName");
-                        profile.have.property("photos");
-                    })
-                    .then(() => done())
-                    .catch(ErrorProcess);
+    describe("User login cheack Test", () => {
+        let token;
+        describe("should return error", () => {
+            let req, res, data;
+            before(done => {
+                req = createRequest(getReq());
+                res = createResponse();
+                cheack(req, res, () => {
+                    controller.cheack(req, res, done);
+                });
             });
+
+            beforeEach(() => (data = JSON.parse(res._getData())));
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the success false", () =>
+                expect(data.success).to.be.equal(false));
+        });
+        describe("should return the profile", () => {
+            let req, data, res;
+
+            before(done => {
+                const login = next => {
+                    req = createRequest(postReq({ user }));
+                    res = createResponse();
+                    controller.login(req, res, next);
+                };
+
+                login(() => {
+                    const token = JSON.parse(res._getData()).message.token;
+                    req = createRequest(getReq({ "x-access-token": token }));
+                    res = createResponse();
+
+                    cheack(req, res, () => controller.cheack(req, res, done));
+                });
+            });
+
+            beforeEach(() => (data = JSON.parse(res._getData())));
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the status 201", () =>
+                expect(res.statusCode).to.equal(201));
+
+            it("should the profile", () =>
+                expect(data.message.profile).to.have.all.keys(
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "socialId",
+                    "platformName",
+                    "nickName",
+                    "photos"
+                ));
         });
     });
 });
