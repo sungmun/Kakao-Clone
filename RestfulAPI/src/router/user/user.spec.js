@@ -21,13 +21,21 @@ const getReq = params => ({
 
 describe("User.Controller", () => {
     describe("User login Test", () => {
-        it("should return error", done => {
-            chai.request(url)
-                .post("/user")
-                .then(resCheack)
-                .then(res => expect(res.body.success).to.be.equal(false))
-                .then(() => done())
-                .catch(ErrorProcess);
+        describe("should return error", () => {
+            let req, res, data;
+            before(done => {
+                req = createRequest(postReq());
+                res = createResponse();
+                controller.login(req, res, done);
+            });
+
+            beforeEach(() => (data = JSON.parse(res._getData())));
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the success false", () =>
+                expect(data.success).to.be.equal(false));
         });
         it("should return the token", done => {
             chai.request(url)
