@@ -1,7 +1,8 @@
 import { expect } from "chai";
-import httpMocks from "node-mocks-http";
-import { check } from "../utile";
-import controller from "./friend.controller";
+import { createMocks } from "node-mocks-http";
+import { cheack } from "../utile";
+import { login } from "../user/user.controller";
+import { remove, save, read } from "./friend.controller";
 
 const user = {
     platformName: "google",
