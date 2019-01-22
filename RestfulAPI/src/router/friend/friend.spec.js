@@ -39,16 +39,13 @@ describe("friend.Controller", () => {
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
-        it("message type cheack", done => {
-            expect(data).to.have.all.keys("success", "message");
-            done();
-        });
+        it("message type cheack", () =>
+            expect(data).to.have.all.keys("success", "message"));
 
-        it("should return success", done => {
-            expect(data.success).to.be.equal(true);
-            done();
-        });
+        it("should return success", () =>
+            expect(data.success).to.be.equal(true));
     });
+
     describe("read", () => {
         let data;
         before(() => {
@@ -65,26 +62,22 @@ describe("friend.Controller", () => {
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
-        it("message type cheack", done => {
+        it("message type cheack", () => {
             expect(data).to.have.all.keys("success", "message");
-            done();
         });
 
-        it("should return success", done => {
+        it("should return success", () => {
             expect(data.success).to.be.equal(true);
-            done();
         });
 
-        it("should return Array", done => {
+        it("should return Array", () => {
             expect(body.message.friend).to.be.an("array");
-            done();
         });
 
-        it("should return Array type profile", done => {
+        it("should return Array type profile", () => {
             expect(body.message.friend)
                 .to.be.an("array")
                 .that.does.include("profile");
-            done();
         });
     });
 
@@ -104,14 +97,12 @@ describe("friend.Controller", () => {
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
-        it("message type cheack", done => {
+        it("message type cheack", () => {
             expect(data).to.have.all.keys("success", "message");
-            done();
         });
 
-        it("should return success", done => {
+        it("should return success", () => {
             expect(data.success).to.be.equal(true);
-            done();
         });
     });
 });
