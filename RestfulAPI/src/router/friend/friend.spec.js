@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { createMocks } from "node-mocks-http";
-import { cheack } from "../utile";
+import { auth } from "../utile";
 import { login } from "../user/user.controller";
 import { remove, save, read } from "./friend.controller";
 
