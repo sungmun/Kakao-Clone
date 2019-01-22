@@ -37,17 +37,28 @@ describe("User.Controller", () => {
             it("should the success false", () =>
                 expect(data.success).to.be.equal(false));
         });
-        it("should return the token", done => {
-            chai.request(url)
-                .post("/user")
-                .send({ user })
-                .then(resCheack)
-                .then(res => {
-                    expect(res.body.success).to.be.equal(true);
-                    expect(res.body.message).have.property("token");
-                })
-                .then(() => done())
-                .catch(ErrorProcess);
+
+        describe("should return the token", () => {
+            let req, res, data;
+            before(done => {
+                req = createRequest(postReq({ user }));
+                res = createResponse();
+                controller.login(req, res, done);
+            });
+
+            beforeEach(() => (data = JSON.parse(res._getData())));
+
+            it("should the status 201", () =>
+                expect(res.statusCode).to.equal(201));
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the success true", () =>
+                expect(data.success).to.be.equal(true));
+
+            it("should the token", () =>
+                expect(data.message).have.property("token"));
         });
     });
 
