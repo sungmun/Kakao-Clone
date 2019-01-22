@@ -61,18 +61,15 @@ describe("User.Controller", () => {
     });
 
     describe("User login cheack Test", () => {
-        let token;
         describe("should return error", () => {
-            let req, res, data;
-            before(done => {
-                req = createRequest(getReq());
-                res = createResponse();
-                cheack(req, res, () => {
-                    controller.cheack(req, res, done);
-                });
-            });
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq());
 
-            beforeEach(() => (data = JSON.parse(res._getData())));
+                return createPromise(req, res, auth)
+                    .then(() => createPromise(req, res, cheack))
+                    .then(() => (data = JSON.parse(res._getData())));
+            });
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
