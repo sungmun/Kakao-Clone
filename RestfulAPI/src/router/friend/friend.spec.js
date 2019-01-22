@@ -18,9 +18,9 @@ describe("friend.Controller", () => {
             url: "/login",
             body: { user }
         });
-        controller.login(req, res);
-
-        token = JSON.parse(res._getData()).message.token;
+        return new Promise((resolve, reject) => {
+            login(req, res, resolve);
+        }).then(() => (token = JSON.parse(res._getData()).message.token));
     });
 
     describe("save", () => {
