@@ -4,11 +4,6 @@ import { auth } from "../utile";
 import { login } from "../user/user.controller";
 import { remove, save, read } from "./friend.controller";
 
-const user = {
-    platformName: "google",
-    socialId: "tjdans174@gmail.com"
-};
-
 describe("friend.Controller", () => {
     let token;
 
@@ -16,7 +11,12 @@ describe("friend.Controller", () => {
         const { req, res } = createMocks({
             method: "POST",
             url: "/login",
-            body: { user }
+            body: {
+                user: {
+                    platformName: "google",
+                    socialId: "tjdans174@gmail.com"
+                }
+            }
         });
         return new Promise((resolve, reject) => {
             login(req, res, resolve);
