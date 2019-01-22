@@ -18,7 +18,7 @@ export const cheack = (req, res, next) => {
         res.status(403).json(messageFormat(false, error.message));
 
     promiss
-        .then(profile => Model.Members.findByPk(profile.id))
+        .then(profile => Model.User.findByPk(profile.id))
         .then(profile => profile.dataValues)
         .then(respond)
         .catch(onError)

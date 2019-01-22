@@ -1,8 +1,10 @@
 import express from "express";
 import User from "./user";
+import Friend from "./friend";
 
-var route = express.Router();
+const Router = express.Router();
 
-route.use("/user", User);
+Router.use("/user", User);
+Router.use("/friend", Friend);
 
-export default route;
+export default Router;
