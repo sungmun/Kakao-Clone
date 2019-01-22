@@ -32,8 +32,11 @@ describe("friend.Controller", () => {
                 body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            check(req, res, controller.save(req, res));
-            data = JSON.parse(res._getData());
+            return new Promise((resolve, reject) => {
+                cheack(req, res, resolve);
+            })
+                .then(() => save(req, res, Promise.resolve))
+                .then(() => (data = JSON.parse(res._getData())));
         });
 
         it("message type cheack", done => {
@@ -54,8 +57,12 @@ describe("friend.Controller", () => {
                 url: "/friend",
                 headers: { "x-access-token": token }
             });
-            check(req, res, controller.save(req, res));
-            data = JSON.parse(res._getData());
+
+            return new Promise((resolve, reject) => {
+                cheack(req, res, resolve);
+            })
+                .then(() => read(req, res, Promise.resolve))
+                .then(() => (data = JSON.parse(res._getData())));
         });
 
         it("message type cheack", done => {
@@ -90,8 +97,11 @@ describe("friend.Controller", () => {
                 body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            check(req, res, controller.save(req, res));
-            data = JSON.parse(res._getData());
+            return new Promise((resolve, reject) => {
+                cheack(req, res, resolve);
+            })
+                .then(() => remove(req, res, Promise.resolve))
+                .then(() => (data = JSON.parse(res._getData())));
         });
 
         it("message type cheack", done => {
