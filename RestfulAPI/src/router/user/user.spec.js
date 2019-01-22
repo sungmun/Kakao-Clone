@@ -123,3 +123,8 @@ describe("User.Controller", () => {
         });
     });
 });
+const createPromise = (req, res, callback) => {
+    return new Promise(resolve => {
+        callback(req, res, resolve);
+    });
+};
