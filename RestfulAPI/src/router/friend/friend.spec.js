@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { createMocks } from "node-mocks-http";
-import { auth } from "../utile";
+import { auth, convertMiddlewareToPromise } from "../utile";
 import { login } from "../user/user.controller";
 import { remove, save, read } from "./friend.controller";
 
@@ -18,7 +18,7 @@ describe("friend.Controller", () => {
                 }
             }
         });
-        return createPromise(req, res, login).then(
+        return convertMiddlewareToPromise(login, req, res).then(
             () => (token = JSON.parse(res._getData()).message.token)
         );
     });
@@ -33,8 +33,8 @@ describe("friend.Controller", () => {
                 headers: { "x-access-token": token }
             });
 
-            return createPromise(req, res, auth)
-                .then(() => createPromise(req, res, save))
+            return convertMiddlewareToPromise(auth, req, res)
+                .then(() => convertMiddlewareToPromise(save, req, res))
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
@@ -54,8 +54,8 @@ describe("friend.Controller", () => {
                 headers: { "x-access-token": token }
             });
 
-            return createPromise(req, res, auth)
-                .then(() => createPromise(req, res, read))
+            return convertMiddlewareToPromise(auth, req, res)
+                .then(() => convertMiddlewareToPromise(read, req, res))
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
@@ -87,8 +87,8 @@ describe("friend.Controller", () => {
                 body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            return createPromise(req, res, auth)
-                .then(() => createPromise(req, res, remove))
+            return convertMiddlewareToPromise(auth, req, res)
+                .then(() => convertMiddlewareToPromise(remove, req, res))
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
@@ -101,9 +101,3 @@ describe("friend.Controller", () => {
         });
     });
 });
-
-const createPromise = (req, res, callback) => {
-    return new Promise(resolve => {
-        callback(req, res, resolve);
-    });
-};
