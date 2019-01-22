@@ -15,7 +15,7 @@ export const cheack = (req, res, next) => {
     const respond = profile => (req.body.profile = profile);
 
     const onError = error =>
-        res.status(403).json(sendMessage(false, error.message));
+        res.status(403).json(messageFormat(false, error.message));
 
     promiss
         .then(profile => Model.Members.findByPk(profile.id))
