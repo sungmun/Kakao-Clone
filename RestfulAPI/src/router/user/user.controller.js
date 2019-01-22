@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Model from "../../database/models";
 import { secret } from "../../../private-key.json";
 import { messageFormat } from "../utile";
-exports.login = (req, res, next) => {
+export const login = (req, res, next) => {
     const reqCheak = new Promise((resolve, reject) => {
         req.body.user || reject(Error("유저 정보가 없습니다"));
         resolve(req.body.user);
@@ -32,7 +32,7 @@ exports.login = (req, res, next) => {
         .then(next);
 };
 
-exports.cheack = (req, res, next) => {
+export const cheack = (req, res, next) => {
     if (0 !== Object.keys(req.body).length) {
         res.status(201).json(
             messageFormat(true, { profile: req.body.profile })
