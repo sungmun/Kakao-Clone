@@ -12,12 +12,12 @@ exports.login = (req, res) => {
     const tokenIssue = profile => jwt.sign({ id: profile.id }, secret);
 
     const memberfind = profile =>
-        Model.Members.findOne({
+        Model.User.findOne({
             where: {
                 platformName: profile.platformName,
                 socialId: profile.socialId
             }
-        }).then(result => result || Model.Members.create(profile));
+        }).then(result => result || Model.User.create(profile));
 
     const respond = token => res.status(201).json(sendMessage(true, { token }));
 

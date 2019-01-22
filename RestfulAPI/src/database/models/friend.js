@@ -8,13 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    Friend.associate = function(models) {
-        Friend.hasMany(models.User, {
-            foreignKey: "userId"
-        });
-        Friend.hasMany(models.User, {
-            foreignKey: "friendId"
-        });
-    };
+    Friend.associate = function(models) {};
     return Friend;
 };

@@ -17,7 +17,7 @@ exports.check = (req, res, next) => {
         res.status(403).json(sendMessage(false, error.message));
 
     promiss
-        .then(profile => Model.Members.findByPk(profile.id))
+        .then(profile => Model.User.findByPk(profile.id))
         .then(respond)
         .catch(onError);
 };
