@@ -1,96 +1,119 @@
-import chai, { expect } from "chai";
-import http from "chai-http";
-
-chai.use(http);
-
-const url = "http://localhost:5000";
+import { expect } from "chai";
+import { createRequest, createResponse, createMocks } from "node-mocks-http";
+import { auth } from "../utile";
+import { login, cheack } from "./user.controller";
 
 const user = {
     platformName: "google",
     socialId: "tjdans174@gmail.com"
 };
 
-const ErrorProcess = err => console.log(err);
-
-const resCheack = res => {
-    expect(res.body).have.property("success");
-    expect(res.body).have.property("message");
-    return res;
-};
-
-const getToken = new Promise((resolve, reject) => {
-    chai.request(url)
-        .post("/user")
-        .send({ user })
-        .then(resCheack)
-        .then(res => {
-            expect(res.body.success).to.be.equal(true);
-            expect(res.body.message).have.property("token");
-            return res.body.message.token;
-        })
-        .then(resolve)
-        .catch(reject);
+const postReq = params => ({
+    method: "POST",
+    url: "/login",
+    body: params
 });
+
+const getReq = params => ({
+    method: "GET",
+    url: "/login",
+    headers: params
+});
+
 describe("User.Controller", () => {
     describe("User login Test", () => {
-        it("should return error", done => {
-            chai.request(url)
-                .post("/user")
-                .then(resCheack)
-                .then(res => expect(res.body.success).to.be.equal(false))
-                .then(() => done())
-                .catch(ErrorProcess);
+        describe("should return error", () => {
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq());
+
+                return createPromise(req, res, login).then(
+                    () => (data = JSON.parse(res._getData()))
+                );
+            });
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the success false", () =>
+                expect(data.success).to.be.equal(false));
         });
-        it("should return the token", done => {
-            chai.request(url)
-                .post("/user")
-                .send({ user })
-                .then(resCheack)
-                .then(res => {
-                    expect(res.body.success).to.be.equal(true);
-                    expect(res.body.message).have.property("token");
-                })
-                .then(() => done())
-                .catch(ErrorProcess);
+
+        describe("should return the token", () => {
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq({ user }));
+
+                return createPromise(req, res, login).then(
+                    () => (data = JSON.parse(res._getData()))
+                );
+            });
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the success true", () =>
+                expect(data.success).to.be.equal(true));
+
+            it("should the token", () =>
+                expect(data.message).have.property("token"));
         });
     });
 
-    describe("User login check Test", () => {
-        it("should return the not loggged in", done => {
-            chai.request(url)
-                .get("/user")
-                .then(resCheack)
-                .then(res => expect(res.body.success).to.be.equal(false))
-                .then(() => done())
-                .catch(ErrorProcess);
-        });
-        it("should return err", done => {
-            chai.request(url)
-                .get("/user")
-                .set("x-access-token", null)
-                .then(resCheack)
-                .then(res => expect(res.body.success).to.be.equal(false))
-                .then(() => done())
-                .catch(ErrorProcess);
-        });
-        it("should return the profile", done => {
-            getToken.then(token => {
-                chai.request(url)
-                    .get("/user")
-                    .set("x-access-token", token)
-                    .then(resCheack)
-                    .then(res => {
-                        expect(res.status).to.equal(201);
+    describe("User login cheack Test", () => {
+        describe("should return error", () => {
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq());
 
-                        const profile = expect(res.body.message.profile);
-                        profile.have.property("socialId");
-                        profile.have.property("platformName");
-                        profile.have.property("nickName");
-                        profile.have.property("photos");
-                    })
-                    .then(() => done())
-                    .catch(ErrorProcess);
+                return createPromise(req, res, auth)
+                    .then(() => createPromise(req, res, cheack))
+                    .then(() => (data = JSON.parse(res._getData())));
             });
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the success false", () =>
+                expect(data.success).to.be.equal(false));
+        });
+
+        describe("should return the profile", () => {
+            let data;
+
+            before(() => {
+                let { req, res } = createMocks(postReq({ user }));
+                return createPromise(req, res, login)
+                    .then(() => JSON.parse(res._getData()).message.token)
+                    .then(token => {
+                        req = createRequest(
+                            getReq({ "x-access-token": token })
+                        );
+                        res = createResponse();
+                        return createPromise(req, res, auth);
+                    })
+                    .then(() => createPromise(req, res, cheack))
+                    .then(() => (data = JSON.parse(res._getData())));
+            });
+
+            it("message type cheack", () =>
+                expect(data).to.have.all.keys("success", "message"));
+
+            it("should the profile", () =>
+                expect(data.message.profile).to.have.all.keys(
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "socialId",
+                    "platformName",
+                    "nickName",
+                    "photos"
+                ));
         });
     });
 });
+const createPromise = (req, res, callback) => {
+    return new Promise(resolve => {
+        callback(req, res, resolve);
+    });
+};
