@@ -21,3 +21,5 @@ exports.check = (req, res, next) => {
         .then(respond)
         .catch(onError);
 };
+
+export const messageFormat = (success, message) => ({ success, message });
