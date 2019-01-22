@@ -81,7 +81,7 @@ describe("friend.Controller", () => {
         });
     });
 
-    describe("delete", () => {
+    describe("remove", () => {
         let data;
         before(() => {
             const { req, res } = createMocks({
