@@ -28,7 +28,8 @@ exports.login = (req, res, next) => {
         .then(memberfind)
         .then(tokenIssue)
         .then(respond)
-        .catch(OnError);
+        .catch(OnError)
+        .then(next);
 };
 
 exports.cheack = (req, res, next) => {
