@@ -23,14 +23,14 @@ const getReq = params => ({
 describe("User.Controller", () => {
     describe("User login Test", () => {
         describe("should return error", () => {
-            let req, res, data;
-            before(done => {
-                req = createRequest(postReq());
-                res = createResponse();
-                controller.login(req, res, done);
-            });
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq());
 
-            beforeEach(() => (data = JSON.parse(res._getData())));
+                return createPromise(req, res, login).then(
+                    () => (data = JSON.parse(res._getData()))
+                );
+            });
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
