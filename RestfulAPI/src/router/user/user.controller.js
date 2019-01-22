@@ -31,8 +31,11 @@ exports.login = (req, res, next) => {
         .catch(OnError);
 };
 
-exports.check = (req, res) => {
+exports.cheack = (req, res, next) => {
+    if (0 !== Object.keys(req.body).length) {
         res.status(201).json(
             messageFormat(true, { profile: req.body.profile })
         );
+    }
+    next();
 };
