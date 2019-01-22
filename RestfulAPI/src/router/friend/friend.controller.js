@@ -1,4 +1,9 @@
 import Model from "../../database/models";
-exports.read = (req, res) => {};
+import { messageFormat } from "../utile";
+
+export const read = (req, res) => {
+    res.status(201).json(messageFormat(true, {}));
+};
+
 exports.save = (req, res) => {};
 exports.delete = (req, res) => {};
