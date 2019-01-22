@@ -18,9 +18,9 @@ describe("friend.Controller", () => {
                 }
             }
         });
-        return new Promise((resolve, reject) => {
-            login(req, res, resolve);
-        }).then(() => (token = JSON.parse(res._getData()).message.token));
+        return createPromise(req, res, login).then(
+            () => (token = JSON.parse(res._getData()).message.token)
+        );
     });
 
     describe("save", () => {
@@ -32,10 +32,9 @@ describe("friend.Controller", () => {
                 body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            return new Promise((resolve, reject) => {
-                cheack(req, res, resolve);
-            })
-                .then(() => save(req, res, Promise.resolve))
+
+            return createPromise(req, res, auth)
+                .then(() => createPromise(req, res, save))
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
@@ -55,10 +54,8 @@ describe("friend.Controller", () => {
                 headers: { "x-access-token": token }
             });
 
-            return new Promise((resolve, reject) => {
-                cheack(req, res, resolve);
-            })
-                .then(() => read(req, res, Promise.resolve))
+            return createPromise(req, res, auth)
+                .then(() => createPromise(req, res, read))
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
@@ -90,10 +87,8 @@ describe("friend.Controller", () => {
                 body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            return new Promise((resolve, reject) => {
-                cheack(req, res, resolve);
-            })
-                .then(() => remove(req, res, Promise.resolve))
+            return createPromise(req, res, auth)
+                .then(() => createPromise(req, res, remove))
                 .then(() => (data = JSON.parse(res._getData())));
         });
 
