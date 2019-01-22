@@ -40,17 +40,14 @@ describe("User.Controller", () => {
         });
 
         describe("should return the token", () => {
-            let req, res, data;
-            before(done => {
-                req = createRequest(postReq({ user }));
-                res = createResponse();
-                controller.login(req, res, done);
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq({ user }));
+
+                return createPromise(req, res, login).then(
+                    () => (data = JSON.parse(res._getData()))
+                );
             });
-
-            beforeEach(() => (data = JSON.parse(res._getData())));
-
-            it("should the status 201", () =>
-                expect(res.statusCode).to.equal(201));
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
