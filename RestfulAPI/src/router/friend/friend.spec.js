@@ -13,28 +13,25 @@ describe("friend.Controller", () => {
     let token;
 
     before(() => {
-        let req = httpMocks.createRequest({
+        const { req, res } = createMocks({
             method: "POST",
             url: "/login",
             body: { user }
         });
-
-        let res = httpMocks.createResponse();
         controller.login(req, res);
 
         token = JSON.parse(res._getData()).message.token;
     });
 
     describe("save", () => {
-        let req, res, data;
+        let data;
         before(() => {
-            req = httpMocks.createRequest({
+            const { req, res } = createMocks({
                 method: "POST",
                 url: "/friend",
                 body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            res = httpMocks.createResponse();
             check(req, res, controller.save(req, res));
             data = JSON.parse(res._getData());
         });
@@ -50,14 +47,13 @@ describe("friend.Controller", () => {
         });
     });
     describe("read", () => {
-        let req, res, data;
+        let data;
         before(() => {
-            req = httpMocks.createRequest({
+            const { req, res } = createMocks({
                 method: "get",
                 url: "/friend",
                 headers: { "x-access-token": token }
             });
-            res = httpMocks.createResponse();
             check(req, res, controller.save(req, res));
             data = JSON.parse(res._getData());
         });
@@ -86,15 +82,14 @@ describe("friend.Controller", () => {
     });
 
     describe("delete", () => {
-        let req, res, data;
+        let data;
         before(() => {
-            req = httpMocks.createRequest({
+            const { req, res } = createMocks({
                 method: "delete",
                 url: "/friend",
-                body: 2,
+                body: { friend: 2 },
                 headers: { "x-access-token": token }
             });
-            res = httpMocks.createResponse();
             check(req, res, controller.save(req, res));
             data = JSON.parse(res._getData());
         });
