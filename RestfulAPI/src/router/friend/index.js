@@ -1,10 +1,10 @@
 import express from "express";
-import controller from "./friend.controller";
+import { read, save, remove } from "./friend.controller";
 
 const router = express.Router();
 
-router.post("/", controller.save);
-router.get("/", controller.read);
-router.delete("/", controller.delete);
+router.post("/", save);
+router.get("/", read);
+router.delete("/", remove);
 
 export default router;
