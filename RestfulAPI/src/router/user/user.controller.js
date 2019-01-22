@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
 import Model from "../../database/models";
 import { secret } from "../../../private-key.json";
-const sendMessage = (success, message) => ({ success, message });
-
-exports.login = (req, res) => {
+import { messageFormat } from "../utile";
+exports.login = (req, res, next) => {
     const reqCheak = new Promise((resolve, reject) => {
         req.body.user || reject(Error("유저 정보가 없습니다"));
         resolve(req.body.user);
@@ -19,18 +18,25 @@ exports.login = (req, res) => {
             }
         }).then(result => result || Model.User.create(profile));
 
-    const respond = token => res.status(201).json(sendMessage(true, { token }));
+    const respond = token =>
+        res.status(201).json(messageFormat(true, { token }));
 
     const OnError = error =>
-        res.status(403).json(sendMessage(false, error.message));
+        res.status(403).json(messageFormat(false, error.message));
 
     reqCheak
         .then(memberfind)
         .then(tokenIssue)
         .then(respond)
-        .catch(OnError);
+        .catch(OnError)
+        .then(next);
 };
 
-exports.check = (req, res) => {
-    res.status(201).json(sendMessage(true, { profile: req.body.profile }));
+exports.cheack = (req, res, next) => {
+    if (0 !== Object.keys(req.body).length) {
+        res.status(201).json(
+            messageFormat(true, { profile: req.body.profile })
+        );
+    }
+    next();
 };
