@@ -26,3 +26,9 @@ export const auth = (req, res, next) => {
 };
 
 export const messageFormat = (success, message) => ({ success, message });
+
+export const convertMiddlewareToPromise = (middleware, req, res) => {
+    return new Promise(resolve => {
+        middleware(req, res, resolve);
+    });
+};
