@@ -9,4 +9,6 @@ export const save = (req, res) => {
     res.status(201).json(messageFormat(true, {}));
 };
 
-exports.delete = (req, res) => {};
+export const remove = (req, res) => {
+    res.status(201).json(messageFormat(true, {}));
+};
