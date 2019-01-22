@@ -5,6 +5,6 @@ import Friend from "./friend";
 const Router = express.Router();
 
 Router.use("/user", User);
-Router.use("/friend", Friend);
+Router.use("/friend", cheack, Friend);
 
 export default Router;

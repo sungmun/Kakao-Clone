@@ -1,7 +1,8 @@
 import { expect } from "chai";
-import { createRequest, createResponse } from "node-mocks-http";
-import { cheack } from "../utile";
-import controller from "./user.controller";
+import { createRequest, createResponse, createMocks } from "node-mocks-http";
+import { auth } from "../utile";
+import { login, cheack } from "./user.controller";
+
 const user = {
     platformName: "google",
     socialId: "tjdans174@gmail.com"
@@ -22,14 +23,14 @@ const getReq = params => ({
 describe("User.Controller", () => {
     describe("User login Test", () => {
         describe("should return error", () => {
-            let req, res, data;
-            before(done => {
-                req = createRequest(postReq());
-                res = createResponse();
-                controller.login(req, res, done);
-            });
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq());
 
-            beforeEach(() => (data = JSON.parse(res._getData())));
+                return createPromise(req, res, login).then(
+                    () => (data = JSON.parse(res._getData()))
+                );
+            });
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
@@ -39,17 +40,14 @@ describe("User.Controller", () => {
         });
 
         describe("should return the token", () => {
-            let req, res, data;
-            before(done => {
-                req = createRequest(postReq({ user }));
-                res = createResponse();
-                controller.login(req, res, done);
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq({ user }));
+
+                return createPromise(req, res, login).then(
+                    () => (data = JSON.parse(res._getData()))
+                );
             });
-
-            beforeEach(() => (data = JSON.parse(res._getData())));
-
-            it("should the status 201", () =>
-                expect(res.statusCode).to.equal(201));
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
@@ -63,18 +61,15 @@ describe("User.Controller", () => {
     });
 
     describe("User login cheack Test", () => {
-        let token;
         describe("should return error", () => {
-            let req, res, data;
-            before(done => {
-                req = createRequest(getReq());
-                res = createResponse();
-                cheack(req, res, () => {
-                    controller.cheack(req, res, done);
-                });
-            });
+            let data;
+            before(() => {
+                const { req, res } = createMocks(postReq());
 
-            beforeEach(() => (data = JSON.parse(res._getData())));
+                return createPromise(req, res, auth)
+                    .then(() => createPromise(req, res, cheack))
+                    .then(() => (data = JSON.parse(res._getData())));
+            });
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
@@ -82,32 +77,27 @@ describe("User.Controller", () => {
             it("should the success false", () =>
                 expect(data.success).to.be.equal(false));
         });
+
         describe("should return the profile", () => {
-            let req, data, res;
+            let data;
 
-            before(done => {
-                const login = next => {
-                    req = createRequest(postReq({ user }));
-                    res = createResponse();
-                    controller.login(req, res, next);
-                };
-
-                login(() => {
-                    const token = JSON.parse(res._getData()).message.token;
-                    req = createRequest(getReq({ "x-access-token": token }));
-                    res = createResponse();
-
-                    cheack(req, res, () => controller.cheack(req, res, done));
-                });
+            before(() => {
+                let { req, res } = createMocks(postReq({ user }));
+                return createPromise(req, res, login)
+                    .then(() => JSON.parse(res._getData()).message.token)
+                    .then(token => {
+                        req = createRequest(
+                            getReq({ "x-access-token": token })
+                        );
+                        res = createResponse();
+                        return createPromise(req, res, auth);
+                    })
+                    .then(() => createPromise(req, res, cheack))
+                    .then(() => (data = JSON.parse(res._getData())));
             });
-
-            beforeEach(() => (data = JSON.parse(res._getData())));
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
-
-            it("should the status 201", () =>
-                expect(res.statusCode).to.equal(201));
 
             it("should the profile", () =>
                 expect(data.message.profile).to.have.all.keys(
@@ -122,3 +112,8 @@ describe("User.Controller", () => {
         });
     });
 });
+const createPromise = (req, res, callback) => {
+    return new Promise(resolve => {
+        callback(req, res, resolve);
+    });
+};

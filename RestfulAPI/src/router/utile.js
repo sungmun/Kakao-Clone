@@ -1,7 +1,7 @@
 import { secret } from "../../private-key.json";
 import jwt from "jsonwebtoken";
 import Model from "../database/models";
-export const cheack = (req, res, next) => {
+export const auth = (req, res, next) => {
     const token = req.headers["x-access-token"] || req.query.token;
 
     const promiss = new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ export const cheack = (req, res, next) => {
     const respond = profile => (req.body.profile = profile);
 
     const onError = error =>
-        res.status(403).json(sendMessage(false, error.message));
+        res.status(403).json(messageFormat(false, error.message));
 
     promiss
         .then(profile => Model.User.findByPk(profile.id))
