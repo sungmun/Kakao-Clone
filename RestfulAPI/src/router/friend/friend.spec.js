@@ -7,36 +7,37 @@ import { remove, save, read } from "./friend.controller";
 describe("friend.Controller", () => {
     let token;
 
-    before(() => {
-        const { req, res } = createMocks({
-            method: "POST",
-            url: "/login",
-            body: {
-                user: {
-                    platformName: "google",
-                    socialId: "tjdans174@gmail.com"
+    before(() =>
+        convertMiddlewareToPromise(
+            login,
+            createMocks({
+                method: "POST",
+                body: {
+                    user: {
+                        platformName: "google",
+                        socialId: "tjdans174@gmail.com"
+                    }
                 }
-            }
-        });
-        return convertMiddlewareToPromise(login, req, res).then(
-            () => (token = JSON.parse(res._getData()).message.token)
-        );
-    });
+            })
+        ).then(({ res }) => (token = JSON.parse(res._getData()).message.token))
+    );
 
     describe("save", () => {
         let data;
-        before(() => {
-            const { req, res } = createMocks({
-                method: "POST",
-                url: "/friend",
-                body: { friend: 2 },
-                headers: { "x-access-token": token }
-            });
-
-            return convertMiddlewareToPromise(auth, req, res)
-                .then(() => convertMiddlewareToPromise(save, req, res))
-                .then(() => (data = JSON.parse(res._getData())));
-        });
+        before(() =>
+            convertMiddlewareToPromise(
+                auth,
+                createMocks({
+                    method: "POST",
+                    body: { friend: 2 },
+                    headers: { "x-access-token": token }
+                })
+            )
+                .then(promiseData =>
+                    convertMiddlewareToPromise(save, promiseData)
+                )
+                .then(({ res }) => (data = JSON.parse(res._getData())))
+        );
 
         it("message type cheack", () =>
             expect(data).to.have.all.keys("success", "message"));
@@ -47,17 +48,19 @@ describe("friend.Controller", () => {
 
     describe("read", () => {
         let data;
-        before(() => {
-            const { req, res } = createMocks({
-                method: "get",
-                url: "/friend",
-                headers: { "x-access-token": token }
-            });
-
-            return convertMiddlewareToPromise(auth, req, res)
-                .then(() => convertMiddlewareToPromise(read, req, res))
-                .then(() => (data = JSON.parse(res._getData())));
-        });
+        before(() =>
+            convertMiddlewareToPromise(
+                auth,
+                createMocks({
+                    method: "get",
+                    headers: { "x-access-token": token }
+                })
+            )
+                .then(promiseData =>
+                    convertMiddlewareToPromise(read, promiseData)
+                )
+                .then(({ res }) => (data = JSON.parse(res._getData())))
+        );
 
         it("message type cheack", () => {
             expect(data).to.have.all.keys("success", "message");
@@ -80,17 +83,20 @@ describe("friend.Controller", () => {
 
     describe("remove", () => {
         let data;
-        before(() => {
-            const { req, res } = createMocks({
-                method: "delete",
-                url: "/friend",
-                body: { friend: 2 },
-                headers: { "x-access-token": token }
-            });
-            return convertMiddlewareToPromise(auth, req, res)
-                .then(() => convertMiddlewareToPromise(remove, req, res))
-                .then(() => (data = JSON.parse(res._getData())));
-        });
+        before(() =>
+            convertMiddlewareToPromise(
+                auth,
+                createMocks({
+                    method: "delete",
+                    body: { friend: 2 },
+                    headers: { "x-access-token": token }
+                })
+            )
+                .then(promiseData =>
+                    convertMiddlewareToPromise(remove, promiseData)
+                )
+                .then(({ res }) => (data = JSON.parse(res._getData())))
+        );
 
         it("message type cheack", () => {
             expect(data).to.have.all.keys("success", "message");
