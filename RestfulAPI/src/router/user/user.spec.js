@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { createRequest, createResponse, createMocks } from "node-mocks-http";
-import { auth } from "../utile";
+import { auth, convertMiddlewareToPromise } from "../utile";
 import { login, cheack } from "./user.controller";
 
 const user = {
@@ -27,7 +27,7 @@ describe("User.Controller", () => {
             before(() => {
                 const { req, res } = createMocks(postReq());
 
-                return createPromise(req, res, login).then(
+                return convertMiddlewareToPromise(login, req, res).then(
                     () => (data = JSON.parse(res._getData()))
                 );
             });
@@ -44,7 +44,7 @@ describe("User.Controller", () => {
             before(() => {
                 const { req, res } = createMocks(postReq({ user }));
 
-                return createPromise(req, res, login).then(
+                return convertMiddlewareToPromise(login, req, res).then(
                     () => (data = JSON.parse(res._getData()))
                 );
             });
@@ -66,8 +66,8 @@ describe("User.Controller", () => {
             before(() => {
                 const { req, res } = createMocks(postReq());
 
-                return createPromise(req, res, auth)
-                    .then(() => createPromise(req, res, cheack))
+                return convertMiddlewareToPromise(auth, req, res)
+                    .then(() => convertMiddlewareToPromise(cheack, req, res))
                     .then(() => (data = JSON.parse(res._getData())));
             });
 
@@ -83,16 +83,16 @@ describe("User.Controller", () => {
 
             before(() => {
                 let { req, res } = createMocks(postReq({ user }));
-                return createPromise(req, res, login)
+                return convertMiddlewareToPromise(login, req, res)
                     .then(() => JSON.parse(res._getData()).message.token)
                     .then(token => {
                         req = createRequest(
                             getReq({ "x-access-token": token })
                         );
                         res = createResponse();
-                        return createPromise(req, res, auth);
+                        return convertMiddlewareToPromise(auth, req, res);
                     })
-                    .then(() => createPromise(req, res, cheack))
+                    .then(() => convertMiddlewareToPromise(cheack, req, res))
                     .then(() => (data = JSON.parse(res._getData())));
             });
 
@@ -112,8 +112,3 @@ describe("User.Controller", () => {
         });
     });
 });
-const createPromise = (req, res, callback) => {
-    return new Promise(resolve => {
-        callback(req, res, resolve);
-    });
-};
