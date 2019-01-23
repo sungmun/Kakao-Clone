@@ -12,11 +12,16 @@ export const read = (req, res, next) => {
             })
         );
 
+    const respond = dataArray => {
+        res.status(201).json(messageFormat(true, { friend: dataArray }));
+    };
+
     Model.User.findAll({
         where: { id: user.id },
         include: [{ model: Model.User, as: "friend" }]
     })
         .then(convertDatavaluesToProfile)
+        .then(respond)
 };
 
 export const save = (req, res, next) => {
