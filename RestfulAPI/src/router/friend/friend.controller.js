@@ -27,6 +27,7 @@ export const read = (req, res, next) => {
         .then(convertDatavaluesToProfile)
         .then(respond)
         .catch(OnError)
+        .finally(next);
 };
 
 export const save = (req, res, next) => {
