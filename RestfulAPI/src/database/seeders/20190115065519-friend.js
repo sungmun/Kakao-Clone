@@ -28,6 +28,30 @@ module.exports = {
                         .toISOString()
                         .replace(/T/, " ")
                         .replace(/\..+/, "")
+                },
+                {
+                    userId: 3,
+                    friendId: 1,
+                    createdAt: new Date()
+                        .toISOString()
+                        .replace(/T/, " ")
+                        .replace(/\..+/, ""),
+                    updatedAt: new Date()
+                        .toISOString()
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")
+                },
+                {
+                    userId: 2,
+                    friendId: 3,
+                    createdAt: new Date()
+                        .toISOString()
+                        .replace(/T/, " ")
+                        .replace(/\..+/, ""),
+                    updatedAt: new Date()
+                        .toISOString()
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")
                 }
             ],
             {}
