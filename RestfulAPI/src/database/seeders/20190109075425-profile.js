@@ -34,6 +34,21 @@ module.exports = {
                         .toISOString()
                         .replace(/T/, " ")
                         .replace(/\..+/, "")
+                },
+                {
+                    platformName: "google",
+                    socialId: "dkrak174@gmail.com",
+                    nickName: "강성문",
+                    photos:
+                        "https://lh4.googleusercontent.com/-PfFszwf5seY/AAAAAAAAAAI/AAAAAAAAAAA/AKxrwcYyWHTOrGBE042hzQsvX4DkYwD_hg/s96-c/photo.jpg",
+                    createdAt: new Date()
+                        .toISOString()
+                        .replace(/T/, " ")
+                        .replace(/\..+/, ""),
+                    updatedAt: new Date()
+                        .toISOString()
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")
                 }
             ],
             {}
