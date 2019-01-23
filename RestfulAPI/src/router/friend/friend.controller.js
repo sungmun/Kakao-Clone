@@ -16,12 +16,17 @@ export const read = (req, res, next) => {
         res.status(201).json(messageFormat(true, { friend: dataArray }));
     };
 
+    const OnError = error => {
+        res.status(403).json(messageFormat(true, error.message));
+    };
+
     Model.User.findAll({
         where: { id: user.id },
         include: [{ model: Model.User, as: "friend" }]
     })
         .then(convertDatavaluesToProfile)
         .then(respond)
+        .catch(OnError)
 };
 
 export const save = (req, res, next) => {
