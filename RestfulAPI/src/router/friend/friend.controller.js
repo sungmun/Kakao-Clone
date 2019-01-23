@@ -4,6 +4,10 @@ import { messageFormat } from "../utile";
 export const read = (req, res, next) => {
     const user = req.body.profile;
 
+    Model.User.findAll({
+        where: { id: user.id },
+        include: [{ model: Model.User, as: "friend" }]
+    })
 };
 
 export const save = (req, res, next) => {
