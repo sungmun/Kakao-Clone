@@ -1,6 +1,7 @@
 import { secret } from "../../private-key.json";
 import jwt from "jsonwebtoken";
 import Model from "../database/models";
+
 export const auth = (req, res, next) => {
     const token = req.headers["x-access-token"] || req.query.token;
 
@@ -27,8 +28,8 @@ export const auth = (req, res, next) => {
 
 export const messageFormat = (success, message) => ({ success, message });
 
-export const convertMiddlewareToPromise = (middleware, req, res) => {
+export const convertMiddlewareToPromise = (middleware, { req, res }) => {
     return new Promise(resolve => {
-        middleware(req, res, resolve);
+        middleware(req, res, () => resolve({ req, res }));
     });
 };
