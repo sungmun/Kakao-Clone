@@ -71,7 +71,7 @@ describe("friend.Controller", () => {
         });
 
         it("should return Array", () => {
-            expect(body.message.friend).to.be.an("array");
+            expect(data.message.friend).to.be.an("array");
         });
 
         it("should return Array type profile", () => {
