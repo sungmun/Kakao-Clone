@@ -36,6 +36,9 @@ export const save = (req, res, next) => {
 
     const respond = data =>
         res.status(201).json(messageFormat(true, { friend: data }));
+
+    const OnError = error =>
+        res.status(403).json(messageFormat(true, error.message));
 };
 
 export const remove = (req, res, next) => {
