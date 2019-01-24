@@ -47,6 +47,7 @@ export const save = (req, res, next) => {
         }
     })
         .then(data => data[0].dataValues)
+        .then(respond)
         .finally(next);
 };
 
