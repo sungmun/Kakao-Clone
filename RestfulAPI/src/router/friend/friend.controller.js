@@ -46,6 +46,7 @@ export const save = (req, res, next) => {
             friendId: friend
         }
     })
+        .then(data => data[0].dataValues)
         .finally(next);
 };
 
