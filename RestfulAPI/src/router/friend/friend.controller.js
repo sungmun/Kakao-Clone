@@ -31,6 +31,8 @@ export const read = (req, res, next) => {
 };
 
 export const save = (req, res, next) => {
+    const user = req.body.profile;
+    const friend = req.body.friend;
 };
 
 export const remove = (req, res, next) => {
