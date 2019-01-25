@@ -49,6 +49,9 @@ describe("friend.Controller", () => {
 
         it("should return success", () =>
             expect(data.success).to.be.equal(true));
+
+        it("should friend cheack", () =>
+            expect(data.message).to.have.key("friend"));
     });
 
     describe("read", () => {
