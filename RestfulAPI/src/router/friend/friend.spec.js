@@ -16,13 +16,10 @@ describe("friend.Controller", () => {
     before(() =>
         convertMiddlewareToPromise(
             login,
-            createMocks({
-                method: "POST",
-                body: {
-                    user: {
-                        platformName: "google",
-                        socialId: "tjdans174@gmail.com"
-                    }
+            setMocks("POST", {
+                user: {
+                    platformName: "google",
+                    socialId: "tjdans174@gmail.com"
                 }
             })
         ).then(({ res }) => (token = JSON.parse(res._getData()).message.token))
