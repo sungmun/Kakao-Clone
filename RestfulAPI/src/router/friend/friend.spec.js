@@ -36,11 +36,7 @@ describe("friend.Controller", () => {
         before(() =>
             convertMiddlewareToPromise(
                 auth,
-                createMocks({
-                    method: "POST",
-                    body: { friend: 2 },
-                    headers: { "x-access-token": token }
-                })
+                setTokenMocks("POST", { friend: 2 }, token)
             )
                 .then(promiseData =>
                     convertMiddlewareToPromise(save, promiseData)
@@ -58,13 +54,7 @@ describe("friend.Controller", () => {
     describe("read", () => {
         let data;
         before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                createMocks({
-                    method: "get",
-                    headers: { "x-access-token": token }
-                })
-            )
+            convertMiddlewareToPromise(auth, setTokenMocks("get", null, token))
                 .then(promiseData =>
                     convertMiddlewareToPromise(read, promiseData)
                 )
@@ -95,11 +85,7 @@ describe("friend.Controller", () => {
         before(() =>
             convertMiddlewareToPromise(
                 auth,
-                createMocks({
-                    method: "delete",
-                    body: { friend: 2 },
-                    headers: { "x-access-token": token }
-                })
+                setTokenMocks("delete", { friend: 2 }, token)
             )
                 .then(promiseData =>
                     convertMiddlewareToPromise(remove, promiseData)
