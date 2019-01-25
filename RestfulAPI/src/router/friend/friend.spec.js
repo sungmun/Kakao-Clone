@@ -4,6 +4,12 @@ import { auth, convertMiddlewareToPromise } from "../utile";
 import { login } from "../user/user.controller";
 import { remove, save, read } from "./friend.controller";
 
+const setMocks = (method, data) =>
+    createMocks({
+        method: method,
+        body: { data }
+    });
+
 describe("friend.Controller", () => {
     let token;
 
