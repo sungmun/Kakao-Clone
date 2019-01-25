@@ -52,6 +52,15 @@ describe("friend.Controller", () => {
 
         it("should friend cheack", () =>
             expect(data.message).to.have.key("friend"));
+
+        it("should friend type cheack", () =>
+            expect(data.message.friend).to.have.all.keys(
+                "createdAt",
+                "id",
+                "friendId",
+                "userId",
+                "updatedAt"
+            ));
     });
 
     describe("read", () => {
