@@ -86,9 +86,17 @@ describe("friend.Controller", () => {
         });
 
         it("should return Array type profile", () => {
-            expect(body.message.friend)
-                .to.be.an("array")
-                .that.does.include("profile");
+            data.message.friend.forEach(({ profile }) =>
+                expect(profile).to.have.all.keys(
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "socialId",
+                    "platformName",
+                    "nickName",
+                    "photos"
+                )
+            );
         });
     });
 
