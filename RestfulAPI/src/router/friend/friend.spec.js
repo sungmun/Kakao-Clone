@@ -101,7 +101,7 @@ describe("friend.Controller", () => {
     });
 
     describe("remove", () => {
-        let data;
+        let data, status;
         before(() =>
             convertMiddlewareToPromise(
                 auth,
@@ -110,7 +110,10 @@ describe("friend.Controller", () => {
                 .then(promiseData =>
                     convertMiddlewareToPromise(remove, promiseData)
                 )
-                .then(({ res }) => (data = JSON.parse(res._getData())))
+                .then(({ res }) => {
+                    status = res.status;
+                    data = JSON.parse(res._getData());
+                })
         );
 
         it("message type cheack", () => {
