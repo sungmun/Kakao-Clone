@@ -118,5 +118,7 @@ describe("friend.Controller", () => {
         it("should return success", () =>
             expect(data.success).to.be.equal(true));
 
+        it("should verify that the removed value is 1", () =>
+            expect(data.message.row).to.be.equal(1));
     });
 });
