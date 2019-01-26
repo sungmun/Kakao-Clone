@@ -73,19 +73,16 @@ describe("friend.Controller", () => {
                 .then(({ res }) => (data = JSON.parse(res._getData())))
         );
 
-        it("message type cheack", () => {
-            expect(data).to.have.all.keys("success", "message");
-        });
+        it("message type cheack", () =>
+            expect(data).to.have.all.keys("success", "message"));
 
-        it("should return success", () => {
-            expect(data.success).to.be.equal(true);
-        });
+        it("should return success", () =>
+            expect(data.success).to.be.equal(true));
 
-        it("should return Array", () => {
-            expect(data.message.friend).to.be.an("array");
-        });
+        it("should return Array", () =>
+            expect(data.message.friend).to.be.an("array"));
 
-        it("should return Array type profile", () => {
+        it("should return Array type profile", () =>
             data.message.friend.forEach(({ profile }) =>
                 expect(profile).to.have.all.keys(
                     "id",
@@ -96,8 +93,7 @@ describe("friend.Controller", () => {
                     "nickName",
                     "photos"
                 )
-            );
-        });
+            ));
     });
 
     describe("remove", () => {
@@ -116,12 +112,11 @@ describe("friend.Controller", () => {
                 })
         );
 
-        it("message type cheack", () => {
-            expect(data).to.have.all.keys("success", "message");
-        });
+        it("message type cheack", () =>
+            expect(data).to.have.all.keys("success", "message"));
 
-        it("should return success", () => {
-            expect(data.success).to.be.equal(true);
-        });
+        it("should return success", () =>
+            expect(data.success).to.be.equal(true));
+
     });
 });
