@@ -52,6 +52,15 @@ describe("friend.Controller", () => {
 
         it("should friend cheack", () =>
             expect(data.message).to.have.key("friend"));
+
+        it("should friend type cheack", () =>
+            expect(data.message.friend).to.have.all.keys(
+                "createdAt",
+                "id",
+                "friendId",
+                "userId",
+                "updatedAt"
+            ));
     });
 
     describe("read", () => {
@@ -64,27 +73,31 @@ describe("friend.Controller", () => {
                 .then(({ res }) => (data = JSON.parse(res._getData())))
         );
 
-        it("message type cheack", () => {
-            expect(data).to.have.all.keys("success", "message");
-        });
+        it("message type cheack", () =>
+            expect(data).to.have.all.keys("success", "message"));
 
-        it("should return success", () => {
-            expect(data.success).to.be.equal(true);
-        });
+        it("should return success", () =>
+            expect(data.success).to.be.equal(true));
 
-        it("should return Array", () => {
-            expect(body.message.friend).to.be.an("array");
-        });
+        it("should return Array", () =>
+            expect(data.message.friend).to.be.an("array"));
 
-        it("should return Array type profile", () => {
-            expect(body.message.friend)
-                .to.be.an("array")
-                .that.does.include("profile");
-        });
+        it("should return Array type profile", () =>
+            data.message.friend.forEach(({ profile }) =>
+                expect(profile).to.have.all.keys(
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "socialId",
+                    "platformName",
+                    "nickName",
+                    "photos"
+                )
+            ));
     });
 
     describe("remove", () => {
-        let data;
+        let data, status;
         before(() =>
             convertMiddlewareToPromise(
                 auth,
@@ -93,15 +106,19 @@ describe("friend.Controller", () => {
                 .then(promiseData =>
                     convertMiddlewareToPromise(remove, promiseData)
                 )
-                .then(({ res }) => (data = JSON.parse(res._getData())))
+                .then(({ res }) => {
+                    status = res.status;
+                    data = JSON.parse(res._getData());
+                })
         );
 
-        it("message type cheack", () => {
-            expect(data).to.have.all.keys("success", "message");
-        });
+        it("message type cheack", () =>
+            expect(data).to.have.all.keys("success", "message"));
 
-        it("should return success", () => {
-            expect(data.success).to.be.equal(true);
-        });
+        it("should return success", () =>
+            expect(data.success).to.be.equal(true));
+
+        it("should verify that the removed value is 1", () =>
+            expect(data.message.row).to.be.equal(1));
     });
 });

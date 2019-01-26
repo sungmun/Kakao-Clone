@@ -24,13 +24,11 @@ describe("User.Controller", () => {
     describe("User login Test", () => {
         describe("should return error", () => {
             let data;
-            before(() => {
-                const { req, res } = createMocks(postReq());
-
-                return convertMiddlewareToPromise(login, req, res).then(
-                    () => (data = JSON.parse(res._getData()))
-                );
-            });
+            before(() =>
+                convertMiddlewareToPromise(login, createMocks(postReq())).then(
+                    ({ res }) => (data = JSON.parse(res._getData()))
+                )
+            );
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
@@ -41,13 +39,12 @@ describe("User.Controller", () => {
 
         describe("should return the token", () => {
             let data;
-            before(() => {
-                const { req, res } = createMocks(postReq({ user }));
-
-                return convertMiddlewareToPromise(login, req, res).then(
-                    () => (data = JSON.parse(res._getData()))
-                );
-            });
+            before(() =>
+                convertMiddlewareToPromise(
+                    login,
+                    createMocks(postReq({ user }))
+                ).then(({ res }) => (data = JSON.parse(res._getData())))
+            );
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
@@ -63,13 +60,11 @@ describe("User.Controller", () => {
     describe("User login cheack Test", () => {
         describe("should return error", () => {
             let data;
-            before(() => {
-                const { req, res } = createMocks(postReq());
-
-                return convertMiddlewareToPromise(auth, req, res)
-                    .then(() => convertMiddlewareToPromise(cheack, req, res))
-                    .then(() => (data = JSON.parse(res._getData())));
-            });
+            before(() =>
+                convertMiddlewareToPromise(auth, createMocks(postReq())).then(
+                    ({ res }) => (data = JSON.parse(res._getData()))
+                )
+            );
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));
@@ -81,20 +76,23 @@ describe("User.Controller", () => {
         describe("should return the profile", () => {
             let data;
 
-            before(() => {
-                let { req, res } = createMocks(postReq({ user }));
-                return convertMiddlewareToPromise(login, req, res)
-                    .then(() => JSON.parse(res._getData()).message.token)
+            before(() =>
+                convertMiddlewareToPromise(
+                    login,
+                    createMocks(postReq({ user }))
+                )
+                    .then(({ res }) => JSON.parse(res._getData()).message.token)
                     .then(token => {
-                        req = createRequest(
-                            getReq({ "x-access-token": token })
+                        return convertMiddlewareToPromise(
+                            auth,
+                            createMocks(getReq({ "x-access-token": token }))
                         );
-                        res = createResponse();
-                        return convertMiddlewareToPromise(auth, req, res);
                     })
-                    .then(() => convertMiddlewareToPromise(cheack, req, res))
-                    .then(() => (data = JSON.parse(res._getData())));
-            });
+                    .then(({ req, res }) =>
+                        convertMiddlewareToPromise(cheack, { req, res })
+                    )
+                    .then(({ res }) => (data = JSON.parse(res._getData())))
+            );
 
             it("message type cheack", () =>
                 expect(data).to.have.all.keys("success", "message"));

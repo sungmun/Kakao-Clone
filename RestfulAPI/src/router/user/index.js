@@ -1,10 +1,10 @@
 import express from "express";
-import controller from "./user.controller";
-import { check } from "../utile";
+import { login, cheack } from "./user.controller";
+import { auth } from "../utile";
 
 const router = express.Router();
 
-router.post("/", controller.login);
-router.get("/", check, controller.check);
+router.post("/", login);
+router.get("/", auth, cheack);
 
 export default router;
