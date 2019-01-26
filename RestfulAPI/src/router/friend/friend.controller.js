@@ -69,5 +69,6 @@ export const remove = (req, res, next) => {
         }
     })
         .then(respond)
+        .catch(OnError)
         .finally(next);
 };
