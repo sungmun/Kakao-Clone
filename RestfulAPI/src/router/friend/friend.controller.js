@@ -61,4 +61,12 @@ export const remove = (req, res, next) => {
 
     const OnError = error =>
         res.status(403).json(messageFormat(true, error.message));
+
+    Model.Friend.destroy({
+        where: {
+            userId: user.id,
+            friendId: friend
+        }
+    })
+        .finally(next);
 };
