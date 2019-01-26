@@ -55,4 +55,7 @@ export const save = (req, res, next) => {
 export const remove = (req, res, next) => {
     const user = req.body.profile;
     const friend = req.body.friend;
+
+    const respond = data =>
+        res.status(201).json(messageFormat(true, { row: data }));
 };
