@@ -58,4 +58,7 @@ export const remove = (req, res, next) => {
 
     const respond = data =>
         res.status(201).json(messageFormat(true, { row: data }));
+
+    const OnError = error =>
+        res.status(403).json(messageFormat(true, error.message));
 };
