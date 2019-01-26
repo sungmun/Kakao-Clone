@@ -68,5 +68,6 @@ export const remove = (req, res, next) => {
             friendId: friend
         }
     })
+        .then(respond)
         .finally(next);
 };
