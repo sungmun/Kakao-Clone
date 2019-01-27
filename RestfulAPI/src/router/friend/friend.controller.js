@@ -4,14 +4,6 @@ import { messageFormat } from "../utile";
 export const read = (req, res, next) => {
     const user = req.body.profile;
 
-    const convertDatavaluesToProfile = data =>
-        Promise.all(
-            data[0].friend.map(friend => {
-                delete friend.dataValues.friends;
-                return { profile: friend.dataValues };
-            })
-        );
-
     const respond = dataArray => {
         res.status(201).json(messageFormat(true, { friend: dataArray }));
     };
@@ -29,7 +21,6 @@ export const read = (req, res, next) => {
             }
         ]
     })
-        .then(convertDatavaluesToProfile)
         .then(respond)
         .catch(OnError)
         .finally(next);
