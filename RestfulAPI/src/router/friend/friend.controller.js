@@ -22,6 +22,7 @@ export const read = (req, res, next) => {
         ]
     })
         .map(el => el.get({ plain: true }).Friends.map(el => el.User))
+        .then(data => data[0])
         .then(respond)
         .catch(OnError)
         .finally(next);
