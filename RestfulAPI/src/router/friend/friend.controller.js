@@ -22,7 +22,12 @@ export const read = (req, res, next) => {
 
     Model.User.findAll({
         where: { id: user.id },
-        include: [{ model: Model.User, as: "friend" }]
+        include: [
+            {
+                model: Model.Friend,
+                include: [Model.User]
+            }
+        ]
     })
         .then(convertDatavaluesToProfile)
         .then(respond)
