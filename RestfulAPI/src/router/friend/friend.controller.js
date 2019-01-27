@@ -4,13 +4,11 @@ import { messageFormat } from "../utile";
 export const read = (req, res, next) => {
     const user = req.body.profile;
 
-    const respond = dataArray => {
+    const respond = dataArray =>
         res.status(201).json(messageFormat(true, { friend: dataArray }));
-    };
 
-    const OnError = error => {
+    const OnError = error =>
         res.status(403).json(messageFormat(true, error.message));
-    };
 
     Model.User.findAll({
         where: { id: user.id },
