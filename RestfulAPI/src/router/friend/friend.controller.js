@@ -44,7 +44,7 @@ export const save = (req, res, next) => {
             friendId: friend
         }
     })
-        .then(data => data[0].dataValues)
+        .spread(friend => friend.get({ plain: true }))
         .then(respond)
         .catch(OnError)
         .finally(next);
