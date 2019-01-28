@@ -4,27 +4,23 @@ import { messageFormat } from "../utile";
 export const read = (req, res, next) => {
     const user = req.body.profile;
 
-    const convertDatavaluesToProfile = data =>
-        Promise.all(
-            data[0].friend.map(friend => {
-                delete friend.dataValues.friends;
-                return { profile: friend.dataValues };
-            })
-        );
-
-    const respond = dataArray => {
+    const respond = dataArray =>
         res.status(201).json(messageFormat(true, { friend: dataArray }));
-    };
 
-    const OnError = error => {
+    const OnError = error =>
         res.status(403).json(messageFormat(true, error.message));
-    };
 
     Model.User.findAll({
         where: { id: user.id },
-        include: [{ model: Model.User, as: "friend" }]
+        include: [
+            {
+                model: Model.Friend,
+                include: [Model.User]
+            }
+        ]
     })
-        .then(convertDatavaluesToProfile)
+        .map(el => el.get({ plain: true }).Friends.map(el => el.User))
+        .then(data => data[0])
         .then(respond)
         .catch(OnError)
         .finally(next);
@@ -46,7 +42,7 @@ export const save = (req, res, next) => {
             friendId: friend
         }
     })
-        .then(data => data[0].dataValues)
+        .spread(friend => friend.get({ plain: true }))
         .then(respond)
         .catch(OnError)
         .finally(next);
