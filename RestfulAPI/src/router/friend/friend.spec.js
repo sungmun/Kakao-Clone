@@ -13,7 +13,7 @@ const setTokenMocks = (method, data, token) => {
 const setMocks = (method, data) =>
     createMocks({
         method: method,
-        body: { data }
+        body: data
     });
 
 describe("friend.Controller", () => {
@@ -83,7 +83,7 @@ describe("friend.Controller", () => {
             expect(data.message.friend).to.be.an("array"));
 
         it("should return Array type profile", () =>
-            data.message.friend.forEach(({ profile }) =>
+            data.message.friend.forEach(profile =>
                 expect(profile).to.have.all.keys(
                     "id",
                     "createdAt",
