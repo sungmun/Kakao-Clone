@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
             through: "UserTalkRooms",
             foreignKey: "talkId"
         });
+
+        TalkRoom.hasMany(models.Talk, {
+            as: "Talks",
+            foreignKey: "talkRoomId"
+        });
     };
     return TalkRoom;
 };
