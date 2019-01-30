@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     );
     User.associate = function(models) {
         User.hasMany(models.Friend);
+
+        User.belongsToMany(models.TalkRoom, {
+            as: "TalkRoomList",
+            through: "UserTalkRooms",
+            foreignKey: "userId"
+        });
     };
     return User;
 };
