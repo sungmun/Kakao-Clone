@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    Talk.associate = function(models) {};
+    Talk.associate = function(models) {
+        Talk.belongsTo(models.User, { foreignKey: "userId" });
+    };
     return Talk;
 };
