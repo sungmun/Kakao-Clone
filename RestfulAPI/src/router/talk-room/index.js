@@ -13,8 +13,8 @@ const router = express.Router();
 router.post("/", save); //생성
 router.post("/user", addUser); //유저추가
 
-router.get("/", read); //목록
-router.get("/:id", listRead); //내용
+router.get("/", listRead); //목록
+router.get("/:id", read); //내용
 
 router.put("/:id", update); //변경
 
