@@ -23,4 +23,16 @@ describe("talkRoom.Controller", () => {
             .then(TestCaseUtile.getData)
             .then(data => (token = data.message.token))
     );
+
+    describe("addUser", () => TestCase.addUser(token));
+
+    describe("listRead", () => TestCase.listRead(token));
+
+    describe("read", () => TestCase.read(token));
+
+    describe("remove", () => TestCase.remove(token));
+
+    describe("save", () => TestCase.save(token));
+
+    describe("update", () => TestCase.update(token));
 });
