@@ -1,6 +1,7 @@
 import { secret } from "../../private-key.json";
 import jwt from "jsonwebtoken";
 import Model from "../database/models";
+import { createMocks } from "node-mocks-http";
 
 export const auth = (req, res, next) => {
     const token = req.headers["x-access-token"] || req.query.token;
@@ -33,3 +34,24 @@ export const convertMiddlewareToPromise = (middleware, { req, res }) => {
         middleware(req, res, () => resolve({ req, res }));
     });
 };
+
+export const TestCaseUtile = {
+    convertMiddlewareToPromise,
+    setTokenMocks,
+    setMocks,
+    getData
+};
+
+const setTokenMocks = (method, data, token) => {
+    const { req, res } = setMocks(method, data);
+    req.headers = { "x-access-token": token };
+    return { req, res };
+};
+
+const setMocks = (method, data) =>
+    createMocks({
+        method: method,
+        body: data
+    });
+
+const getData = ({ res }) => JSON.parse(res._getData());
