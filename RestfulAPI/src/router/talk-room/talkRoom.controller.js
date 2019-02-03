@@ -26,7 +26,3 @@ export const remove = (req, res, next) => {
 export const addUser = (req, res, next) => {
     next();
 };
-//talkRoom 유저제거
-export const removeUser = (req, res, next) => {
-    next();
-};
