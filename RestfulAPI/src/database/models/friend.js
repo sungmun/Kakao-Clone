@@ -8,13 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    Friend.associate = function(models) {
-        Friend.belongsTo(models.User, {
-            foreignKey: "userId"
-        });
-        Friend.belongsTo(models.User, {
-            foreignKey: "friendId"
-        });
-    };
+    Friend.associate = function(models) {};
     return Friend;
 };
