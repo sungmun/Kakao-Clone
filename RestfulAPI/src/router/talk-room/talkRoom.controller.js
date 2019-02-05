@@ -1,3 +1,5 @@
+import Model from "../../database/models";
+
 //talkRoom생성
 export const save = (req, res, next) => {
     next();
