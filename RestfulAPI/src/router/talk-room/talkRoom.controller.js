@@ -39,7 +39,14 @@ export const updata = (req, res, next) => {
 
 //talkRoom 마지막 남은 유저 나가기
 export const remove = (req, res, next) => {
-    next();
+    const OnError = ({ message }) => res.status(403).json(message);
+
+    const promise = new Promise((resolve, reject) => {
+        reject(Error("내용이 없음"));
+        resolve();
+    });
+
+    promise.catch(OnError).finally(next);
 };
 
 //talkRoom 유저추가
