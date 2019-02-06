@@ -11,7 +11,13 @@ export const read = (req, res, next) => {
 };
 //talkRoom리스트보기
 export const listRead = (req, res, next) => {
-    next();
+    const OnError = ({ message }) => res.status(403).json(message);
+
+    new Promise((resolve, reject) => {
+        reject(Error("내용이 없음"));
+    })
+        .catch(OnError)
+        .finally(next);
 };
 
 //talkRoom 변경
