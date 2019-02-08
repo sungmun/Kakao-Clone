@@ -2,7 +2,8 @@ import Model from "../../database/models";
 
 //talkRoom생성
 export const save = (req, res, next) => {
-    next();
+    const user = req.body.profile;
+    const friends = req.body.friends;
 };
 
 //talkRoom내용 보기
