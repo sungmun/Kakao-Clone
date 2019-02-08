@@ -4,6 +4,15 @@ import Model from "../../database/models";
 export const save = (req, res, next) => {
     const user = req.body.profile;
     const friends = req.body.friends;
+
+    const friendsCheack = new Promise((resolve, reject) => {
+        if (friends === undefined) reject(Error("friends 값이 없습니다"));
+        if (!Array.isArray(friends)) reject(Error("friends 배열이 아닙니다"));
+        resolve(friends);
+    });
+
+    friendsCheack
+        .finally(next);
 };
 
 //talkRoom내용 보기
