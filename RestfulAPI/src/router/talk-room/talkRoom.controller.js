@@ -12,6 +12,8 @@ export const save = (req, res, next) => {
     });
 
     const OnError = ({ message }) => res.status(403).json(message);
+
+    const userBuild = () => Model.User.build(user).reload();
     friendsCheack
         .catch(OnError)
         .finally(next);
