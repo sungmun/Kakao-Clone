@@ -15,6 +15,15 @@ export const save = (req, res, next) => {
 
     const userBuild = () => Model.User.build(user).reload();
     friendsCheack
+        .then(userBuild)
+        .then(user => user.getFriendList())
+        .then(data => data || Error("데이터가 없습니다"))
+        .then(friendList =>
+            friendList.map(friend => friend.get({ plain: true }))
+        )
+        .then(friendList =>
+            friendList.filter(friend => friends.indexOf(friend.id) !== -1)
+        )
         .catch(OnError)
         .finally(next);
 };
