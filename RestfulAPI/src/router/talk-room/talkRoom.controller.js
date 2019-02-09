@@ -11,7 +11,9 @@ export const save = (req, res, next) => {
         resolve(friends);
     });
 
+    const OnError = ({ message }) => res.status(403).json(message);
     friendsCheack
+        .catch(OnError)
         .finally(next);
 };
 
