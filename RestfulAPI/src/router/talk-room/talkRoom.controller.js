@@ -14,6 +14,15 @@ export const save = (req, res, next) => {
     const OnError = ({ message }) => res.status(403).json(message);
 
     const userBuild = () => Model.User.build(user).reload();
+
+    const createTalkRoom = friendList =>
+        Model.TalkRoom.create().then(value => {
+            friendList.map(friend =>
+                value.addUserList(Model.User.build(friend))
+            );
+            return value;
+        });
+
     friendsCheack
         .then(userBuild)
         .then(user => user.getFriendList())
@@ -24,6 +33,7 @@ export const save = (req, res, next) => {
         .then(friendList =>
             friendList.filter(friend => friends.indexOf(friend.id) !== -1)
         )
+        .then(createTalkRoom)
         .catch(OnError)
         .finally(next);
 };
