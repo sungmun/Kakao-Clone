@@ -1,111 +1,110 @@
-import { expect } from "chai";
-import { createRequest, createResponse, createMocks } from "node-mocks-http";
-import { auth, convertMiddlewareToPromise } from "../utile";
-import { login, cheack } from "./user.controller";
+/* eslint-disable no-undef */
+import { expect } from 'chai';
+import { newToken, oldToken } from '../../../private-key.json';
+import { auth, TestCaseUtile } from '../utile';
+import { login, cheack } from './user.controller';
 
-const user = {
-    platformName: "google",
-    socialId: "tjdans174@gmail.com"
-};
+const {
+    convertMiddlewareToPromise,
+    setTokenMocks,
+    getData,
+    setMocks
+} = TestCaseUtile;
 
-const postReq = params => ({
-    method: "POST",
-    url: "/login",
-    body: params
-});
-
-const getReq = params => ({
-    method: "GET",
-    url: "/login",
-    headers: params
-});
-
-describe("User.Controller", () => {
-    describe("User login Test", () => {
-        describe("should return error", () => {
+describe('User.Controller', () => {
+    describe('User login Test', () => {
+        describe('should return error', () => {
             let data;
             before(() =>
-                convertMiddlewareToPromise(login, createMocks(postReq())).then(
-                    ({ res }) => (data = JSON.parse(res._getData()))
+                convertMiddlewareToPromise(login, setMocks('POST', null)).then(
+                    promiseData => {
+                        data = getData(promiseData);
+                    }
                 )
             );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should the success false", () =>
-                expect(data.success).to.be.equal(false));
+            it('should the error message', () =>
+                expect(data).have.to.equals('유저 정보가 없습니다'));
         });
 
-        describe("should return the token", () => {
+        describe('should return the token', () => {
             let data;
             before(() =>
                 convertMiddlewareToPromise(
                     login,
-                    createMocks(postReq({ user }))
-                ).then(({ res }) => (data = JSON.parse(res._getData())))
+                    setMocks('POST', {
+                        user: {
+                            platformName: 'google',
+                            socialId: 'tjdans174@gmail.com'
+                        }
+                    })
+                ).then(promiseData => {
+                    data = getData(promiseData);
+                })
             );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should the success true", () =>
-                expect(data.success).to.be.equal(true));
-
-            it("should the token", () =>
-                expect(data.message).have.property("token"));
+            it('should the token', () => expect(data).have.property('token'));
         });
     });
 
-    describe("User login cheack Test", () => {
-        describe("should return error", () => {
-            let data;
-            before(() =>
-                convertMiddlewareToPromise(auth, createMocks(postReq())).then(
-                    ({ res }) => (data = JSON.parse(res._getData()))
-                )
-            );
+    describe('User login cheack Test', () => {
+        describe('should return error', () => {
+            describe('should old token Factor', () => {
+                let data;
+                before(() =>
+                    convertMiddlewareToPromise(
+                        auth,
+                        setTokenMocks('GET', null, oldToken)
+                    ).catch(({ message }) => {
+                        data = message;
+                    })
+                );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
+                it('should the error message', () =>
+                    expect(data).have.to.equals('잘못된 토큰입니다.'));
+            });
 
-            it("should the success false", () =>
-                expect(data.success).to.be.equal(false));
+            describe('should null token Factor', () => {
+                let data;
+                before(() =>
+                    convertMiddlewareToPromise(
+                        auth,
+                        setTokenMocks('GET', null, null)
+                    ).catch(({ message }) => {
+                        data = message;
+                    })
+                );
+
+                it('should return message ', () =>
+                    expect(data).to.be.equal('not loggged in'));
+            });
         });
 
-        describe("should return the profile", () => {
+        describe('should return the profile', () => {
             let data;
 
             before(() =>
                 convertMiddlewareToPromise(
-                    login,
-                    createMocks(postReq({ user }))
+                    auth,
+                    setTokenMocks('GET', null, newToken)
                 )
-                    .then(({ res }) => JSON.parse(res._getData()).message.token)
-                    .then(token => {
-                        return convertMiddlewareToPromise(
-                            auth,
-                            createMocks(getReq({ "x-access-token": token }))
-                        );
-                    })
-                    .then(({ req, res }) =>
-                        convertMiddlewareToPromise(cheack, { req, res })
+                    .then(promiseData =>
+                        convertMiddlewareToPromise(cheack, promiseData)
                     )
-                    .then(({ res }) => (data = JSON.parse(res._getData())))
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    })
             );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should the profile", () =>
-                expect(data.message.profile).to.have.all.keys(
-                    "id",
-                    "createdAt",
-                    "updatedAt",
-                    "socialId",
-                    "platformName",
-                    "nickName",
-                    "photos"
+            it('should the profile', () =>
+                expect(data.profile).to.have.all.keys(
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'socialId',
+                    'platformName',
+                    'nickName',
+                    'photos'
                 ));
         });
     });
