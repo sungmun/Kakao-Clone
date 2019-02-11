@@ -1,14 +1,15 @@
-import { addUserTestCase } from "./addUser.spec";
-import { listReadTestCase } from "./listRead.spec";
-import { readTestCase } from "./read.spec";
-import { removeTestCase } from "./remove.spec";
-import { saveTestCase } from "./save.spec";
+import addUser from './addUser.spec';
+import listRead from './listRead.spec';
+import read from './read.spec';
+import remove from './remove.spec';
+import save from './save.spec';
+import update from './update.spec';
 
-export const TestCase = {
-    addUser: addUserTestCase,
-    listRead: listReadTestCase,
-    read: readTestCase,
-    remove: removeTestCase,
-    save: saveTestCase,
-    update: updateTestCase
+export default {
+    addUser,
+    listRead,
+    read,
+    remove,
+    save,
+    update
 };

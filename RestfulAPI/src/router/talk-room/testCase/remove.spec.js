@@ -1,80 +1,69 @@
-import { expect } from "chai";
-import { auth, TestCaseUtile } from "../../utile";
-import { remove } from "../talkRoom.controller";
-import { createMocks } from "node-mocks-http";
+/* eslint-disable no-undef */
+import { expect } from 'chai';
+import { createMocks } from 'node-mocks-http';
+import { auth, TestCaseUtile } from '../../utile';
+import { remove } from '../talkRoom.controller';
 
 const { convertMiddlewareToPromise, getData } = TestCaseUtile;
 
-export const removeTestCase = token => {
-    describe("return success", () => {
-        let data;
+export default () => {
+    describe('return success', () => {
         before(() => {
             convertMiddlewareToPromise(
                 auth,
                 createMocks({
-                    method: "DELETE",
+                    method: 'DELETE',
                     params: 1,
-                    headers: { "x-access-token": token }
+                    headers: { 'x-access-token': token }
                 })
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(remove, promiseData)
-                )
-                .then(promiseData => (data = getData(promiseData)));
+            ).then(promiseData =>
+                convertMiddlewareToPromise(remove, promiseData)
+            );
         });
-
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
     });
 
-    describe("return fail", () => {
-        describe("token null", () => {
+    describe('return fail', () => {
+        describe('token null', () => {
             let data;
             before(() => {
                 convertMiddlewareToPromise(
                     auth,
                     createMocks({
-                        method: "DELETE",
+                        method: 'DELETE',
                         params: 1
                     })
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(remove, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    });
             });
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
-
-            it("should return message ", () =>
-                expect(data.message).to.be.equal("not loggged in"));
+            it('should return message ', () =>
+                expect(data).to.be.equal('not loggged in'));
         });
 
-        describe("params null", () => {
-            let data;
+        describe('params null', () => {
             before(() => {
                 convertMiddlewareToPromise(
                     auth,
                     createMocks({
-                        method: "DELETE",
-                        headers: { "x-access-token": token }
+                        method: 'DELETE',
+                        headers: { 'x-access-token': token }
                     })
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(remove, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    });
+
+                it('should return message', () =>
+                    expect(data).to.be.equal('params가 없습니다'));
             });
-
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
         });
     });
 };

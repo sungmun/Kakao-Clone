@@ -1,80 +1,75 @@
-import { expect } from "chai";
-import { auth, TestCaseUtile } from "../../utile";
-import { read } from "../talkRoom.controller";
-import { createMocks } from "node-mocks-http";
+/* eslint-disable no-undef */
+import { expect } from 'chai';
+import { createMocks } from 'node-mocks-http';
+import { auth, TestCaseUtile } from '../../utile';
+import { read } from '../talkRoom.controller';
+import { newToken } from '../../../../private-key.json';
 
 const { convertMiddlewareToPromise, getData } = TestCaseUtile;
 
-export const readTestCase = token => {
-    describe("return success", () => {
-        let data;
-        before(() => {
+export default () => {
+    describe('return success', () => {
+        // let data;
+        before(() =>
             convertMiddlewareToPromise(
                 auth,
                 createMocks({
-                    method: "GET",
+                    method: 'GET',
                     params: 1,
-                    headers: { "x-access-token": token }
+                    headers: { 'x-access-token': newToken }
                 })
             )
                 .then(promiseData =>
                     convertMiddlewareToPromise(read, promiseData)
                 )
-                .then(promiseData => (data = getData(promiseData)));
-        });
-
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
+                .then(promiseData => {
+                    data = getData(promiseData);
+                })
+        );
     });
 
-    describe("return fail", () => {
-        describe("token null", () => {
-            let data;
-            before(() => {
+    describe('return fail', () => {
+        describe('token null', () => {
+            before(() =>
                 convertMiddlewareToPromise(
                     auth,
                     createMocks({
-                        method: "GET",
+                        method: 'GET',
                         params: 1
                     })
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(read, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
-            });
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    })
+            );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
-
-            it("should return message ", () =>
-                expect(data.message).to.be.equal("not loggged in"));
+            it('should return message ', () =>
+                expect(data).to.be.equal('not loggged in'));
         });
 
-        describe("params null", () => {
+        describe('params null', () => {
             let data;
-            before(() => {
+            before(() =>
                 convertMiddlewareToPromise(
                     auth,
                     createMocks({
-                        method: "GET",
-                        headers: { "x-access-token": token }
+                        method: 'GET',
+                        headers: { 'x-access-token': newToken }
                     })
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(read, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
-            });
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    })
+            );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
+            it('should return message ', () =>
+                expect(data).to.be.equal('params가 없습니다'));
         });
     });
 };

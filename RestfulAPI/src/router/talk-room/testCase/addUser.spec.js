@@ -1,54 +1,50 @@
-import { expect } from "chai";
-import { auth, TestCaseUtile } from "../../utile";
-import { addUser } from "../talkRoom.controller";
+/* eslint-disable no-undef */
+import { expect } from 'chai';
+import { auth, TestCaseUtile } from '../../utile';
+import { addUser } from '../talkRoom.controller';
+
+import { newToken } from '../../../../private-key.json';
 
 const { convertMiddlewareToPromise, getData, setTokenMocks } = TestCaseUtile;
 
-export const addUserTestCase = token => {
-    describe("return success", () => {
+export default () => {
+    describe('return success', () => {
         let data;
-        before(() => {
+
+        before(() =>
             convertMiddlewareToPromise(
                 auth,
-                setTokenMocks("POST", { friend: 3 }, token)
+                setTokenMocks('POST', { friend: 3 }, newToken)
             )
                 .then(promiseData =>
                     convertMiddlewareToPromise(addUser, promiseData)
                 )
-                .then(promiseData => (data = getData(promiseData)));
-        });
+                .then(promiseData => {
+                    data = getData(promiseData);
+                })
+        );
 
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
-
-        it("should return success", () =>
-            expect(data.success).to.be.equal(true));
-
-        it("should null cheack", () => expect(data.message).to.have.null);
+        it('should null cheack', () => expect(data).to.have.null);
     });
 
-    describe("argument null", () => {
+    describe('argument null', () => {
         let data;
-        describe("token null", () => {
-            before(() => {
+        describe('token null', () => {
+            before(() =>
                 convertMiddlewareToPromise(
                     auth,
-                    setTokenMocks("POST", { friend: 3 }, null)
+                    setTokenMocks('POST', { friend: 3 }, null)
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(addUser, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
-            });
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    })
+            );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
-
-            it("should return message ", () =>
-                expect(data.message).to.be.equal("not loggged in"));
+            it('should return message ', () =>
+                expect(data).to.be.equal('not loggged in'));
         });
     });
 };
