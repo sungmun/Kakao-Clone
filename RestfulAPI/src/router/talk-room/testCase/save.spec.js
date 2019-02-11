@@ -1,76 +1,73 @@
-import { expect } from "chai";
-import { auth, TestCaseUtile } from "../../utile";
-import { save } from "../talkRoom.controller";
+/* eslint-disable no-undef */
+import { expect } from 'chai';
+import { auth, TestCaseUtile } from '../../utile';
+import { save } from '../talkRoom.controller';
+import { newToken } from '../../../../private-key.json';
 
 const { convertMiddlewareToPromise, getData, setTokenMocks } = TestCaseUtile;
 
-export const saveTestCase = token => {
-    describe("return success", () => {
+export default () => {
+    describe('return success', () => {
         let data;
+
         before(() => {
             convertMiddlewareToPromise(
                 auth,
-                setTokenMocks("POST", { friends: [3, 1] }, token)
+                setTokenMocks('POST', { friends: [2, 3] }, newToken)
             )
                 .then(promiseData =>
                     convertMiddlewareToPromise(save, promiseData)
                 )
-                .then(promiseData => (data = getData(promiseData)));
+                .then(promiseData => {
+                    data = getData(promiseData);
+                })
+                .catch(() => {
+                    data = undefined;
+                });
         });
 
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
-
-        it("should return success", () =>
-            expect(data.success).to.be.equal(true));
-
-        it("should null cheack", () => expect(data.message).to.have.null);
+        it('should null cheack', () => expect(data).to.have.undefined);
     });
 
-    describe("argument null", () => {
+    describe('argument null', () => {
         let data;
-        describe("token null", () => {
-            before(() => {
+        describe('token null', () => {
+            before(() =>
                 convertMiddlewareToPromise(
                     auth,
-                    setTokenMocks("POST", { friends: [3, 1] }, null)
+                    setTokenMocks('POST', { friends: [3, 2] }, null)
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(save, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
-            });
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    })
+                    .catch(error => {
+                        data = error.message;
+                    })
+            );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
-
-            it("should return message ", () =>
-                expect(data.message).to.be.equal("not loggged in"));
+            it('should return message ', () =>
+                expect(data).to.be.equal('not loggged in'));
         });
 
-        describe("friend null", () => {
-            before(() => {
+        describe('friend null', () => {
+            before(() =>
                 convertMiddlewareToPromise(
                     auth,
-                    setTokenMocks("POST", null, token)
+                    setTokenMocks('POST', null, newToken)
                 )
                     .then(promiseData =>
                         convertMiddlewareToPromise(save, promiseData)
                     )
-                    .then(promiseData => (data = getData(promiseData)));
-            });
+                    .then(promiseData => {
+                        data = getData(promiseData);
+                    })
+            );
 
-            it("message type cheack", () =>
-                expect(data).to.have.all.keys("success", "message"));
-
-            it("should return fail", () =>
-                expect(data.success).to.be.equal(false));
-
-            it("should return message ", () =>
-                expect(data.message).to.be.equal("not loggged in"));
+            it('should return message ', () =>
+                expect(data).to.be.equal('friends 값이 없습니다'));
         });
     });
 };
