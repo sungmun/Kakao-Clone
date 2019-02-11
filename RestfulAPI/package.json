@@ -3,13 +3,14 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "build": "babel --presets @babel/preset-env src --watch --out-dir build",
+        "build": "babel src --watch --out-dir build",
         "start": "supervisor build/index.js",
-        "test": "mocha --recursive ./build/router/**/*.spec.js"
+        "test": "mocha --recursive ./src/router/**/*.spec.js --require @babel/register"
     },
     "license": "MIT",
     "dependencies": {
         "@babel/polyfill": "^7.0.0",
+        "@babel/register": "^7.0.0",
         "body-parser": "^1.18.3",
         "chai": "^4.2.0",
         "chai-http": "^4.2.0",
