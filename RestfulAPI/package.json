@@ -23,6 +23,7 @@
         "mocha": "^5.2.0",
         "morgan": "^1.9.1",
         "sequelize": "^5.0.0-beta.15",
+        "node-mocks-http": "^1.7.3",
         "supertest": "^3.3.0"
     },
     "devDependencies": {
@@ -33,7 +34,6 @@
         "eslint-plugin-jsx-a11y": "6.1.1",
         "eslint-plugin-react": "7.11.0",
         "mariadb": "^2.0.2-rc",
-        "node-mocks-http": "^1.7.3",
         "sinon": "^7.2.2"
     },
     "repository": {
@@ -48,6 +48,9 @@
         "extends": [
             "airbnb",
             "prettier"
-        ]
+        ],
+        "rules": {
+            "no-param-reassign": 0
+        }
     }
 }
