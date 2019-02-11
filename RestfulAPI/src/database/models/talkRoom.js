@@ -1,16 +1,15 @@
-"use strict";
-module.exports = (sequelize, DataTypes) => {
-    const TalkRoom = sequelize.define("TalkRoom", {}, {});
-    TalkRoom.associate = function(models) {
+module.exports = sequelize => {
+    const TalkRoom = sequelize.define('TalkRoom', {}, {});
+    TalkRoom.associate = models => {
         TalkRoom.belongsToMany(models.User, {
-            as: "UserList",
-            through: "UserTalkRooms",
-            foreignKey: "talkId"
+            as: 'UserList',
+            through: 'UserTalkRooms',
+            foreignKey: 'talkId'
         });
 
         TalkRoom.hasMany(models.Talk, {
-            as: "Talks",
-            foreignKey: "talkRoomId"
+            as: 'Talks',
+            foreignKey: 'talkRoomId'
         });
     };
     return TalkRoom;

@@ -1,13 +1,11 @@
-"use strict";
 module.exports = (sequelize, DataTypes) => {
     const Friend = sequelize.define(
-        "Friend",
+        'Friend',
         {
             userId: DataTypes.INTEGER,
             friendId: DataTypes.INTEGER
         },
         {}
     );
-    Friend.associate = function(models) {};
     return Friend;
 };

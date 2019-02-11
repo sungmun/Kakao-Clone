@@ -1,20 +1,22 @@
-import { secret } from "../../private-key.json";
-import jwt from "jsonwebtoken";
-import Model from "../database/models";
-import { createMocks } from "node-mocks-http";
+import jwt from 'jsonwebtoken';
+import { createMocks } from 'node-mocks-http';
+import { secret } from '../../private-key.json';
+import Model from '../database/models';
 
 export const auth = (req, res, next) => {
-    const token = req.headers["x-access-token"] || req.query.token;
+    const token = req.headers['x-access-token'] || req.query.token;
 
     const promiss = new Promise((resolve, reject) => {
-        if (!token) reject(Error("not loggged in"));
+        if (!token) reject(Error('not loggged in'));
 
         jwt.verify(token, secret, (err, decode) =>
-            err ? reject(Error("잘못된 토큰입니다.")) : resolve(decode)
+            err ? reject(Error('잘못된 토큰입니다.')) : resolve(decode)
         );
     });
 
-    const respond = profile => (req.body.profile = profile);
+    const respond = profile => {
+        req.body.profile = profile;
+    };
 
     const onError = ({ message }) => {
         res.status(403).json(message);
@@ -51,6 +53,7 @@ const setTokenMocks = (method, data, token) => {
     return { req, res };
 };
 
+// eslint-disable-next-line no-underscore-dangle
 const getData = ({ res }) => JSON.parse(res._getData());
 
 export const TestCaseUtile = {

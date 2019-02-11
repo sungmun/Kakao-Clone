@@ -1,7 +1,6 @@
-"use strict";
 module.exports = (sequelize, DataTypes) => {
     const Talk = sequelize.define(
-        "Talk",
+        'Talk',
         {
             message: DataTypes.STRING,
             userId: DataTypes.INTEGER,
@@ -9,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    Talk.associate = function(models) {
-        Talk.belongsTo(models.User, { foreignKey: "userId" });
+    Talk.associate = models => {
+        Talk.belongsTo(models.User, { foreignKey: 'userId' });
     };
     return Talk;
 };
