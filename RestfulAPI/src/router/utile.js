@@ -23,7 +23,7 @@ export const auth = (req, res, next) => {
 
     promiss
         .then(profile => Model.User.findByPk(profile.id))
-        .then(profile => profile.dataValues)
+        .then(profile => profile.get({ plain: true }))
         .then(respond)
         .catch(onError)
         .finally(next);
