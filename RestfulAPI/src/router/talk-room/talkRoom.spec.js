@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import TestCase from './testCase';
 
 describe('talkRoom.Controller', () => {
