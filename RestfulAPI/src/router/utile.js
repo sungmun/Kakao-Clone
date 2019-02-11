@@ -26,7 +26,7 @@ export const auth = (req, res, next) => {
         .then(profile => profile.dataValues)
         .then(respond)
         .catch(onError)
-        .then(next);
+        .finally(next);
 };
 
 export const messageFormat = (success, message) => ({ success, message });
