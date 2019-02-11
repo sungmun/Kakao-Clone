@@ -16,8 +16,10 @@ export const auth = (req, res, next) => {
 
     const respond = profile => (req.body.profile = profile);
 
-    const onError = error =>
-        res.status(403).json(messageFormat(false, error.message));
+    const onError = ({ message }) => {
+        res.status(403).json(message);
+        next(message);
+    };
 
     promiss
         .then(profile => Model.User.findByPk(profile.id))
@@ -29,11 +31,13 @@ export const auth = (req, res, next) => {
 
 export const messageFormat = (success, message) => ({ success, message });
 
-export const convertMiddlewareToPromise = (middleware, { req, res }) => {
-    return new Promise(resolve => {
-        middleware(req, res, () => resolve({ req, res }));
+export const convertMiddlewareToPromise = (middleware, { req, res }) =>
+    new Promise((resolve, reject) => {
+        middleware(req, res, message => {
+            if (message !== undefined) reject(Error(message));
+            resolve({ req, res });
+        });
     });
-};
 
 export const TestCaseUtile = {
     convertMiddlewareToPromise,
