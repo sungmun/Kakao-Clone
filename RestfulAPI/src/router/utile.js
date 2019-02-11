@@ -39,23 +39,23 @@ export const convertMiddlewareToPromise = (middleware, { req, res }) =>
         });
     });
 
-export const TestCaseUtile = {
-    convertMiddlewareToPromise,
-    setTokenMocks,
-    setMocks,
-    getData
-};
-
-const setTokenMocks = (method, data, token) => {
-    const { req, res } = setMocks(method, data);
-    req.headers = { "x-access-token": token };
-    return { req, res };
-};
-
 const setMocks = (method, data) =>
     createMocks({
-        method: method,
+        method,
         body: data
     });
 
+const setTokenMocks = (method, data, token) => {
+    const { req, res } = setMocks(method, data);
+    req.headers = { 'x-access-token': token };
+    return { req, res };
+};
+
 const getData = ({ res }) => JSON.parse(res._getData());
+
+export const TestCaseUtile = {
+    setTokenMocks,
+    setMocks,
+    convertMiddlewareToPromise,
+    getData
+};
