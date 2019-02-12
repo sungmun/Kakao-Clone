@@ -22,6 +22,8 @@ export const save = (req, res, next) => {
             return value;
         });
 
+    const respond = () => res.status(201);
+
     friendsCheack
         .then(userBuild)
         .then(userData => userData.getFriendList())
@@ -33,6 +35,7 @@ export const save = (req, res, next) => {
             friendList.filter(friend => friends.indexOf(friend.id) !== -1)
         )
         .then(createTalkRoom)
+        .then(respond)
         .catch(OnError)
         .finally(next);
 };
