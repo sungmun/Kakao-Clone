@@ -86,11 +86,8 @@ export const remove = (req, res, next) => {
 
 // talkRoom 유저추가
 export const addUser = (req, res, next) => {
-    const promisetest = new Promise((resolve, reject) => {
-        reject(Error('내용이 없음'));
-        resolve();
+    const { talkroom, friend } = req.body;
     });
 
     const OnError = ({ message }) => res.status(403).json(message);
-    promisetest.catch(OnError).finally(next);
 };
