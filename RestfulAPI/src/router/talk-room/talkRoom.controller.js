@@ -95,4 +95,16 @@ export const addUser = (req, res, next) => {
     });
 
     const OnError = ({ message }) => res.status(403).json(message);
+
+    const respond = () => res.status(201).json({ friend });
+
+    const addFriend = room =>
+        room.addUserList(Model.User.build(friend).reload());
+
+    paramsCheack
+        .then(() => Model.TalkRoom.build(talkroom).reload())
+        .then(addFriend)
+        .then(respond)
+        .catch(OnError)
+        .finally(next);
 };
