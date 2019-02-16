@@ -41,6 +41,9 @@ export default () => {
                 )
                 .then(promiseData => {
                     data = getData(promiseData);
+                })
+                .catch(error => {
+                    data = error.message;
                 });
         });
 
