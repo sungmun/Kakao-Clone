@@ -61,6 +61,7 @@ export const listRead = (req, res, next) => {
 
     Model.User.build(user)
         .reload()
+        .then(DBuser => DBuser.getTalkRoomList())
         .catch(OnError)
         .finally(next);
 };
