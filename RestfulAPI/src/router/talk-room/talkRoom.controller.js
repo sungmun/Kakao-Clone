@@ -62,6 +62,13 @@ export const listRead = (req, res, next) => {
     Model.User.build(user)
         .reload()
         .then(DBuser => DBuser.getTalkRoomList())
+        .then(DBtalkRoomList =>
+            DBtalkRoomList.map(DBtalkRoom => {
+                const data = DBtalkRoom.get({ plain: true });
+                delete data.UserTalkRooms;
+                return data;
+            })
+        )
         .catch(OnError)
         .finally(next);
 };
