@@ -52,6 +52,8 @@ export const read = (req, res, next) => {
 };
 // talkRoom리스트보기
 export const listRead = (req, res, next) => {
+    const { profile: user } = req.body;
+
     const OnError = ({ message }) => res.status(403).json(message);
 
     Model.User.build(user)
