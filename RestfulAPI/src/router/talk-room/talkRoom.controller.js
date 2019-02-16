@@ -56,6 +56,9 @@ export const listRead = (req, res, next) => {
 
     const OnError = ({ message }) => res.status(403).json(message);
 
+    const respond = DBtalkRoomList =>
+        res.status(201).json({ talkRoomList: DBtalkRoomList });
+
     Model.User.build(user)
         .reload()
         .catch(OnError)
