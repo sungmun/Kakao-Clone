@@ -21,16 +21,13 @@ export default () => {
                     data = getData(promiseData);
                 })
         );
-        it('should return Array type profile', () =>
-            data.friend.forEach(profile =>
-                expect(profile).to.have.all.keys(
+
+        it('should return Array type talkRoomList', () =>
+            data.talkRoomList.map(talkRoom =>
+                expect(talkRoom).to.have.all.keys(
                     'id',
                     'createdAt',
-                    'updatedAt',
-                    'socialId',
-                    'platformName',
-                    'nickName',
-                    'photos'
+                    'updatedAt'
                 )
             ));
     });
