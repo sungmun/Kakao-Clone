@@ -69,6 +69,7 @@ export const listRead = (req, res, next) => {
                 return data;
             })
         )
+        .then(respond)
         .catch(OnError)
         .finally(next);
 };
