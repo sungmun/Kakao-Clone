@@ -9,13 +9,13 @@ const { convertMiddlewareToPromise, getData } = TestCaseUtile;
 
 export default () => {
     describe('return success', () => {
-        // let data;
+        let data;
         before(() =>
             convertMiddlewareToPromise(
                 auth,
                 createMocks({
                     method: 'GET',
-                    params: 1,
+                    params: { talkRoom: 1 },
                     headers: { 'x-access-token': newToken }
                 })
             )
@@ -26,10 +26,47 @@ export default () => {
                     data = getData(promiseData);
                 })
         );
+
+        it('talkRoom and userList and talkList data cheack', () =>
+            expect(data).to.be.have.keys('TalkRoom', 'UserList', 'TalkList'));
+
+        it('userList data cheack', () =>
+            data.UserList.map(list =>
+                expect(list).to.be.have.keys(
+                    'UserTalkRooms',
+                    'nickName',
+                    'photos',
+                    'platformName',
+                    'socialId',
+                    'id',
+                    'createdAt',
+                    'updatedAt'
+                )
+            ));
+
+        it('talkList data cheack', () =>
+            data.TalkList.map(list =>
+                expect(list).to.be.have.keys(
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'message',
+                    'talkRoomId',
+                    'userId'
+                )
+            ));
+
+        it('talkRoom data cheack', () =>
+            expect(data.TalkRoom).to.be.have.keys(
+                'id',
+                'createdAt',
+                'updatedAt'
+            ));
     });
 
     describe('return fail', () => {
         describe('token null', () => {
+            let data;
             before(() =>
                 convertMiddlewareToPromise(
                     auth,
@@ -43,6 +80,9 @@ export default () => {
                     )
                     .then(promiseData => {
                         data = getData(promiseData);
+                    })
+                    .catch(error => {
+                        data = error.message;
                     })
             );
 
