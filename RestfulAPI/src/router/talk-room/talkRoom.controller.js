@@ -19,6 +19,7 @@ export const save = (req, res, next) => {
             friendList.map(friend =>
                 value.addUserList(Model.User.build(friend))
             );
+            value.addUserList(Model.User.build(user));
             return value;
         });
 
