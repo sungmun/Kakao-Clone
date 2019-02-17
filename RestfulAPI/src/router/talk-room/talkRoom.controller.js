@@ -44,12 +44,41 @@ export const save = (req, res, next) => {
 export const read = (req, res, next) => {
     const OnError = ({ message }) => res.status(403).json(message);
 
-    new Promise((resolve, reject) => {
-        reject(Error('내용이 없음'));
-    })
+    const talkRoomCheack = new Promise((resolve, reject) => {
+        const talkRoom = { id: req.params.talkRoom };
+        if (talkRoom.id === undefined) reject(Error('params가 없습니다'));
+        resolve(talkRoom);
+    });
+
+    const respond = ArrayValue =>
+        res.status(201).json({
+            TalkRoom: ArrayValue[0],
+            UserList: ArrayValue[1],
+            TalkList: ArrayValue[2]
+        });
+
+    talkRoomCheack
+        .then(talkRoom => Model.TalkRoom.build(talkRoom).reload())
+        .then(DBtalkRoom =>
+            Promise.all([
+                DBtalkRoom,
+                DBtalkRoom.getUserList(),
+                DBtalkRoom.getTalks()
+            ])
+        )
+
+        .then(ArrayValue =>
+            ArrayValue.map(value => {
+                return !Array.isArray(value)
+                    ? value.get({ plain: true })
+                    : value.map(el => el.get({ plain: true }));
+            })
+        )
+        .then(respond)
         .catch(OnError)
         .finally(next);
 };
+
 // talkRoom리스트보기
 export const listRead = (req, res, next) => {
     const { profile: user } = req.body;
