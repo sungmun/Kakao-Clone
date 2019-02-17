@@ -116,14 +116,29 @@ export const updata = (req, res, next) => {
 
 // talkRoom 마지막 남은 유저 나가기
 export const remove = (req, res, next) => {
+    const { profile: user } = req.body;
     const OnError = ({ message }) => res.status(403).json(message);
 
-    const promise = new Promise((resolve, reject) => {
-        reject(Error('내용이 없음'));
-        resolve();
+    const talkRoomCheack = new Promise((resolve, reject) => {
+        const talkRoom = { id: req.params.talkRoom };
+        if (talkRoom.id === undefined) reject(Error('params가 없습니다'));
+        resolve(talkRoom);
     });
 
-    promise.catch(OnError).finally(next);
+    const respond = () => res.status(204);
+
+    talkRoomCheack
+        .then(talkRoom =>
+            Model.userTalkRooms.destroy({
+                where: {
+                    talkId: talkRoom.id,
+                    userId: user.id
+                }
+            })
+        )
+        .then(respond)
+        .catch(OnError)
+        .finally(next);
 };
 
 // talkRoom 유저추가
