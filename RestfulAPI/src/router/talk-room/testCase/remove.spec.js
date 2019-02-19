@@ -1,11 +1,20 @@
 /* eslint-disable no-undef */
 import { expect } from 'chai';
 import { createMocks } from 'node-mocks-http';
+import SequelizeMock from 'sequelize-mock';
+import { load } from 'proxyquire';
 import { auth, TestCaseUtile } from '../../utile';
-import { remove } from '../talkRoom.controller';
 import { newToken } from '../../../../private-key.json';
 
 const { convertMiddlewareToPromise, getData } = TestCaseUtile;
+
+const DBmock = new SequelizeMock();
+
+const userTalkRooms = DBmock.define('userTalkRooms', { userId: 1, talkId: 73 });
+
+const { remove } = load('../talkRoom.controller', {
+    '../../database/models': { userTalkRooms }
+});
 
 export default () => {
     describe('return success', () => {
