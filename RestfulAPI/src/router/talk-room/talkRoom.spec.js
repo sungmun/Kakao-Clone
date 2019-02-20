@@ -11,6 +11,4 @@ describe('talkRoom.Controller', () => {
     describe('read', () => TestCase.read());
 
     describe('remove', () => TestCase.remove());
-
-    describe('update', () => TestCase.update());
 });
