@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global describe before it:true */
 import { expect } from 'chai';
 import { auth, TestCaseUtile } from '../../utile';
 import { listRead } from '../talkRoom.controller';

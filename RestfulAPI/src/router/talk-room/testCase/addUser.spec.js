@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global describe before it:true */
 import { expect } from 'chai';
 import { stub, restore } from 'sinon';
 import { newToken } from '../../../../private-key.json';

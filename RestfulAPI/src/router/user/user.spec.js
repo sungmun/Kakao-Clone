@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global describe before it:true */
 import { expect } from 'chai';
 import { newToken, oldToken } from '../../../private-key.json';
 import { auth, TestCaseUtile } from '../utile';

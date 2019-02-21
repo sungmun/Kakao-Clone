@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global describe before it:true */
 import { expect } from 'chai';
 import { createMocks } from 'node-mocks-http';
 import SequelizeMock from 'sequelize-mock';
