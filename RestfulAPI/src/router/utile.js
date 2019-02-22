@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { createMocks } from 'node-mocks-http';
+import { EventEmitter } from 'events';
 import { secret } from '../../private-key.json';
 import Model from '../database/models';
+import { seedData } from '../database/seeders/20190109075425-profile';
 
 export const auth = (req, res, next) => {
     const token = req.headers['x-access-token'] || req.query.token;
@@ -42,10 +44,13 @@ export const convertMiddlewareToPromise = (middleware, { req, res }) =>
     });
 
 const setMocks = (method, data) =>
-    createMocks({
-        method,
-        body: data
-    });
+    createMocks(
+        {
+            method,
+            ...data
+        },
+        { eventEmitter: EventEmitter }
+    );
 
 const setTokenMocks = (method, data, token) => {
     const { req, res } = setMocks(method, data);
