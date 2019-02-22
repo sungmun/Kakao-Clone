@@ -58,6 +58,12 @@ const setTokenMocks = (method, data, token) => {
     return { req, res };
 };
 
+const mockAfterAuth = (method, data) => {
+    const { req, res } = setMocks(method, data);
+    req.body = { ...req.body, profile: seedData[0] };
+    return { req, res };
+};
+
 // eslint-disable-next-line no-underscore-dangle
 const getData = ({ res }) => JSON.parse(res._getData());
 
@@ -65,5 +71,6 @@ export const TestCaseUtile = {
     setTokenMocks,
     setMocks,
     convertMiddlewareToPromise,
+    mockAfterAuth,
     getData
 };
