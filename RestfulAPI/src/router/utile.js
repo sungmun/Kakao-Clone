@@ -12,7 +12,7 @@ export const auth = (req, res, next) => {
         if (!token) reject(Error('not loggged in'));
 
         jwt.verify(token, secret, (err, decode) =>
-            err ? reject(Error('잘못된 토큰입니다.')) : resolve(decode)
+            err ? reject(Error(err.message)) : resolve(decode)
         );
     });
 
@@ -22,7 +22,7 @@ export const auth = (req, res, next) => {
 
     const onError = ({ message }) => {
         res.status(403).json(message);
-        next(message);
+        return message;
     };
 
     promiss
