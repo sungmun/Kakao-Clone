@@ -23,7 +23,7 @@ export const read = (req, res, next) => {
 export const save = (req, res, next) => {
     const { profile: user, friend } = req.body;
 
-    const respond = () => res.status(204);
+    const respond = () => res.status(204).send();
 
     const OnError = ({ message }) => res.status(403).json(message);
 
@@ -42,7 +42,7 @@ export const save = (req, res, next) => {
 export const remove = (req, res, next) => {
     const { profile: user, friend } = req.body;
 
-    const respond = () => res.status(204);
+    const respond = () => res.status(204).send();
 
     const OnError = ({ message }) => res.status(403).json(message);
 
