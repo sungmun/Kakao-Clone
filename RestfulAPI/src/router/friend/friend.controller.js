@@ -1,15 +1,13 @@
 import Model from '../../database/models';
 
 export const read = (req, res, next) => {
-    const { profile: user } = req.body;
-
     const respond = dataArray => res.status(201).json({ friend: dataArray });
 
     const OnError = ({ message }) => res.status(403).json(message);
 
-    Model.User.build(user)
+    Model.User.build(req.body.profile)
         .reload()
-        .then(users => users.getFriendList())
+        .then(user => user.getFriendList())
         .then(friendlist =>
             friendlist.map(friend => {
                 const data = friend.get({ plain: true });
