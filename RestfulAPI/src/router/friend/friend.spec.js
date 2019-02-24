@@ -1,45 +1,29 @@
 /* global describe before it:true */
 import { expect } from 'chai';
-import { stub, restore } from 'sinon';
-import { auth, TestCaseUtile } from '../utile';
-import { newToken } from '../../../private-key.json';
-import { remove, save, read } from './friend.controller';
-import Model from '../../database/models';
+import { stub } from 'sinon';
+import { save, read, remove } from './friend.controller';
+import { TestCaseUtile } from '../utile';
+import models from '../../database/models';
 
-const { convertMiddlewareToPromise, setTokenMocks, getData } = TestCaseUtile;
+const { getData, mockAfterAuth } = TestCaseUtile;
 
 describe('friend.Controller', () => {
+    before(() => {
+        stub(models.Friend, 'destroy').resolves({ row: 1 });
+    });
+
     describe('save', () => {
         let code;
-        before(() => {
-            stub(Model.Friend, 'findOrCreate').returns({
-                spread: fn =>
-                    Promise.resolve(
-                        fn({
-                            get: () => ({
-                                id: 1,
-                                userId: 1,
-                                friendId: 2,
-                                createdAt: '2019-02-15 08:01:16',
-                                updatedAt: '2019-02-15 08:01:16'
-                            })
-                        })
-                    )
+        before(done => {
+            const { req, res } = mockAfterAuth('POST', { body: { friend: 2 } });
+
+            res.on('send', () => {
+                code = res.statusCode;
+                done();
             });
 
-            return convertMiddlewareToPromise(
-                auth,
-                setTokenMocks('POST', { friend: 2 }, newToken)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(save, promiseData)
-                )
-                .then(promiseData => {
-                    code = promiseData.res.statusCode;
-                });
+            save(req, res);
         });
-
-        after(() => restore());
 
         it('should return statusCode 204', () =>
             expect(code).to.be.equals(204));
