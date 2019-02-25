@@ -31,18 +31,16 @@ describe('friend.Controller', () => {
 
     describe('read', () => {
         let data;
-        before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                setTokenMocks('get', null, newToken)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(read, promiseData)
-                )
-                .then(promiseData => {
-                    data = getData(promiseData);
-                })
-        );
+        before(done => {
+            const { req, res } = mockAfterAuth('POST');
+
+            res.on('send', () => {
+                data = getData({ res });
+                done();
+            });
+
+            read(req, res);
+        });
 
         it('should return Array', () => expect(data.friend).to.be.an('array'));
 
