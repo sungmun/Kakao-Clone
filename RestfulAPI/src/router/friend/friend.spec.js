@@ -8,10 +8,6 @@ import models from '../../database/models';
 const { getData, mockAfterAuth } = TestCaseUtile;
 
 describe('friend.Controller', () => {
-    before(() => {
-        stub(models.Friend, 'destroy').resolves({ row: 1 });
-    });
-
     describe('save', () => {
         let code;
         before(done => {
@@ -60,22 +56,20 @@ describe('friend.Controller', () => {
 
     describe('remove', () => {
         let code;
-        before(() => {
-            stub(Model.Friend, 'destroy').resolves({ get: { row: 1 } });
+        before(done => {
+            stub(models.Friend, 'destroy').resolves({ row: 1 });
 
-            return convertMiddlewareToPromise(
-                auth,
-                setTokenMocks('delete', { friend: 2 }, newToken)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(remove, promiseData)
-                )
-                .then(promiseData => {
-                    code = promiseData.res.statusCode;
-                });
+            const { req, res } = mockAfterAuth('DELETE', {
+                body: { friend: 2 }
+            });
+
+            res.on('send', () => {
+                code = res.statusCode;
+                done();
+            });
+
+            remove(req, res);
         });
-
-        after(() => restore());
 
         it('should return statusCode 204', () =>
             expect(code).to.be.equals(204));
