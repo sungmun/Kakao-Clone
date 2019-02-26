@@ -4,24 +4,22 @@ import { newToken, oldToken } from '../../../private-key.json';
 import { auth, TestCaseUtile } from '../utile';
 import { login, cheack } from './user.controller';
 
-const {
-    convertMiddlewareToPromise,
-    setTokenMocks,
-    getData,
-    setMocks
-} = TestCaseUtile;
+const { getData, setMocks, mockAfterAuth } = TestCaseUtile;
 
 describe('User.Controller', () => {
     describe('User login Test', () => {
         describe('should return error', () => {
             let data;
-            before(() =>
-                convertMiddlewareToPromise(login, setMocks('POST', null)).then(
-                    promiseData => {
-                        data = getData(promiseData);
-                    }
-                )
-            );
+            before(done => {
+                const { req, res } = setMocks('POST');
+
+                res.on('send', () => {
+                    data = getData({ res });
+                    done();
+                });
+
+                login(req, res);
+            });
 
             it('should the error message', () =>
                 expect(data).have.to.equals('유저 정보가 없습니다'));
