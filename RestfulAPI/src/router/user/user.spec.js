@@ -54,17 +54,23 @@ describe('User.Controller', () => {
         describe('should return error', () => {
             describe('should old token Factor', () => {
                 let data;
-                before(() =>
-                    convertMiddlewareToPromise(
-                        auth,
-                        setTokenMocks('GET', null, oldToken)
-                    ).catch(({ message }) => {
-                        data = message;
-                    })
-                );
+                before(done => {
+                    const { req, res } = setMocks('GET', {
+                        headers: {
+                            'x-access-token': oldToken
+                        }
+                    });
+
+                    res.on('send', () => {
+                        data = getData({ res });
+                        done();
+                    });
+
+                    auth(req, res);
+                });
 
                 it('should the error message', () =>
-                    expect(data).have.to.equals('잘못된 토큰입니다.'));
+                    expect(data).have.to.equals('jwt expired'));
             });
 
             describe('should null token Factor', () => {
