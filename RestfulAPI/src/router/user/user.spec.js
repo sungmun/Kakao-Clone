@@ -75,14 +75,16 @@ describe('User.Controller', () => {
 
             describe('should null token Factor', () => {
                 let data;
-                before(() =>
-                    convertMiddlewareToPromise(
-                        auth,
-                        setTokenMocks('GET', null, null)
-                    ).catch(({ message }) => {
-                        data = message;
-                    })
-                );
+                before(done => {
+                    const { req, res } = setMocks('GET');
+
+                    res.on('send', () => {
+                        data = getData({ res });
+                        done();
+                    });
+
+                    auth(req, res);
+                });
 
                 it('should return message ', () =>
                     expect(data).to.be.equal('not loggged in'));
