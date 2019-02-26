@@ -27,19 +27,24 @@ describe('User.Controller', () => {
 
         describe('should return the token', () => {
             let data;
-            before(() =>
-                convertMiddlewareToPromise(
-                    login,
-                    setMocks('POST', {
+
+            before(done => {
+                const { req, res } = setMocks('POST', {
+                    body: {
                         user: {
                             platformName: 'google',
                             socialId: 'tjdans174@gmail.com'
                         }
-                    })
-                ).then(promiseData => {
-                    data = getData(promiseData);
-                })
-            );
+                    }
+                });
+
+                res.on('send', () => {
+                    data = getData({ res });
+                    done();
+                });
+
+                login(req, res);
+            });
 
             it('should the token', () => expect(data).have.property('token'));
         });
