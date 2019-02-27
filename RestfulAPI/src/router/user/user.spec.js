@@ -90,6 +90,32 @@ describe('User.Controller', () => {
                     expect(data).to.be.equal('not loggged in'));
             });
         });
+        describe('should new token Factor', () => {
+            let data;
+            before(done => {
+                const { req, res } = setMocks('GET', {
+                    headers: {
+                        'x-access-token': newToken
+                    }
+                });
+
+                auth(req, res, () => {
+                    data = req.body;
+                    done();
+                });
+            });
+
+            it('should the profile', () =>
+                expect(data.profile).to.have.all.keys(
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'socialId',
+                    'platformName',
+                    'nickName',
+                    'photos'
+                ));
+        });
 
         describe('should return the profile', () => {
             let data;
