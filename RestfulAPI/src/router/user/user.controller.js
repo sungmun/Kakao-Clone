@@ -10,7 +10,8 @@ export const login = (req, res, next) => {
         resolve(user);
     });
 
-    const tokenIssue = profile => jwt.sign({ id: profile.id }, secret);
+    const tokenIssue = profile =>
+        jwt.sign({ id: profile.id }, secret, { expiresIn: '3h' });
 
     const respond = token => res.status(201).json({ token });
 
@@ -32,9 +33,8 @@ export const login = (req, res, next) => {
         .finally(next);
 };
 
-export const cheack = (req, res, next) => {
+export const cheack = (req, res) => {
     if (Object.keys(req.body).length !== 0) {
         res.status(201).json({ profile: req.body.profile });
     }
-    next();
 };
