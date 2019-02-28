@@ -119,19 +119,16 @@ describe('User.Controller', () => {
 
         describe('should return the profile', () => {
             let data;
+            before(done => {
+                const { req, res } = mockAfterAuth('GET');
 
-            before(() =>
-                convertMiddlewareToPromise(
-                    auth,
-                    setTokenMocks('GET', null, newToken)
-                )
-                    .then(promiseData =>
-                        convertMiddlewareToPromise(cheack, promiseData)
-                    )
-                    .then(promiseData => {
-                        data = getData(promiseData);
-                    })
-            );
+                res.on('send', () => {
+                    data = getData({ res });
+                    done();
+                });
+
+                cheack(req, res);
+            });
 
             it('should the profile', () =>
                 expect(data.profile).to.have.all.keys(
