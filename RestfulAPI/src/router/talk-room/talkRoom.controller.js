@@ -23,12 +23,12 @@ export const save = (req, res, next) => {
             return value;
         });
 
-    const respond = () => res.status(201);
+    const respond = () => res.status(201).send();
 
     friendsCheack
         .then(userBuild)
         .then(userData => userData.getFriendList())
-        .then(data => data || Error('데이터가 없습니다'))
+        .then(data => data || Promise.reject(Error('데이터가 없습니다')))
         .then(friendList =>
             friendList.map(friend => friend.get({ plain: true }))
         )
@@ -67,7 +67,6 @@ export const read = (req, res, next) => {
                 DBtalkRoom.getTalks()
             ])
         )
-
         .then(ArrayValue =>
             ArrayValue.map(value => {
                 return !Array.isArray(value)
@@ -115,7 +114,7 @@ export const remove = (req, res, next) => {
         resolve(talkRoom);
     });
 
-    const respond = () => res.status(204);
+    const respond = () => res.status(204).send();
 
     talkRoomCheack
         .then(talkRoom =>
@@ -134,10 +133,15 @@ export const remove = (req, res, next) => {
 // talkRoom 유저추가
 export const addUser = (req, res, next) => {
     const { talkroom, friend } = req.body;
-
     const paramsCheack = new Promise((resolve, reject) => {
-        if (talkroom === undefined || friend === undefined)
-            reject(Error('params가 없습니다'));
+        let ErrStr;
+
+        if (talkroom === undefined && friend === undefined) ErrStr = 'params';
+        else if (talkroom === undefined) ErrStr = 'talkRoom';
+        else if (friend === undefined) ErrStr = 'friend';
+
+        if (ErrStr !== undefined) reject(Error(`${ErrStr} 값이 없습니다.`));
+
         resolve(talkroom);
     });
 
@@ -146,7 +150,12 @@ export const addUser = (req, res, next) => {
     const respond = () => res.status(201).json({ friend });
 
     const addFriend = room =>
-        room.addUserList(Model.User.build(friend).reload());
+        Model.User.build(friend)
+            .reload()
+            .then(DBFriend => {
+                room.addUserList(DBFriend);
+                return DBFriend;
+            });
 
     paramsCheack
         .then(() => Model.TalkRoom.build(talkroom).reload())
