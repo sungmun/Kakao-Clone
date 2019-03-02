@@ -5,7 +5,7 @@
     "scripts": {
         "build": "babel src --watch --out-dir build",
         "start": "supervisor build/index.js",
-        "test": "mocha --recursive ./src/router/**/*.spec.js --require @babel/register"
+        "test": "SET NODE_ENV=test&&mocha --recursive ./src/router/**/*.spec.js --require @babel/register "
     },
     "license": "MIT",
     "dependencies": {
