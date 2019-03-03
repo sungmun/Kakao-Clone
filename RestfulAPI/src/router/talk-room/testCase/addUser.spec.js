@@ -42,26 +42,18 @@ export default () => {
     });
 
     describe('argument null', () => {
-        let data;
-        describe('token null', () => {
-            before(() =>
-                convertMiddlewareToPromise(
-                    auth,
-                    setTokenMocks('POST', { friend: 3 }, null)
-                )
-                    .then(promiseData =>
-                        convertMiddlewareToPromise(addUser, promiseData)
-                    )
-                    .then(promiseData => {
-                        data = getData(promiseData);
-                    })
-                    .catch(err => {
-                        data = err.message;
-                    })
+        describe('talkroom argument null', () => {
+            let data;
+            before(done =>
+                addUserBefor({ friend: 3 }, res => {
+                    data = getData({ res });
+                    done();
+                })
             );
 
             it('should return message ', () =>
-                expect(data).to.be.equal('not loggged in'));
+                expect(data).to.be.equal('talkRoom 값이 없습니다.'));
+        });
         });
     });
 };
