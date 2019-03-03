@@ -1,12 +1,21 @@
 /* global describe before it:true */
 import { expect } from 'chai';
-import { stub, restore } from 'sinon';
-import { newToken } from '../../../../private-key.json';
-import { auth, TestCaseUtile } from '../../utile';
+import { stub } from 'sinon';
+import { TestCaseUtile } from '../../utile';
 import { addUser } from '../talkRoom.controller';
-import Model from '../../../database/models';
+import models from '../../../database/models';
 
-const { convertMiddlewareToPromise, getData, setTokenMocks } = TestCaseUtile;
+const { getData, mockAfterAuth } = TestCaseUtile;
+
+const addUserBefor = (body, done) => {
+    const { req, res } = mockAfterAuth('POST', { body });
+
+    res.on('send', () => {
+        done(res);
+    });
+
+    addUser(req, res);
+};
 
 export default () => {
     before(() => {
