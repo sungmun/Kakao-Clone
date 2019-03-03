@@ -29,22 +29,16 @@ export default () => {
     });
 
     describe('return success', () => {
-        let data;
-
-        before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                setTokenMocks('POST', { friend: 3, talkroom: 1 }, newToken)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(addUser, promiseData)
-                )
-                .then(promiseData => {
-                    data = getData(promiseData);
-                })
+        let code;
+        before(done =>
+            addUserBefor({ friend: { id: 3 }, talkroom: { id: 1 } }, res => {
+                code = res.statusCode;
+                done();
+            })
         );
 
-        it('should null cheack', () => expect(data).to.be.ok);
+        it('should return statusCode 201', () =>
+            expect(code).to.be.equals(201));
     });
 
     describe('argument null', () => {
