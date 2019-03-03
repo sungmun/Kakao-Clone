@@ -19,12 +19,14 @@ const addUserBefor = (body, done) => {
 
 export default () => {
     before(() => {
-        stub(Model.TalkRoom, 'build').callsFake(() => ({
-            reload: () => Promise.resolve({ addUserList: user => user })
-        }));
+        models.TalkRoom.build({ id: 1 })
+            .reload()
+            .then(data => {
+                stub(data, 'addUserList').callsFake(user =>
+                    models.User.build(user).reload()
+                );
+            });
     });
-
-    after(() => restore());
 
     describe('return success', () => {
         let data;
