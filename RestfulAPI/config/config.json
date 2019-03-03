@@ -11,6 +11,7 @@
         "username": "root",
         "password": null,
         "database": "kakao_talk",
+        "logging": false,
         "host": "localhost",
         "dialect": "mariadb"
     },
