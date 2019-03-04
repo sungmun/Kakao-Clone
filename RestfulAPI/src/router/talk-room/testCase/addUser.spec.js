@@ -54,6 +54,31 @@ export default () => {
             it('should return message ', () =>
                 expect(data).to.be.equal('talkRoom 값이 없습니다.'));
         });
+
+        describe('friend argument null', () => {
+            let data;
+            before(done =>
+                addUserBefor({ talkroom: 1 }, res => {
+                    data = getData({ res });
+                    done();
+                })
+            );
+
+            it('should return message ', () =>
+                expect(data).to.be.equal('friend 값이 없습니다.'));
+        });
+
+        describe('friend argument null', () => {
+            let data;
+            before(done =>
+                addUserBefor(undefined, res => {
+                    data = getData({ res });
+                    done();
+                })
+            );
+
+            it('should return message ', () =>
+                expect(data).to.be.equal('params 값이 없습니다.'));
         });
     });
 };
