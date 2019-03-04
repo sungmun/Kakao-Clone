@@ -1,26 +1,23 @@
 /* global describe before it:true */
 import { expect } from 'chai';
-import { auth, TestCaseUtile } from '../../utile';
+import { TestCaseUtile } from '../../utile';
 import { listRead } from '../talkRoom.controller';
-import { newToken } from '../../../../private-key.json';
 
-const { convertMiddlewareToPromise, getData, setTokenMocks } = TestCaseUtile;
+const { getData, mockAfterAuth } = TestCaseUtile;
 
 export default () => {
     describe('return success', () => {
         let data;
-        before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                setTokenMocks('GET', null, newToken)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(listRead, promiseData)
-                )
-                .then(promiseData => {
-                    data = getData(promiseData);
-                })
-        );
+        before(done => {
+            const { req, res } = mockAfterAuth('GET');
+
+            res.on('send', () => {
+                data = getData({ res });
+                done();
+            });
+
+            listRead(req, res);
+        });
 
         it('should return Array type talkRoomList', () =>
             data.talkRoomList.map(talkRoom =>
@@ -30,24 +27,5 @@ export default () => {
                     'updatedAt'
                 )
             ));
-    });
-
-    describe('return fail', () => {
-        let data;
-        before(() => {
-            convertMiddlewareToPromise(auth, setTokenMocks('GET', null, null))
-                .then(promiseData =>
-                    convertMiddlewareToPromise(listRead, promiseData)
-                )
-                .then(promiseData => {
-                    data = getData(promiseData);
-                })
-                .catch(error => {
-                    data = error.message;
-                });
-        });
-
-        it('should return message ', () =>
-            expect(data).to.be.equal('not loggged in'));
     });
 };
