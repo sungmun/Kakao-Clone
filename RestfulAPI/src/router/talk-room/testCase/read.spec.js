@@ -18,21 +18,11 @@ const readFun = (params, done) => {
 export default () => {
     describe('return success', () => {
         let data;
-        before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                createMocks({
-                    method: 'GET',
-                    params: { talkRoom: 1 },
-                    headers: { 'x-access-token': newToken }
-                })
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(read, promiseData)
-                )
-                .then(promiseData => {
-                    data = getData(promiseData);
-                })
+        before(done =>
+            readFun({ talkRoom: 1 }, res => {
+                data = getData({ res });
+                done();
+            })
         );
 
         it('talkRoom and userList and talkList data cheack', () =>
@@ -72,52 +62,17 @@ export default () => {
             ));
     });
 
-    describe('return fail', () => {
-        describe('token null', () => {
-            let data;
-            before(() =>
-                convertMiddlewareToPromise(
-                    auth,
-                    createMocks({
-                        method: 'GET',
-                        params: 1
-                    })
-                )
-                    .then(promiseData =>
-                        convertMiddlewareToPromise(read, promiseData)
-                    )
-                    .then(promiseData => {
-                        data = getData(promiseData);
-                    })
-                    .catch(error => {
-                        data = error.message;
-                    })
-            );
+    describe('params null', () => {
+        let data;
 
-            it('should return message ', () =>
-                expect(data).to.be.equal('not loggged in'));
-        });
+        before(done =>
+            readFun(undefined, res => {
+                data = getData({ res });
+                done();
+            })
+        );
 
-        describe('params null', () => {
-            let data;
-            before(() =>
-                convertMiddlewareToPromise(
-                    auth,
-                    createMocks({
-                        method: 'GET',
-                        headers: { 'x-access-token': newToken }
-                    })
-                )
-                    .then(promiseData =>
-                        convertMiddlewareToPromise(read, promiseData)
-                    )
-                    .then(promiseData => {
-                        data = getData(promiseData);
-                    })
-            );
-
-            it('should return message ', () =>
-                expect(data).to.be.equal('params가 없습니다'));
-        });
+        it('should return message ', () =>
+            expect(data).to.be.equal('params가 없습니다'));
     });
 };
