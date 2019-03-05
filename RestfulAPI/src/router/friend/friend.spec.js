@@ -1,124 +1,77 @@
-import { expect } from "chai";
-import { createMocks } from "node-mocks-http";
-import { auth, convertMiddlewareToPromise } from "../utile";
-import { login } from "../user/user.controller";
-import { remove, save, read } from "./friend.controller";
+/* global describe before it:true */
+import { expect } from 'chai';
+import { stub } from 'sinon';
+import { save, read, remove } from './friend.controller';
+import { TestCaseUtile } from '../utile';
+import models from '../../database/models';
 
-const setTokenMocks = (method, data, token) => {
-    const { req, res } = setMocks(method, data);
-    req.headers = { "x-access-token": token };
-    return { req, res };
-};
+const { getData, mockAfterAuth } = TestCaseUtile;
 
-const setMocks = (method, data) =>
-    createMocks({
-        method: method,
-        body: { data }
+describe('friend.Controller', () => {
+    describe('save', () => {
+        let code;
+        before(done => {
+            const { req, res } = mockAfterAuth('POST', { body: { friend: 2 } });
+
+            res.on('send', () => {
+                code = res.statusCode;
+                done();
+            });
+
+            save(req, res);
+        });
+
+        it('should return statusCode 204', () =>
+            expect(code).to.be.equals(204));
     });
 
-describe("friend.Controller", () => {
-    let token;
-
-    before(() =>
-        convertMiddlewareToPromise(
-            login,
-            setMocks("POST", {
-                user: {
-                    platformName: "google",
-                    socialId: "tjdans174@gmail.com"
-                }
-            })
-        ).then(({ res }) => (token = JSON.parse(res._getData()).message.token))
-    );
-
-    describe("save", () => {
+    describe('read', () => {
         let data;
-        before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                setTokenMocks("POST", { friend: 2 }, token)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(save, promiseData)
-                )
-                .then(({ res }) => (data = JSON.parse(res._getData())))
-        );
+        before(done => {
+            const { req, res } = mockAfterAuth('POST');
 
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
+            res.on('send', () => {
+                data = getData({ res });
+                done();
+            });
 
-        it("should return success", () =>
-            expect(data.success).to.be.equal(true));
+            read(req, res);
+        });
 
-        it("should friend cheack", () =>
-            expect(data.message).to.have.key("friend"));
+        it('should return Array', () => expect(data.friend).to.be.an('array'));
 
-        it("should friend type cheack", () =>
-            expect(data.message.friend).to.have.all.keys(
-                "createdAt",
-                "id",
-                "friendId",
-                "userId",
-                "updatedAt"
-            ));
-    });
-
-    describe("read", () => {
-        let data;
-        before(() =>
-            convertMiddlewareToPromise(auth, setTokenMocks("get", null, token))
-                .then(promiseData =>
-                    convertMiddlewareToPromise(read, promiseData)
-                )
-                .then(({ res }) => (data = JSON.parse(res._getData())))
-        );
-
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
-
-        it("should return success", () =>
-            expect(data.success).to.be.equal(true));
-
-        it("should return Array", () =>
-            expect(data.message.friend).to.be.an("array"));
-
-        it("should return Array type profile", () =>
-            data.message.friend.forEach(({ profile }) =>
+        it('should return Array type profile', () =>
+            data.friend.forEach(profile =>
                 expect(profile).to.have.all.keys(
-                    "id",
-                    "createdAt",
-                    "updatedAt",
-                    "socialId",
-                    "platformName",
-                    "nickName",
-                    "photos"
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'socialId',
+                    'platformName',
+                    'nickName',
+                    'photos'
                 )
             ));
     });
 
-    describe("remove", () => {
-        let data, status;
-        before(() =>
-            convertMiddlewareToPromise(
-                auth,
-                setTokenMocks("delete", { friend: 2 }, token)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(remove, promiseData)
-                )
-                .then(({ res }) => {
-                    status = res.status;
-                    data = JSON.parse(res._getData());
-                })
-        );
+    describe('remove', () => {
+        let code;
+        before(done => {
+            stub(models.Friend, 'destroy').resolves({ row: 1 });
 
-        it("message type cheack", () =>
-            expect(data).to.have.all.keys("success", "message"));
+            const { req, res } = mockAfterAuth('DELETE', {
+                body: { friend: 2 }
+            });
 
-        it("should return success", () =>
-            expect(data.success).to.be.equal(true));
+            res.on('send', () => {
+                code = res.statusCode;
+                done();
+            });
 
-        it("should verify that the removed value is 1", () =>
-            expect(data.message.row).to.be.equal(1));
+            remove(req, res);
+        });
+
+        it('should return statusCode 204', () =>
+            expect(code).to.be.equals(204));
     });
 });

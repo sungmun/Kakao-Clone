@@ -1,7 +1,6 @@
-"use strict";
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(
-        "User",
+        'User',
         {
             platformName: DataTypes.STRING,
             socialId: DataTypes.STRING,
@@ -10,10 +9,19 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    User.associate = function(models) {
+
+    User.associate = models => {
         User.belongsToMany(User, {
-            as: "friend",
-            through: "friends"
+            as: 'FriendList',
+            through: 'Friends',
+            foreignKey: 'userId',
+            otherKey: 'friendId'
+        });
+
+        User.belongsToMany(models.TalkRoom, {
+            as: 'TalkRoomList',
+            through: 'UserTalkRooms',
+            foreignKey: 'userId'
         });
     };
     return User;

@@ -1,14 +1,21 @@
-import jwt from "jsonwebtoken";
-import Model from "../../database/models";
-import { secret } from "../../../private-key.json";
-import { messageFormat } from "../utile";
+import jwt from 'jsonwebtoken';
+import Model from '../../database/models';
+import { secret } from '../../../private-key.json';
+
 export const login = (req, res, next) => {
+    let { user } = req.body;
+
     const reqCheak = new Promise((resolve, reject) => {
-        req.body.user || reject(Error("유저 정보가 없습니다"));
-        resolve(req.body.user);
+        user = user || reject(Error('유저 정보가 없습니다'));
+        resolve(user);
     });
 
-    const tokenIssue = profile => jwt.sign({ id: profile.id }, secret);
+    const tokenIssue = profile =>
+        jwt.sign({ id: profile.id }, secret, { expiresIn: '3h' });
+
+    const respond = token => res.status(201).json({ token });
+
+    const OnError = ({ message }) => res.status(403).json(message);
 
     const memberfind = profile =>
         Model.User.findOne({
@@ -18,25 +25,16 @@ export const login = (req, res, next) => {
             }
         }).then(result => result || Model.User.create(profile));
 
-    const respond = token =>
-        res.status(201).json(messageFormat(true, { token }));
-
-    const OnError = error =>
-        res.status(403).json(messageFormat(false, error.message));
-
     reqCheak
         .then(memberfind)
         .then(tokenIssue)
         .then(respond)
         .catch(OnError)
-        .then(next);
+        .finally(next);
 };
 
-export const cheack = (req, res, next) => {
-    if (0 !== Object.keys(req.body).length) {
-        res.status(201).json(
-            messageFormat(true, { profile: req.body.profile })
-        );
+export const cheack = (req, res) => {
+    if (Object.keys(req.body).length !== 0) {
+        res.status(201).json({ profile: req.body.profile });
     }
-    next();
 };

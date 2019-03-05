@@ -3,30 +3,37 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "build": "babel --presets @babel/preset-env src --watch --out-dir build",
+        "build": "babel src --watch --out-dir build",
         "start": "supervisor build/index.js",
-        "test": "mocha --recursive ./build/router/**/*.spec.js"
+        "test": "SET NODE_ENV=test&&mocha --recursive ./src/router/**/*.spec.js --require @babel/register "
     },
     "license": "MIT",
     "dependencies": {
         "@babel/polyfill": "^7.0.0",
+        "@babel/register": "^7.0.0",
         "body-parser": "^1.18.3",
         "chai": "^4.2.0",
         "chai-http": "^4.2.0",
         "cors": "^2.8.5",
+        "eslint": "5.3.0",
+        "eslint-config-airbnb": "17.1.0",
+        "eslint-config-prettier": "^4.0.0",
         "express": "^4.16.4",
         "jsonwebtoken": "^8.4.0",
         "mocha": "^5.2.0",
         "morgan": "^1.9.1",
         "sequelize": "^5.0.0-beta.15",
+        "node-mocks-http": "^1.7.3",
         "supertest": "^3.3.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.1.5",
         "@babel/core": "^7.1.6",
         "@babel/preset-env": "^7.1.6",
+        "eslint-plugin-import": "2.14.0",
+        "eslint-plugin-jsx-a11y": "6.1.1",
+        "eslint-plugin-react": "7.11.0",
         "mariadb": "^2.0.2-rc",
-        "node-mocks-http": "^1.7.3",
         "sinon": "^7.2.2"
     },
     "repository": {
@@ -36,5 +43,14 @@
     "bugs": {
         "url": "https://github.com/sungmun/Kakao-Clone/issues"
     },
-    "homepage": "https://github.com/sungmun/Kakao-Clone/RestfulAPI/#readme"
+    "homepage": "https://github.com/sungmun/Kakao-Clone/RestfulAPI/#readme",
+    "eslintConfig": {
+        "extends": [
+            "airbnb",
+            "prettier"
+        ],
+        "rules": {
+            "no-param-reassign": 0
+        }
+    }
 }

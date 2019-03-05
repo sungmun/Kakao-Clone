@@ -1,44 +1,31 @@
-import Model from "../../database/models";
-import { messageFormat } from "../utile";
+import Model from '../../database/models';
 
 export const read = (req, res, next) => {
-    const user = req.body.profile;
+    const respond = dataArray => res.status(201).json({ friend: dataArray });
 
-    const convertDatavaluesToProfile = data =>
-        Promise.all(
-            data[0].friend.map(friend => {
-                delete friend.dataValues.friends;
-                return { profile: friend.dataValues };
+    const OnError = ({ message }) => res.status(403).json(message);
+
+    Model.User.build(req.body.profile)
+        .reload()
+        .then(user => user.getFriendList())
+        .then(friendlist =>
+            friendlist.map(friend => {
+                const data = friend.get({ plain: true });
+                delete data.Friends;
+                return data;
             })
-        );
-
-    const respond = dataArray => {
-        res.status(201).json(messageFormat(true, { friend: dataArray }));
-    };
-
-    const OnError = error => {
-        res.status(403).json(messageFormat(true, error.message));
-    };
-
-    Model.User.findAll({
-        where: { id: user.id },
-        include: [{ model: Model.User, as: "friend" }]
-    })
-        .then(convertDatavaluesToProfile)
+        )
         .then(respond)
         .catch(OnError)
         .finally(next);
 };
 
 export const save = (req, res, next) => {
-    const user = req.body.profile;
-    const friend = req.body.friend;
+    const { profile: user, friend } = req.body;
 
-    const respond = data =>
-        res.status(201).json(messageFormat(true, { friend: data }));
+    const respond = () => res.status(204).send();
 
-    const OnError = error =>
-        res.status(403).json(messageFormat(true, error.message));
+    const OnError = ({ message }) => res.status(403).json(message);
 
     Model.Friend.findOrCreate({
         where: {
@@ -46,21 +33,18 @@ export const save = (req, res, next) => {
             friendId: friend
         }
     })
-        .then(data => data[0].dataValues)
+        .spread(data => data.get({ plain: true }))
         .then(respond)
         .catch(OnError)
         .finally(next);
 };
 
 export const remove = (req, res, next) => {
-    const user = req.body.profile;
-    const friend = req.body.friend;
+    const { profile: user, friend } = req.body;
 
-    const respond = data =>
-        res.status(201).json(messageFormat(true, { row: data }));
+    const respond = () => res.status(204).send();
 
-    const OnError = error =>
-        res.status(403).json(messageFormat(true, error.message));
+    const OnError = ({ message }) => res.status(403).json(message);
 
     Model.Friend.destroy({
         where: {

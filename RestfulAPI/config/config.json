@@ -4,12 +4,14 @@
         "password": null,
         "database": "kakao_talk",
         "host": "localhost",
+        "logging": false,
         "dialect": "mariadb"
     },
     "test": {
         "username": "root",
         "password": null,
         "database": "kakao_talk",
+        "logging": false,
         "host": "localhost",
         "dialect": "mariadb"
     },
@@ -24,6 +26,5 @@
         "max": 20,
         "min": 0,
         "idle": 5000
-    },
-    "logging": true
+    }
 }
