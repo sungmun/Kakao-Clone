@@ -1,11 +1,19 @@
 /* global describe before it:true */
 import { expect } from 'chai';
-import { createMocks } from 'node-mocks-http';
-import { auth, TestCaseUtile } from '../../utile';
+import { TestCaseUtile } from '../../utile';
 import { read } from '../talkRoom.controller';
-import { newToken } from '../../../../private-key.json';
 
-const { convertMiddlewareToPromise, getData } = TestCaseUtile;
+const { getData, mockAfterAuth } = TestCaseUtile;
+
+const readFun = (params, done) => {
+    const { req, res } = mockAfterAuth('GET', { params });
+
+    res.on('send', () => {
+        done(res);
+    });
+
+    read(req, res);
+};
 
 export default () => {
     describe('return success', () => {
