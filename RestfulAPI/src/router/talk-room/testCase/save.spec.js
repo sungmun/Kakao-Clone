@@ -18,67 +18,39 @@ const saveFun = (body, done) => {
 };
 
 export default () => {
-    describe('return success', () => {
-        let data;
+    before(() => {
+        stub(models.TalkRoom, 'create').resolves(
+            models.TalkRoom.build({ id: 1 })
+        );
 
-        before(() => {
-            convertMiddlewareToPromise(
-                auth,
-                setTokenMocks('POST', { friends: [2, 3] }, newToken)
-            )
-                .then(promiseData =>
-                    convertMiddlewareToPromise(save, promiseData)
-                )
-                .then(promiseData => {
-                    data = getData(promiseData);
-                })
-                .catch(() => {
-                    data = undefined;
-                });
-        });
-
-        it('should null cheack', () => expect(data).to.have.undefined);
+        stub(models.TalkRoom.build({ id: 1 }), 'addUserList').callsFake(user =>
+            Promise.resolve(user)
+        );
     });
 
-    describe('argument null', () => {
+    describe('return success', () => {
+        let code;
+        before(done =>
+            saveFun({ friends: [2, 3] }, res => {
+                code = res.statusCode;
+                done();
+            })
+        );
+
+        it('should return statusCode 201', () =>
+            expect(code).to.be.equals(201));
+    });
+
+    describe('friend null', () => {
         let data;
-        describe('token null', () => {
-            before(() =>
-                convertMiddlewareToPromise(
-                    auth,
-                    setTokenMocks('POST', { friends: [3, 2] }, null)
-                )
-                    .then(promiseData =>
-                        convertMiddlewareToPromise(save, promiseData)
-                    )
-                    .then(promiseData => {
-                        data = getData(promiseData);
-                    })
-                    .catch(error => {
-                        data = error.message;
-                    })
-            );
+        before(done =>
+            saveFun(undefined, res => {
+                data = getData({ res });
+                done();
+            })
+        );
 
-            it('should return message ', () =>
-                expect(data).to.be.equal('not loggged in'));
-        });
-
-        describe('friend null', () => {
-            before(() =>
-                convertMiddlewareToPromise(
-                    auth,
-                    setTokenMocks('POST', null, newToken)
-                )
-                    .then(promiseData =>
-                        convertMiddlewareToPromise(save, promiseData)
-                    )
-                    .then(promiseData => {
-                        data = getData(promiseData);
-                    })
-            );
-
-            it('should return message ', () =>
-                expect(data).to.be.equal('friends 값이 없습니다'));
-        });
+        it('should return message ', () =>
+            expect(data).to.be.equal('friends 값이 없습니다'));
     });
 };
