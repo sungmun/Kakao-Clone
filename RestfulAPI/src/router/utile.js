@@ -68,9 +68,7 @@ const mockAfterAuth = (method, data) => {
 const getData = ({ res }) => JSON.parse(res._getData());
 
 export const TestCaseUtile = {
-    setTokenMocks,
     setMocks,
-    convertMiddlewareToPromise,
     mockAfterAuth,
     getData
 };
