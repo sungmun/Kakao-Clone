@@ -1,20 +1,19 @@
 /* global describe before it:true */
 import { expect } from 'chai';
-import { createMocks } from 'node-mocks-http';
-import SequelizeMock from 'sequelize-mock';
-import { load } from 'proxyquire';
-import { auth, TestCaseUtile } from '../../utile';
-import { newToken } from '../../../../private-key.json';
+import { stub } from 'sinon';
+import { TestCaseUtile } from '../../utile';
+import { remove } from '../talkRoom.controller';
+import models from '../../../database/models';
 
-const { convertMiddlewareToPromise, getData } = TestCaseUtile;
+const { getData, mockAfterAuth } = TestCaseUtile;
 
-const DBmock = new SequelizeMock();
+const removeFun = (params, done) => {
+    const { req, res } = mockAfterAuth('DELETE', { params });
 
-const userTalkRooms = DBmock.define('userTalkRooms', { userId: 1, talkId: 73 });
+    res.on('send', () => done(res));
 
-const { remove } = load('../talkRoom.controller', {
-    '../../database/models': { userTalkRooms }
-});
+    remove(req, res);
+};
 
 export default () => {
     describe('return success', () => {
