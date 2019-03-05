@@ -1,10 +1,21 @@
 /* global describe before it:true */
 import { expect } from 'chai';
-import { auth, TestCaseUtile } from '../../utile';
+import { stub } from 'sinon';
+import { TestCaseUtile } from '../../utile';
+import models from '../../../database/models';
 import { save } from '../talkRoom.controller';
-import { newToken } from '../../../../private-key.json';
 
-const { convertMiddlewareToPromise, getData, setTokenMocks } = TestCaseUtile;
+const { getData, mockAfterAuth } = TestCaseUtile;
+
+const saveFun = (body, done) => {
+    const { req, res } = mockAfterAuth('POST', { body });
+
+    res.on('send', () => {
+        done(res);
+    });
+
+    save(req, res);
+};
 
 export default () => {
     describe('return success', () => {
