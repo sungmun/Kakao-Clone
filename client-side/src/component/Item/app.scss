@@ -1,0 +1,17 @@
+.Item {
+    display: flex;
+    margin: 5px 0px;
+    height: 60px;
+    .Image {
+        border-radius: 50%;
+        margin: 10px;
+        width: 40px;
+        flex-direction: row;
+    }
+
+    .Content {
+        flex-direction: row;
+        width: 100%;
+        height: 60px;
+    }
+}
