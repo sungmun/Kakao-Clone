@@ -3,8 +3,8 @@ import './App.scss';
 
 export default ({ nickName, email }) => (
     <div className="Info">
-        <span className="Nickname">{nickName}</span>
+        <div className="Nickname">{nickName}</div>
 
-        <p className="Email">{email}</p>
+        <div className="Email">{email}</div>
     </div>
 );
