@@ -9,7 +9,7 @@ export const auth = (req, res, next) => {
     const token = req.headers['x-access-token'] || req.query.token;
 
     const promiss = new Promise((resolve, reject) => {
-        if (!token) reject(Error('not loggged in'));
+        if (!token || token == null) reject(Error('not loggged in'));
 
         jwt.verify(token, secret, (err, decode) =>
             err ? reject(Error(err.message)) : resolve(decode)
@@ -18,6 +18,7 @@ export const auth = (req, res, next) => {
 
     const respond = profile => {
         req.body.profile = profile;
+        next();
     };
 
     const onError = ({ message }) => {
@@ -29,8 +30,7 @@ export const auth = (req, res, next) => {
         .then(profile => Model.User.findByPk(profile.id))
         .then(profile => profile.get({ plain: true }))
         .then(respond)
-        .catch(onError)
-        .finally(next);
+        .catch(onError);
 };
 
 export const messageFormat = (success, message) => ({ success, message });
