@@ -15,5 +15,8 @@ const nameView = (names = []) => {
 };
 
 export default ({ friend = friendJSON }) => {
+    const image = attributeFilter(friend, 'photos');
+    const nameArray = attributeFilter(friend, 'nickName');
+
     return <Item image={attributeFilter(friend, 'photos')} />;
 };
