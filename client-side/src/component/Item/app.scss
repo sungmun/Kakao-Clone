@@ -6,6 +6,26 @@ $Size: 50px;
     height: $size;
     width: $size;
 }
+.length4 {
+    .Image {
+        @include round(21px);
+    }
+}
+.length3 {
+    .Image {
+        @include round($Size/2.2);
+    }
+}
+.length2 {
+    .Image {
+        @include round($Size/1.8);
+    }
+}
+.length1 {
+    .Image {
+        @include round($Size);
+    }
+}
 .Item {
     display: flex;
     flex-direction: row;
