@@ -6,6 +6,15 @@ $Size: 50px;
     height: $size;
     width: $size;
 }
+.length2,
+.length3,
+.length4 {
+    .ImagePosition {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+    }
+}
 .length4 {
     .Image {
         @include round(21px);
