@@ -1,0 +1,13 @@
+.Name {
+    display: flex;
+    flex-direction: row;
+    .Length {
+        flex: 1;
+        color: silver;
+        margin-left: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        width: 8px;
+        font-weight: 450;
+    }
+}
