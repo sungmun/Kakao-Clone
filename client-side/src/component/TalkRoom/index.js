@@ -1,6 +1,7 @@
 import React from 'react';
 import Item from 'component/Item';
 import friendJSON from 'component/TalkRoom/friend.json';
+import './app.scss';
 
 const attributeFilter = (frineds = [], attr) => frineds.map(val => val[attr]);
 
