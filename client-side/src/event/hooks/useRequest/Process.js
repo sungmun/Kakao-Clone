@@ -1,30 +1,26 @@
 import { useEffect, useState } from 'react';
-import Axios from 'axios';
 
-const useRequest = ({ method = 'get', url = '/' }, data, { token }) => {
+import axios from 'event/Axios';
+
+export default ({ method = 'get', url = '/' }, { data, token }) => {
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const requese = async () => {
+
+    const useRequest = async () => {
         try {
             setLoading(true);
-            const res = await Axios[method](`http://localhost:5000${url}`, {
-                ...data,
-                headers: {
-                    'x-access-token': token
-                }
-            });
+            const res = await axios({ method, url }, { token, data });
             setResponse(res);
         } catch (error) {
             setError(error);
         }
         setLoading(false);
     };
+
     useEffect(() => {
-        requese();
+        useRequest();
     }, [method, url, data]);
 
     return [response, loading, error];
 };
-
-export default useRequest;
