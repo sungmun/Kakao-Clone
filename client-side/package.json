@@ -1,37 +1,44 @@
 {
-    "name": "client-side",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "axios": "^0.18.0",
-        "eslint-plugin-react-hooks": "^1.6.0",
-        "node-sass": "^4.11.0",
-        "react": "^16.8.4",
-        "react-dom": "^16.8.4",
-        "react-facebook-login": "^4.1.1",
-        "react-google-login": "^5.0.2",
-        "react-redux": "^6.0.1",
-        "react-router-dom": "^4.3.1",
-        "react-scripts": "2.1.8",
-        "redux": "^4.0.1"
+  "name": "client-side",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.2.0",
+    "node-sass": "^4.11.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.0.2",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.8",
+    "redux": "^4.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "env": {
+      "browser": true
     },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "airbnb",
-            "react-hooks"
-        ]
-    },
-    "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
-    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "main": "index.js",
+  "author": "sungmun <tjdans174@gmail.com>",
+  "license": "MIT"
 }
