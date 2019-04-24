@@ -9,8 +9,10 @@ import Provider from 'layout/Provider';
 import 'index.scss';
 
 ReactDOM.render(
-    <Provider children={<Route />} />,
-    document.getElementById('root')
+  <Provider>
+    <Route />
+  </Provider>,
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change
