@@ -31,6 +31,10 @@
     "env": {
       "browser": true
     },
+    "rules": {
+      "import/no-unresolved": 0,
+      "no-param-reassign": 0
+    }
   },
   "browserslist": [
     ">0.2%",
