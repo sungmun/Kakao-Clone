@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { func, element } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import GoogleButton from 'component/Button/Google/index';
 import FacebookButton from 'component/Button/Facebook/index';
@@ -29,7 +29,7 @@ const socialBox = ({ Login, history }) => {
 };
 socialBox.propTypes = {
   Login: func.isRequired,
-  history: element.isRequired,
+  history: shape({ push: func.isRequired }).isRequired,
 };
 
 export default connect(
