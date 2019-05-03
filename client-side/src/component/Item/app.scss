@@ -1,5 +1,6 @@
 $imageRadius: 40%;
 $Size: 50px;
+
 @mixin round($size) {
     border-radius: $imageRadius;
     border: solid white;
@@ -87,6 +88,10 @@ $Size: 50px;
     flex-direction: row;
     margin: 5px 0px;
     height: 60px;
+    a {
+        all: unset;
+        display: flex;
+    }
     .DivRound {
         position: relative;
         width: $Size;
