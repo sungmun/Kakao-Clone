@@ -1,6 +1,6 @@
 import Model from '../../database/models';
 
-export const read = (req, res, next) => {
+export const read = (req, res) => {
     const respond = dataArray => res.status(201).json({ friend: dataArray });
 
     const OnError = ({ message }) => res.status(403).json(message);
@@ -16,8 +16,7 @@ export const read = (req, res, next) => {
             })
         )
         .then(respond)
-        .catch(OnError)
-        .finally(next);
+        .catch(OnError);
 };
 
 export const save = (req, res, next) => {
