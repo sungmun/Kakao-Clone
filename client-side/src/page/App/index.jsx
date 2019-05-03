@@ -7,8 +7,9 @@ import { axiosUseEffect, axiosErrorCatch } from 'event/hooks/useRequest/index';
 import './App.scss';
 
 import { connect } from 'react-redux';
+import { string } from 'prop-types';
 
-const index = ({ token }) => {
+const Index = ({ token }) => {
   const factory = url => axiosUseEffect({ method: 'get', url }, { token });
 
   const profileData = factory('/user');
@@ -43,6 +44,8 @@ const index = ({ token }) => {
   }
 };
 
-const tokenProps = ({ token }) => ({ token });
+Index.propTypes = {
+  token: string.isRequired,
+};
 
-export default connect(tokenProps)(index);
+export default connect(({ token }) => ({ token }))(Index);
