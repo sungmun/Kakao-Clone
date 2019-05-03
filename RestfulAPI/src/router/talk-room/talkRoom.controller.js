@@ -1,4 +1,11 @@
 import Model from '../../database/models';
+import '@babel/polyfill';
+
+const deleteAttribute = async (data = [], attr) => {
+    const temp = await data.get({ plain: true });
+    delete temp[attr];
+    return temp;
+};
 
 // talkRoom생성
 export const save = (req, res, next) => {
@@ -51,12 +58,10 @@ export const read = (req, res, next) => {
         resolve(talkRoom);
     });
 
-    const respond = ArrayValue =>
-        res.status(201).json({
-            TalkRoom: ArrayValue[0],
-            UserList: ArrayValue[1],
-            TalkList: ArrayValue[2]
-        });
+    const respond = ArrayValue => {
+        const [TalkRoom, UserList, TalkList] = ArrayValue;
+        res.status(201).json({ TalkRoom, UserList, TalkList });
+    };
 
     talkRoomCheack
         .then(talkRoom => Model.TalkRoom.build(talkRoom).reload())
@@ -80,87 +85,86 @@ export const read = (req, res, next) => {
 };
 
 // talkRoom리스트보기
-export const listRead = (req, res, next) => {
+export const listRead = async (req, res) => {
     const { profile: user } = req.body;
 
-    const OnError = ({ message }) => res.status(403).json(message);
+    const OnError = e => {
+        res.status(403).json(e.message);
+    };
 
     const respond = DBtalkRoomList =>
         res.status(201).json({ talkRoomList: DBtalkRoomList });
 
-    Model.User.build(user)
-        .reload()
-        .then(DBuser => DBuser.getTalkRoomList())
-        .then(DBtalkRoomList =>
-            DBtalkRoomList.map(DBtalkRoom => {
-                const data = DBtalkRoom.get({ plain: true });
-                delete data.UserTalkRooms;
-                return data;
+    try {
+        const DBuser = await Model.User.build(user).reload();
+        const DBtalkRoomList = await DBuser.getTalkRoomList();
+
+        const coustomList = await Promise.all(
+            DBtalkRoomList.map(async DBtalkRoom => {
+                const talkRoom = await deleteAttribute(
+                    DBtalkRoom,
+                    'UserTalkRooms'
+                );
+
+                talkRoom.userList = await DBtalkRoom.getUserList()
+                    .map(userData => deleteAttribute(userData, 'UserTalkRooms'))
+                    .filter(userData => userData.id !== user.id);
+
+                return talkRoom;
             })
-        )
-        .then(respond)
-        .catch(OnError)
-        .finally(next);
+        );
+
+        respond(coustomList);
+    } catch (e) {
+        OnError(e);
+    }
 };
 
 // talkRoom 마지막 남은 유저 나가기
-export const remove = (req, res, next) => {
+export const remove = async (req, res) => {
     const { profile: user } = req.body;
     const OnError = ({ message }) => res.status(403).json(message);
-
-    const talkRoomCheack = new Promise((resolve, reject) => {
-        const talkRoom = { id: req.params.talkRoom };
-        if (talkRoom.id === undefined) reject(Error('params가 없습니다'));
-        resolve(talkRoom);
-    });
-
     const respond = () => res.status(204).send();
 
-    talkRoomCheack
-        .then(talkRoom =>
-            Model.userTalkRooms.destroy({
-                where: {
-                    talkId: talkRoom.id,
-                    userId: user.id
-                }
-            })
-        )
-        .then(respond)
-        .catch(OnError)
-        .finally(next);
+    try {
+        const talkRoom = { id: req.params.talkRoom };
+        if (talkRoom.id === undefined) throw new Error('params가 없습니다');
+
+        await Model.userTalkRooms.destroy({
+            where: {
+                talkId: talkRoom.id,
+                userId: user.id
+            }
+        });
+
+        respond();
+    } catch (error) {
+        OnError(error);
+    }
 };
 
 // talkRoom 유저추가
-export const addUser = (req, res, next) => {
-    const { talkroom, friend } = req.body;
-    const paramsCheack = new Promise((resolve, reject) => {
-        let ErrStr;
+export const addUser = async (req, res) => {
+    let { talkroom, friend } = req.body;
 
+    let ErrStr;
+    const OnError = ({ message }) => res.status(403).json(message);
+    const respond = () => res.status(201).json({ friend });
+    try {
         if (talkroom === undefined && friend === undefined) ErrStr = 'params';
         else if (talkroom === undefined) ErrStr = 'talkRoom';
         else if (friend === undefined) ErrStr = 'friend';
 
-        if (ErrStr !== undefined) reject(Error(`${ErrStr} 값이 없습니다.`));
+        if (ErrStr !== undefined) throw new Error(`${ErrStr} 값이 없습니다.`);
 
-        resolve(talkroom);
-    });
+        talkroom = await Model.TalkRoom.build(talkroom).reload();
 
-    const OnError = ({ message }) => res.status(403).json(message);
+        friend = await Model.User.build(friend).reload();
 
-    const respond = () => res.status(201).json({ friend });
+        talkroom.addUserList(friend);
 
-    const addFriend = room =>
-        Model.User.build(friend)
-            .reload()
-            .then(DBFriend => {
-                room.addUserList(DBFriend);
-                return DBFriend;
-            });
-
-    paramsCheack
-        .then(() => Model.TalkRoom.build(talkroom).reload())
-        .then(addFriend)
-        .then(respond)
-        .catch(OnError)
-        .finally(next);
+        respond(friend);
+    } catch (error) {
+        OnError(error);
+    }
 };

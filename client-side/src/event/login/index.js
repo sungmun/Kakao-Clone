@@ -1,21 +1,13 @@
-import Axios from 'axios';
+import axios from 'event/Axios';
 
-const action = async profile => {
-    let token = null,
-        path = '/',
-        error = false;
-
-    try {
-        const res = await Axios.post('http://localhost:5000/user', {
-            user: profile
-        });
-
-        token = res.data.token;
-    } catch (e) {
-        error = e;
-        path = '/login';
-    }
-    return { token, path, error };
+export default async user => {
+  try {
+    const res = await axios(
+      { method: 'post', url: '/user' },
+      { data: { user } },
+    );
+    return [res.data.token, '/'];
+  } catch (e) {
+    throw new Error('/login', e);
+  }
 };
-
-export default action;

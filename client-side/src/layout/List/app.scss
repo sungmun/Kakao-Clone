@@ -1,13 +1,16 @@
 .Contents {
-    margin: 0.9vh;
+  margin: 0.9vh;
+  .List {
+    padding-left: 0px;
+    margin-block-start: 0.2em;
+  }
 }
 .Search {
-    width: 100%;
-    vertical-align: middle;
-    white-space: nowrap;
-    position: relative;
-}
-.Input {
+  width: 100%;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+  .Input {
     font-size: 10pt;
     border: 0px;
     width: 45.9vh;
@@ -17,15 +20,17 @@
     border-style: solid;
     border-color: rgb(230, 230, 230);
     height: 36px;
-    ::focus {
-        outline: 0 none;
+    &:focus {
+      outline: 0 none;
     }
-    ::placeholder {
-        color: rgb(153, 153, 153);
+
+    &:placeholder {
+      color: rgb(153, 153, 153);
     }
-}
-.SearchIco {
+  }
+  .SearchIco {
     position: absolute;
     margin: 10px;
     z-index: 1;
+  }
 }

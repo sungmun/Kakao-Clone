@@ -24,7 +24,8 @@ export default () => {
                 expect(talkRoom).to.have.all.keys(
                     'id',
                     'createdAt',
-                    'updatedAt'
+                    'updatedAt',
+                    'userList'
                 )
             ));
     });
