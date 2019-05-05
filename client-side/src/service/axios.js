@@ -7,5 +7,5 @@ export default async ({ method, url }, { token, data }) => {
       'x-access-token': token,
     },
   });
-  return res;
+  return res.data;
 };
