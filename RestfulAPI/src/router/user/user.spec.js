@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { newToken, oldToken } from '../../../private-key.json';
 import { auth, TestCaseUtile } from '../utile';
-import { login, cheack } from './user.controller';
+import { login, cheack, userList } from './user.controller';
 
 const { getData, setMocks, mockAfterAuth } = TestCaseUtile;
 
@@ -141,5 +141,34 @@ describe('User.Controller', () => {
                     'photos'
                 ));
         });
+    });
+
+    describe('User List Test', () => {
+        let data;
+        before(done => {
+            const { req, res } = mockAfterAuth('GET');
+            res.on('send', () => {
+                data = getData({ res });
+                done();
+            });
+
+            userList(req, res);
+        });
+
+        it('should return Array', () =>
+            expect(data.userList).to.be.an('array'));
+
+        it('should return Array type profile', () =>
+            data.userList.forEach(profile =>
+                expect(profile).to.have.all.keys(
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'socialId',
+                    'platformName',
+                    'nickName',
+                    'photos'
+                )
+            ));
     });
 });
