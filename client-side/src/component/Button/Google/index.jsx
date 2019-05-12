@@ -1,10 +1,14 @@
 import React from 'react';
-import { func } from 'prop-types';
+import { useDispatch } from 'react-redux';
 import GoogleLogin from 'react-google-login';
-import './App.scss';
-import { googleApi } from 'api-key.json';
 
-const Google = ({ action }) => {
+import { setToken } from 'actions/token';
+import { googleApi } from 'api-key.json';
+import './App.scss';
+
+const Google = () => {
+  const dispatch = useDispatch();
+
   const responseGoogle = res => {
     const user = {
       platformName: 'google',
@@ -12,7 +16,7 @@ const Google = ({ action }) => {
       nickName: res.profileObj.name,
       photos: res.profileObj.imageUrl,
     };
-    action(user);
+    dispatch(setToken(user));
   };
 
   const responseFail = res => {
@@ -37,10 +41,6 @@ const Google = ({ action }) => {
       />
     </div>
   );
-};
-
-Google.propTypes = {
-  action: func.isRequired,
 };
 
 export default Google;
