@@ -1,40 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { shape, number } from 'prop-types';
 
-import Layout from 'layout/List';
-import TalkRoom from 'component/TalkRoom';
+import Layout from 'layout/TalkRoom';
 
-import { axiosUseEffect, axiosErrorCatch } from 'event/hooks/useRequest/index';
-import { string } from 'prop-types';
+const TalkRoom = ({ match }) => {
+  const { params } = match;
 
-const talkroomList = ({ token }) => {
-  const talkRoomData = axiosUseEffect(
-    { method: 'get', url: '/talk-room' },
-    { token },
-  );
-
-  try {
-    const { talkRoomList } = axiosErrorCatch(talkRoomData);
-
-    return (
-      <Layout>
-        {talkRoomList.map(({ userList, id }) => (
-          <TalkRoom key={id} room={userList} id={id} />
-        ))}
-      </Layout>
-    );
-  } catch (e) {
-    return e.message === '/login' ? (
-      <Redirect to={e.message} />
-    ) : (
-      <div>{e.message}</div>
-    );
-  }
+  return <Layout>{params.id}</Layout>;
 };
 
-talkroomList.propTypes = {
-  token: string.isRequired,
+TalkRoom.propTypes = {
+  match: shape({ params: shape({ id: number.isRequired }).isRequired })
+    .isRequired,
 };
 
-export default connect(state => ({ token: state.token }))(talkroomList);
+export default TalkRoom;
