@@ -12,6 +12,10 @@ const Login = () => {
     alert(`로그아웃 되셨습니다.`);
   }, []);
 
+  useEffect(() => {
+    if (token.error) alert(`로그인에 실패하셨습니다`);
+  }, [token.error]);
+
   if (token.status) return <Redirect to="/" />;
 
   return (
