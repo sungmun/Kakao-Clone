@@ -12,10 +12,7 @@ const FriendView = () => {
   const friendLength = useSelector(({ friendList }) => friendList.data.length);
   return (
     <div>
-      <span className="Profile">
-        친구
-        {` ${friendLength}`}
-      </span>
+      <span className="Profile">{`친구 ${friendLength}`}</span>
       <FriendList />
     </div>
   );
@@ -23,7 +20,7 @@ const FriendView = () => {
 
 const Index = () => {
   const dispatch = useDispatch();
-  const profile = useSelector(state => state.profile);
+  const { profile } = useSelector(state => state);
 
   useEffect(() => {
     if (!profile.status) dispatch(getProfile());
