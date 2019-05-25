@@ -1,26 +1,23 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import GoogleLogin from 'react-google-login';
-
 import { setToken } from 'actions/token';
 import { googleApi } from 'api-key.json';
+import React from 'react';
+import GoogleLogin from 'react-google-login';
+import { useDispatch } from 'react-redux';
 import './App.scss';
 
 const Google = () => {
   const dispatch = useDispatch();
 
   const responseGoogle = res => {
-    const user = {
-      platformName: 'google',
-      socialId: res.profileObj.email,
-      nickName: res.profileObj.name,
-      photos: res.profileObj.imageUrl,
-    };
-    dispatch(setToken(user));
-  };
-
-  const responseFail = res => {
-    console.error(res);
+    const profile = res.profileObj;
+    dispatch(
+      setToken({
+        platformName: 'google',
+        socialId: profile.email,
+        nickName: profile.name,
+        photos: profile.imageUrl,
+      }),
+    );
   };
 
   return (
@@ -36,7 +33,7 @@ const Google = () => {
             Login with Google
           </button>
         )}
-        onFailure={responseFail}
+        onFailure={console.error}
         onSuccess={responseGoogle}
       />
     </div>
