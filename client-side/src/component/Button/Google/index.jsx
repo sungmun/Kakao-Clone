@@ -1,22 +1,23 @@
-import React from 'react';
-import { func } from 'prop-types';
-import GoogleLogin from 'react-google-login';
-import './App.scss';
+import { setToken } from 'actions/token';
 import { googleApi } from 'api-key.json';
+import React from 'react';
+import GoogleLogin from 'react-google-login';
+import { useDispatch } from 'react-redux';
+import './App.scss';
 
-const Google = ({ action }) => {
+const Google = () => {
+  const dispatch = useDispatch();
+
   const responseGoogle = res => {
-    const user = {
-      platformName: 'google',
-      socialId: res.profileObj.email,
-      nickName: res.profileObj.name,
-      photos: res.profileObj.imageUrl,
-    };
-    action(user);
-  };
-
-  const responseFail = res => {
-    console.error(res);
+    const profile = res.profileObj;
+    dispatch(
+      setToken({
+        platformName: 'google',
+        socialId: profile.email,
+        nickName: profile.name,
+        photos: profile.imageUrl,
+      }),
+    );
   };
 
   return (
@@ -32,15 +33,11 @@ const Google = ({ action }) => {
             Login with Google
           </button>
         )}
-        onFailure={responseFail}
+        onFailure={console.error}
         onSuccess={responseGoogle}
       />
     </div>
   );
-};
-
-Google.propTypes = {
-  action: func.isRequired,
 };
 
 export default Google;

@@ -1,6 +1,7 @@
-import React from 'react';
-import { number, string, shape, arrayOf } from 'prop-types';
 import Item from 'component/Item';
+import { number } from 'prop-types';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import './app.scss';
 
 const attributeFilter = (frineds = [], attr) => frineds.map(val => val[attr]);
@@ -11,14 +12,16 @@ const nameView = (names = []) => {
   return nameStr.length > 40 ? `${nameStr.slice(0, 39)}...` : nameStr;
 };
 
-const TalkRoom = ({ room, id }) => {
-  const image = attributeFilter(room, 'photos');
-  const nameArray = attributeFilter(room, 'nickName');
+const TalkRoom = ({ id }) => {
+  const room = useSelector(state => state.talkRoomList.data[id]);
+
+  const image = attributeFilter(room.userList, 'photos');
+  const nameArray = attributeFilter(room.userList, 'nickName');
 
   const length = nameArray.length >= 2 ? nameArray.length + 1 : null;
 
   return (
-    <Item image={image} url={`/talkRoom/${id}`}>
+    <Item image={image} url="/talkRoom" id={id}>
       <div className="Name">
         <div className="NameStr">{nameView(nameArray)}</div>
         <div className="Length">{length}</div>
@@ -26,20 +29,9 @@ const TalkRoom = ({ room, id }) => {
     </Item>
   );
 };
-const isStrRequired = string.isRequired;
+
 TalkRoom.propTypes = {
   id: number.isRequired,
-  room: arrayOf(
-    shape({
-      createdAt: isStrRequired,
-      id: number.isRequired,
-      nickName: isStrRequired,
-      photos: isStrRequired,
-      platformName: isStrRequired,
-      socialId: isStrRequired,
-      updatedAt: isStrRequired,
-    }),
-  ).isRequired,
 };
 
 export default TalkRoom;

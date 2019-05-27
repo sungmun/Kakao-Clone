@@ -1,11 +1,14 @@
 import React from 'react';
-import { func } from 'prop-types';
+import { useDispatch } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 
+import { setToken } from 'actions/token';
 import { facebookApi } from 'api-key.json';
 import './App.scss';
 
-const Facebook = ({ action }) => {
+const Facebook = () => {
+  const dispatch = useDispatch();
+
   const responseFacebook = res => {
     const user = {
       platformName: 'facebook',
@@ -13,7 +16,7 @@ const Facebook = ({ action }) => {
       nickName: res.name,
       photos: res.picture.data.url,
     };
-    action(user);
+    dispatch(setToken(user));
   };
 
   return (
@@ -30,10 +33,6 @@ const Facebook = ({ action }) => {
       </FacebookLogin>
     </div>
   );
-};
-
-Facebook.propTypes = {
-  action: func.isRequired,
 };
 
 export default Facebook;
