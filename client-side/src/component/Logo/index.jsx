@@ -1,7 +1,7 @@
-import React from 'react';
 import logo from 'image/navi_img_logo.png';
+import { arrayOf, node, oneOfType } from 'prop-types';
+import React from 'react';
 import './app.scss';
-import { node, arrayOf, oneOfType } from 'prop-types';
 
 const Logo = ({ children }) => {
   return (
