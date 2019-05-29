@@ -1,14 +1,11 @@
-import { listFriend } from 'actions/friend';
-import { getProfile } from 'actions/profile';
 import Icon from 'component/BackIcon';
 import Logo from 'component/Logo';
 import Profile from 'component/Profile';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getUserList } from 'service/profile';
 
 const Userlist = () => {
-  const dispatch = useDispatch();
   const { token, friendList, profile } = useSelector(state => state);
   const [userlist, setUserlist] = useState([]);
 
@@ -24,11 +21,6 @@ const Userlist = () => {
     const userList = await getUserList(token.data);
     setUserlist(await filter(userList));
   };
-
-  useEffect(() => {
-    if (!friendList.status) dispatch(listFriend());
-    if (!profile.status) dispatch(getProfile());
-  }, []);
 
   useEffect(() => {
     Effect();
