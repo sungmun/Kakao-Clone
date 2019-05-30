@@ -1,5 +1,5 @@
 import Add from 'component/Button/Add';
-import FriendList from 'component/FriendList';
+import FriendList from 'component/List/friend';
 import Profile from 'component/Profile';
 import Layout from 'layout/List';
 import React from 'react';
