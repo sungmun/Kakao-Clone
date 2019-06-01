@@ -18,7 +18,7 @@ const useReduxServerHook = ({ pathname }) => {
       dispatchHooks(talkRoomList, listTalkroom);
       dispatchHooks(friendList, listFriend);
     }
-  }, []);
+  }, [pathname]);
 };
 
 export default useReduxServerHook;
