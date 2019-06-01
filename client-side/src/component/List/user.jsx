@@ -1,10 +1,13 @@
-import React, { useEffect, useState, memo } from 'react';
 import Profile from 'component/Profile';
-import { useSelector } from 'react-redux';
+import { arrayOf, number, shape } from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { add } from 'actions/friend/add';
 
-const user = ({ allUser }) => {
+const userComponent = ({ allUser }) => {
   const [userFilterList, setUserFilterList] = useState([]);
   const { friendList, profile } = useSelector(state => state);
+  const dispatch = useDispatch();
 
   const filter = () => {
     const friend = friendList.data;
@@ -20,11 +23,15 @@ const user = ({ allUser }) => {
 
   return (
     <div>
-      {userFilterList.map(data => (
-        <Profile key={data.id} user={data} />
+      {userFilterList.map(user => (
+        <Profile key={user.id} user={user} Click={() => dispatch(add(user))} />
       ))}
     </div>
   );
 };
 
-export default user;
+userComponent.propTypes = {
+  allUser: arrayOf(shape({ id: number })).isRequired,
+};
+
+export default userComponent;
