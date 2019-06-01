@@ -20,8 +20,8 @@ const Item = ({ image, children, url, id }) => (
   <li className={`Item length${image.length}`}>
     <Link to={{ pathname: url, state: { id } }}>
       <div className="DivRound">{image.map(imageDraw)}</div>
-      <div className="Content">{children}</div>
     </Link>
+    <div className="Content">{children}</div>
   </li>
 );
 
