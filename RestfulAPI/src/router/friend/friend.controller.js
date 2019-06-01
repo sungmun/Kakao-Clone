@@ -1,57 +1,52 @@
-import Model from '../../database/models';
+import "@babel/polyfill";
+import Model from "../../database/models";
 
-export const read = (req, res) => {
-    const respond = dataArray => res.status(201).json({ friend: dataArray });
+export const read = async (req, res) => {
+  try {
+    const user = await Model.User.build(req.body.profile);
+    const friendList = await user.getFriendList();
 
-    const OnError = ({ message }) => res.status(403).json(message);
+    const resData = await friendList.map(friend => {
+      const data = friend.get({ plain: true });
+      delete data.Friends;
+      return data;
+    });
 
-    Model.User.build(req.body.profile)
-        .reload()
-        .then(user => user.getFriendList())
-        .then(friendlist =>
-            friendlist.map(friend => {
-                const data = friend.get({ plain: true });
-                delete data.Friends;
-                return data;
-            })
-        )
-        .then(respond)
-        .catch(OnError);
+    res.status(201).json({ friend: resData });
+  } catch (error) {
+    res.status(403).json(error.message);
+  }
 };
 
-export const save = (req, res, next) => {
+export const save = async (req, res) => {
+  try {
     const { profile: user, friend } = req.body;
 
-    const respond = () => res.status(204).send();
+    await Model.Friend.findOrCreate({
+      where: {
+        userId: user.id,
+        friendId: friend
+      }
+    });
 
-    const OnError = ({ message }) => res.status(403).json(message);
-
-    Model.Friend.findOrCreate({
-        where: {
-            userId: user.id,
-            friendId: friend
-        }
-    })
-        .spread(data => data.get({ plain: true }))
-        .then(respond)
-        .catch(OnError)
-        .finally(next);
+    res.status(204).json();
+  } catch (error) {
+    res.status(403).json(error.message);
+  }
 };
 
-export const remove = (req, res, next) => {
+export const remove = async (req, res) => {
+  try {
     const { profile: user, friend } = req.body;
+    await Model.Friend.destroy({
+      where: {
+        userId: user.id,
+        friendId: friend
+      }
+    });
 
-    const respond = () => res.status(204).send();
-
-    const OnError = ({ message }) => res.status(403).json(message);
-
-    Model.Friend.destroy({
-        where: {
-            userId: user.id,
-            friendId: friend
-        }
-    })
-        .then(respond)
-        .catch(OnError)
-        .finally(next);
+    res.status(204).json();
+  } catch (error) {
+    res.status(403).json(error.message);
+  }
 };
