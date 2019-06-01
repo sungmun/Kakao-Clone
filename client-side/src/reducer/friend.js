@@ -1,4 +1,4 @@
-import { LIST_FRIEND_SUCCESS, LIST_FRIEND_FAILURE } from 'actions/friend';
+import { LIST_SUCCESS, LIST_FAILURE } from 'actions/friend/list';
 
 const initstate = {
   error: null,
@@ -8,9 +8,9 @@ const initstate = {
 
 export default (state = initstate, action) => {
   switch (action.type) {
-    case LIST_FRIEND_SUCCESS:
+    case LIST_SUCCESS:
       return { ...state, error: null, status: true, data: action.friendList };
-    case LIST_FRIEND_FAILURE:
+    case LIST_FAILURE:
       return { ...state, error: action.message };
     default:
       return state;
