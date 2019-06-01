@@ -1,10 +1,7 @@
 import Item from 'component/Item';
-import { number } from 'prop-types';
+import { number, shape, string, arrayOf } from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import './app.scss';
-
-const attributeFilter = (frineds = [], attr) => frineds.map(val => val[attr]);
 
 const nameView = (names = []) => {
   const nameStr = names.join(', ');
@@ -12,16 +9,15 @@ const nameView = (names = []) => {
   return nameStr.length > 40 ? `${nameStr.slice(0, 39)}...` : nameStr;
 };
 
-const TalkRoom = ({ id }) => {
-  const room = useSelector(state => state.talkRoomList.data[id]);
-
-  const image = attributeFilter(room.userList, 'photos');
-  const nameArray = attributeFilter(room.userList, 'nickName');
+const TalkRoom = ({ talkroom }) => {
+  const userListFilter = attr => talkroom.userList.map(val => val[attr]);
+  const image = userListFilter('photos');
+  const nameArray = userListFilter('nickName');
 
   const length = nameArray.length >= 2 ? nameArray.length + 1 : null;
 
   return (
-    <Item image={image} url="/talkRoom" id={id}>
+    <Item image={image} url="/talkRoom" id={talkroom.id}>
       <div className="Name">
         <div className="NameStr">{nameView(nameArray)}</div>
         <div className="Length">{length}</div>
@@ -31,7 +27,8 @@ const TalkRoom = ({ id }) => {
 };
 
 TalkRoom.propTypes = {
-  id: number.isRequired,
+  talkroom: arrayOf(shape({ id: number, photos: string, nickName: string }))
+    .isRequired,
 };
 
 export default TalkRoom;

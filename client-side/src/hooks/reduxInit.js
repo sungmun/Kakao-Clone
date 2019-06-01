@@ -1,4 +1,4 @@
-import { listFriend } from 'actions/friend';
+import { list as listFriend } from 'actions/friend/list';
 import { getProfile } from 'actions/profile';
 import { listTalkroom } from 'actions/talkRoom';
 import { useEffect } from 'react';
@@ -18,7 +18,7 @@ const useReduxServerHook = ({ pathname }) => {
       dispatchHooks(talkRoomList, listTalkroom);
       dispatchHooks(friendList, listFriend);
     }
-  }, []);
+  }, [pathname]);
 };
 
 export default useReduxServerHook;
