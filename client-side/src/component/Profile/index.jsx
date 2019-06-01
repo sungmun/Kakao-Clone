@@ -1,15 +1,15 @@
-import React from 'react';
-import { shape, string, number } from 'prop-types';
-
-import Item from 'component/Item';
 import Info from 'component/Info';
+import Item from 'component/Item';
+import { number, shape, string, func } from 'prop-types';
+import React, { memo } from 'react';
 
-const Profile = ({ user }) => {
+const Profile = ({ user, Click }) => {
   const { photos, nickName, id } = user;
-
   return (
     <Item image={new Array(photos)} url="/user" id={id}>
-      <Info nickName={nickName} />
+      <div id={id} onClick={Click} onKeyDown={Click} role="button" tabIndex="0">
+        <Info nickName={nickName} />
+      </div>
     </Item>
   );
 };
@@ -20,6 +20,7 @@ Profile.propTypes = {
     nickName: string.isRequired,
     id: number.isRequired,
   }).isRequired,
+  Click: func.isRequired,
 };
 
-export default Profile;
+export default memo(Profile);
