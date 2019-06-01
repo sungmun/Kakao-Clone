@@ -18,6 +18,13 @@ export const getFriend = async token => {
   return data.friend;
 };
 
+export const addFreind = async (token, id) => {
+  await axios(
+    { method: 'post', url: '/friend' },
+    { token, data: { friend: id } },
+  );
+};
+
 export const getUserList = async token => {
   const { data } = await axios({ method: 'get', url: '/user' }, { token });
   return data.userList;
