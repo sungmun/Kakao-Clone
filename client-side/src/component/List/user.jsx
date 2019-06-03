@@ -19,7 +19,7 @@ const userComponent = ({ allUser }) => {
 
   useEffect(() => {
     (async () => setUserFilterList(await filter()))();
-  }, [allUser]);
+  }, [allUser, friendList]);
 
   return (
     <div>
