@@ -1,109 +1,19 @@
-$imageRadius: 40%;
-$Size: 50px;
-
-@mixin round($size) {
-    border-radius: $imageRadius;
-    border: solid white;
-    height: $size;
-    width: $size;
-}
-.length2,
-.length3,
-.length4 {
-    .ImagePosition {
-        position: absolute;
-        width: 25px;
-        height: 25px;
-    }
-}
-.length4 {
-    .Image {
-        @include round(21px);
-    }
-}
-.length3 {
-    .Image {
-        @include round($Size/2.2);
-    }
-}
-.length2 {
-    .Image {
-        @include round($Size/1.8);
-    }
-}
-.length1 {
-    .Image {
-        @include round($Size);
-    }
-}
-
-.length2 {
-    .ImagePosition:nth-child(1) {
-        top: 0px;
-        left: 0px;
-    }
-    .ImagePosition:nth-child(2) {
-        bottom: 0px;
-        right: 0px;
-    }
-}
-.length3 {
-    .ImagePosition:nth-child(1) {
-        z-index: 3;
-        top: 0px;
-        left: 50%;
-        transform: translate(-50%, 0);
-    }
-    .ImagePosition:nth-child(2) {
-        z-index: 1;
-        bottom: 0px;
-        left: 0px;
-    }
-    .ImagePosition:nth-child(3) {
-        z-index: 2;
-        bottom: 0px;
-        right: 0px;
-    }
-}
-.length4 {
-    .ImagePosition:nth-child(1) {
-        top: 0px;
-        left: 0px;
-    }
-    .ImagePosition:nth-child(2) {
-        top: 0px;
-        right: 0px;
-    }
-    .ImagePosition:nth-child(3) {
-        bottom: 0px;
-        left: 0px;
-    }
-    .ImagePosition:nth-child(4) {
-        bottom: 0px;
-        right: 0px;
-    }
-}
 .Item {
+  display: flex;
+  flex-direction: row;
+  margin: 5px 0px;
+  height: 60px;
+  a {
+    all: unset;
     display: flex;
-    flex-direction: row;
-    margin: 5px 0px;
-    height: 60px;
-    a {
-        all: unset;
-        display: flex;
-    }
-    .DivRound {
-        position: relative;
-        width: $Size;
-        margin: 5px;
-    }
+  }
 
-    .Content {
-        flex: 1;
-        height: 40px;
-        margin-left: 8px;
-        margin-top: auto;
-        margin-bottom: auto;
-        font-weight: 400;
-    }
+  .Content {
+    flex: 1;
+    height: 40px;
+    margin-left: 8px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 400;
+  }
 }
