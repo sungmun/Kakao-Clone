@@ -1,25 +1,14 @@
 import React from 'react';
-import Profile from 'image/img_profile40_gray.png';
+
 import { Link } from 'react-router-dom';
 import { arrayOf, oneOfType, string, node, number } from 'prop-types';
+import Image from 'component/ItemImage';
 import './app.scss';
 
-const imageDraw = (image, i) => {
-  const ImageOnError = ({ target }) => {
-    target.src = Profile;
-  };
-
-  return (
-    <div className="ImagePosition" key={i}>
-      <img className="Image" src={image} alt="item" onError={ImageOnError} />
-    </div>
-  );
-};
-
 const Item = ({ image, children, url, id }) => (
-  <li className={`Item length${image.length}`}>
+  <li className="Item ">
     <Link to={{ pathname: url, state: { id } }}>
-      <div className="DivRound">{image.map(imageDraw)}</div>
+      <Image image={image} />
     </Link>
     <div className="Content">{children}</div>
   </li>
