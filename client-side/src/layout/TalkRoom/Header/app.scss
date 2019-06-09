@@ -1,0 +1,10 @@
+header {
+  background-color: rgb(169, 189, 206);
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  .img {
+    flex: 1;
+  }
+}
