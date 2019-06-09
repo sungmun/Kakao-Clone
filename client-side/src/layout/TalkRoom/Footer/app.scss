@@ -1,0 +1,16 @@
+.Footer {
+  display: flex;
+  flex-direction: column;
+  height: 140px;
+}
+.Textarea {
+  all: unset;
+  flex: 1;
+
+  padding: 15px;
+  font-size: 10pt;
+  margin-right: 70px;
+}
+.send {
+  background-color: yellow;
+}

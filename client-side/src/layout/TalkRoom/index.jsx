@@ -1,20 +1,32 @@
 import React from 'react';
-import { oneOfType, arrayOf, node } from 'prop-types';
+
+import { useSelector } from 'react-redux';
+import { oneOfType, arrayOf, node, number } from 'prop-types';
+import Base from 'layout/Base';
+import Headers from './Header';
+import Footers from './Footer';
 import './app.scss';
 
-const TalkRoom = ({ children }) => {
-  const view = (
-    <div className="layout">
-      <header>머리</header>
-      <main>{children}</main>
-      <footer>발</footer>
-    </div>
-  );
+const TalkRoom = ({ id, children }) => {
+  const { data } = useSelector(({ talkRoomList }) => talkRoomList);
 
-  return view;
+  const findData = data.find(talkroom => talkroom.id === id);
+
+  if (findData === undefined) return <div>loading</div>;
+
+  return (
+    <Base>
+      <div className="layout container">
+        <Headers userlist={findData.userList} />
+        <div className="Main">{children}</div>
+        <Footers />
+      </div>
+    </Base>
+  );
 };
 
 TalkRoom.propTypes = {
+  id: number.isRequired,
   children: oneOfType([arrayOf(node), node]).isRequired,
 };
 
