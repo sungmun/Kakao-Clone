@@ -1,17 +1,18 @@
-import React from 'react';
 import Profile from 'image/img_profile40_gray.png';
-import { oneOfType, node } from 'prop-types';
+import { node, number, oneOfType, string } from 'prop-types';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './app.scss';
 
-const Image = ({ image }) => {
+const Image = ({ image, url, id }) => {
   const ImageOnError = ({ target }) => {
     target.src = Profile;
   };
 
   return (
-    <div className={`DivRound length${image.length}`}>
-      {image.map(img => {
-        return (
+    <Link to={{ pathname: url, state: { id } }}>
+      <div className={`DivRound length${image.length}`}>
+        {image.map(img => (
           <div className="ImagePosition" key={img}>
             <img
               className="Image"
@@ -20,14 +21,16 @@ const Image = ({ image }) => {
               onError={ImageOnError}
             />
           </div>
-        );
-      })}
-    </div>
+        ))}
+      </div>
+    </Link>
   );
 };
 
 Image.propTypes = {
   image: oneOfType([node]).isRequired,
+  url: string.isRequired,
+  id: number.isRequired,
 };
 
 export default Image;
