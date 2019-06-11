@@ -1,23 +1,17 @@
-import { setToken } from 'actions/token';
 import { googleApi } from 'api-key.json';
+import { func } from 'prop-types';
 import React from 'react';
 import GoogleLogin from 'react-google-login';
-import { useDispatch } from 'react-redux';
-import './App.scss';
+import './app.scss';
 
-const Google = () => {
-  const dispatch = useDispatch();
-
-  const responseGoogle = res => {
-    const profile = res.profileObj;
-    dispatch(
-      setToken({
-        platformName: 'google',
-        socialId: profile.email,
-        nickName: profile.name,
-        photos: profile.imageUrl,
-      }),
-    );
+const GoogleButton = ({ onClick }) => {
+  const responseGoogle = ({ profileObj }) => {
+    onClick({
+      platformName: 'google',
+      socialId: profileObj.email,
+      nickName: profileObj.name,
+      photos: profileObj.imageUrl,
+    });
   };
 
   return (
@@ -40,4 +34,7 @@ const Google = () => {
   );
 };
 
-export default Google;
+GoogleButton.propTypes = {
+  onClick: func.isRequired,
+};
+export default GoogleButton;
