@@ -4,13 +4,23 @@
   padding-top: 0px;
   .IconBox {
     display: inline-block;
+    position: relative;
     overflow: hidden;
+    min-width: 36px;
+    min-height: 36px;
     max-width: 36px;
     max-height: 36px;
     margin-top: 0px;
     margin-right: 20px;
     .Icon {
-      max-width: initial;
+      position: absolute;
+      clip: rect(0px 36px 36px 0px);
+    }
+  }
+  .active {
+    .Icon {
+      left: -36px;
+      clip: rect(0px 72px 36px 36px);
     }
   }
 }
