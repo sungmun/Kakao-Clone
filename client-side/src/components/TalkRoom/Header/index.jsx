@@ -1,6 +1,6 @@
 import React from 'react';
 import { string, shape, arrayOf } from 'prop-types';
-import Image from 'component/ItemImage';
+import Image from 'components/Base/ItemImage';
 import './app.scss';
 
 const nameView = (names = []) => {
