@@ -1,5 +1,4 @@
-import { SET_TOKEN_SUCCESS } from 'actions/token';
-import { SET_TOKEN_FAILURE } from '../actions/token';
+import { SET_TOKEN_SUCCESS, SET_TOKEN_FAILURE } from 'actions/token';
 
 const initstate = {
   error: null,
