@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from 'serviceWorker';
 
-import Route from 'component/Route';
+import Router from 'components/Base/Router';
 
-import Provider from 'layout/Provider';
+import Provider from 'components/Base/Provider';
 
 import 'index.scss';
 
 ReactDOM.render(
   <Provider>
-    <Route />
+    <Router />
   </Provider>,
   document.getElementById('root'),
 );

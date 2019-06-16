@@ -15,8 +15,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 #root {
-  width: 50vh;
+  overflow: hidden;
+  width: 425px;
   margin: 0 auto;
+  border: 0.5px;
+  border-style: solid;
+  border-color: rgb(230, 230, 230);
 }
 
 code {
