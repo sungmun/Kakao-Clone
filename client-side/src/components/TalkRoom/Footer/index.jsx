@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './app.scss';
-
-const SendButton = () => {
-  return <div className="send" />;
-};
+import SendButton from './SendButton';
 
 const Footer = () => {
+  const [isChange, setIsChange] = useState(false);
+
+  const onTextCheck = ({ target }) => {
+    if (target.value.length > 0) {
+      setIsChange(true);
+    } else {
+      setIsChange(false);
+    }
+  };
+
   return (
     <div className="Footer">
-      <textarea name="talkArea" className="Textarea" cols="30" rows="10" />
-      <SendButton />
+      <textarea name="talkArea" className="Textarea" onChange={onTextCheck} />
+      <SendButton ischange={isChange} />
     </div>
   );
 };
