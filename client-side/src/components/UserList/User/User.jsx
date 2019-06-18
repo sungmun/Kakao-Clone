@@ -1,32 +1,32 @@
 import Item from 'components/Base/Item';
 import { func, number, shape, string } from 'prop-types';
-import React, { memo } from 'react';
+import React from 'react';
 
-const Profile = ({ user, Click, Index }) => {
+const User = ({ user, Click, Index }) => {
   const { photos, nickName, id } = user;
   return (
     <li>
       <Item
         image={new Array(photos)}
         LinkOp={{ url: '/user', id }}
-        contentOp={{ TabIndex: Index, Name: nickName, Event: Click }}
+        contentOp={{
+          TabIndex: Index,
+          Name: nickName,
+          Event: () => Click(user),
+        }}
       />
     </li>
   );
 };
 
-Profile.propTypes = {
+User.propTypes = {
   user: shape({
     photos: string.isRequired,
     nickName: string.isRequired,
     id: number.isRequired,
   }).isRequired,
   Index: number.isRequired,
-  Click: func,
+  Click: func.isRequired,
 };
 
-Profile.defaultProps = {
-  Click: () => {},
-};
-
-export default memo(Profile);
+export default User;
