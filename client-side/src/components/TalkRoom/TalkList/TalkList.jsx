@@ -1,6 +1,7 @@
 import React from 'react';
 import { arrayOf, shape, number, string, bool } from 'prop-types';
 import Talk from 'components/TalkRoom/Talk';
+import './TalkList.scss';
 
 const TalkListComponent = ({ talkList }) => {
   return (
