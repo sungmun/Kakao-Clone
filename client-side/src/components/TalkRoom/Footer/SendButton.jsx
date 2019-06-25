@@ -1,27 +1,22 @@
-import { string } from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { string, func } from 'prop-types';
+import React from 'react';
 import './app.scss';
 
-const SendButton = ({ ischange }) => {
-  const [sendClass, setSendClass] = useState('send');
-
-  useEffect(() => {
-    if (ischange === true) {
-      setSendClass('send active');
-    } else {
-      setSendClass('send');
-    }
-  }, [ischange]);
-
+const SendButton = ({ ischange, sendEvent }) => {
   return (
-    <div className={sendClass}>
+    <button
+      className={`send ${ischange ? 'active' : ''}`}
+      type="button"
+      onClick={sendEvent()}
+    >
       <span className="Text">전송</span>
-    </div>
+    </button>
   );
 };
 
 SendButton.propTypes = {
   ischange: string.isRequired,
+  sendEvent: func.isRequired,
 };
 
 export default SendButton;
