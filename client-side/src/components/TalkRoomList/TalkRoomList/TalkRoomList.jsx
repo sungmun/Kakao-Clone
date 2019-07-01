@@ -3,7 +3,9 @@ import TalkRoom from './TalkRoom';
 
 const TalkRoomList = ({ talkRoomList }) => {
   return talkRoomList.map((room, index) => (
-    <TalkRoom Room={room} Index={index} />
+    <li>
+      <TalkRoom Room={room} Index={index} />
+    </li>
   ));
 };
 

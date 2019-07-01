@@ -15,10 +15,15 @@ const ReduxDataLoad = ({ pathname }) => {
   useEffect(() => {
     if (pathname !== '/login') {
       dispatchHooks(profile, getProfile);
-      dispatchHooks(talkRoomList, listTalkroom);
       dispatchHooks(friendList, listFriend);
     }
   }, [pathname]);
+
+  useEffect(() => {
+    if (profile.status) {
+      dispatchHooks(talkRoomList, listTalkroom);
+    }
+  }, [profile]);
 };
 
 export default ReduxDataLoad;

@@ -6,7 +6,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import './App.scss';
 import LoginCheck from 'hooks/LoginCheck';
-import LogoutHooks from 'hooks/LogoutHooks';
+import LogoutHooks from 'hooks/Logout';
 
 const Login = () => {
   setHeaderMode(MODE_NONE);

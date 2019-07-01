@@ -1,0 +1,50 @@
+@endpoint =http://mydirectory.ipdisk.co.kr:5000
+
+# @name login
+POST {{endpoint}}/user HTTP/1.1
+content-type: application/json
+
+{
+    "user": {
+        "id": 1,
+        "socialId": "tjdans174@gmail.com",
+        "platformName": "google"
+    }
+}
+
+###
+@token={{login.response.body.token}}
+
+# @name getTalkRoomList
+GET {{endpoint}}/talk-room HTTP/1.1
+content-type: application/json
+x-access-token: {{token}}
+
+###
+
+# @name getUserData
+GET {{endpoint}}/user/auth HTTP/1.1
+content-type: application/json
+x-access-token: {{token}}
+
+###
+
+# @name getFriendList
+GET {{endpoint}}/friend HTTP/1.1
+content-type: application/json
+x-access-token: {{token}}
+
+###
+
+# @name setAddFriend
+POST {{endpoint}}/friend HTTP/1.1
+content-type: application/json
+x-access-token: {{token}}
+
+{"friend":2}
+
+###
+# @name getAllUserList
+GET {{endpoint}}/user HTTP/1.1
+content-type: application/json
+x-access-token: {{token}}

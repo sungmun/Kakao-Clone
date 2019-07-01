@@ -6,7 +6,7 @@ import ItemContent from './ItemContent';
 import './app.scss';
 
 const Item = ({ image, LinkOp, contentOp }) => (
-  <li className="Item">
+  <div className="Item">
     <ImageLink image={image} url={LinkOp.url} id={LinkOp.id} />
     <ItemContent
       TabIndex={contentOp.TabIndex}
@@ -15,7 +15,7 @@ const Item = ({ image, LinkOp, contentOp }) => (
       Length={contentOp.Length}
       Event={contentOp.Event}
     />
-  </li>
+  </div>
 );
 
 Item.propTypes = {

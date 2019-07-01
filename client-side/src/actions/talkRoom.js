@@ -17,10 +17,18 @@ export const listTalkroomFailure = message => ({
 });
 
 export const listTalkroom = () => async (dispatch, getState) => {
-  const { token } = getState();
+  const { profile, token } = getState();
   try {
     const talkRoomList = await listTalkRoom(token.data);
-    dispatch(listTalkroomSuccess(talkRoomList));
+
+    const filterTalkRoom = await talkRoomList.map(talkRoom => {
+      const userList = talkRoom.userList.filter(
+        user => user.id !== profile.data.id,
+      );
+      return { ...talkRoom, userList };
+    });
+
+    dispatch(listTalkroomSuccess(filterTalkRoom));
   } catch (error) {
     dispatch(listTalkroomFailure(error));
   }

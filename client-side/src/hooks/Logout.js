@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import './App.scss';
 
 const LogoutHook = () => {
   const [init, setInit] = useState(true);
