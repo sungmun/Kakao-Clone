@@ -1,0 +1,18 @@
+.Search {
+  display: flex;
+  width: 100%;
+  border: 0px;
+  border-bottom: 0.8px solid #e6e6e6; }
+  .Search .Input {
+    all: unset;
+    font-size: 10pt;
+    flex: 1;
+    padding: 0px;
+    height: 36px; }
+    .Search .Input:focus {
+      outline: 0 none; }
+    .Search .Input::placeholder {
+      color: #999999; }
+  .Search .SearchIco {
+    margin: 10px;
+    z-index: 1; }
