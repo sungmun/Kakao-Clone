@@ -1,0 +1,1 @@
+export { TalkRoomPage } from './TalkRoomPage';
