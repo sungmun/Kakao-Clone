@@ -1,0 +1,32 @@
+.Footer {
+  display: flex;
+  flex-direction: row;
+  height: 140px;
+  .Textarea {
+    all: unset;
+    flex: 6;
+    padding: 15px;
+    font-size: 10pt;
+    overflow-wrap: break-word;
+  }
+  .send {
+    flex: 1;
+    background-color: yellow;
+    margin: 10px 5px 100px 5px;
+    display: table;
+    text-align: right;
+    &.active {
+      .Text {
+        color: black;
+      }
+    }
+    .Text {
+      display: table-cell;
+      line-height: 30px;
+      color: silver;
+      font-size: 10pt;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+}

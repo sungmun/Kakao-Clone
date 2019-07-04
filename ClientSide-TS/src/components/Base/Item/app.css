@@ -1,0 +1,26 @@
+.Item {
+  display: flex;
+  flex-direction: row;
+  margin: 0px;
+  height: 60px; }
+  .Item .Link {
+    all: unset;
+    display: flex; }
+  .Item .Content {
+    flex: 1;
+    height: 40px;
+    margin-left: 8px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 400;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
+    .Item .Content .Email {
+      padding-top: 2vh;
+      padding-bottom: 2vh;
+      color: rgba(84, 63, 63, 0.6);
+      font-size: 8pt; }
+    .Item .Content .Nickname {
+      font-weight: 300; }
