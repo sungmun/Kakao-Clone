@@ -30,6 +30,7 @@
     "build:sass": "node-sass-chokidar src/ -o src/",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
+    "deploy": "react-scripts-ts build & firebase deploy",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
