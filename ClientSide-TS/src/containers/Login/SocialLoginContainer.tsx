@@ -2,32 +2,19 @@ import { setToken } from 'actions/token';
 import { SocialBox } from 'components/Login/SocialLogin';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { IUser } from 'src/interface/user.interface';
+import { loginProcess } from 'src/containers/Login/loginProcess';
+import { app, providerType } from 'src/firebase/Firebase';
 
-const socialContainer: React.SFC<any> = () => {
+const socialContainer: React.SFC = () => {
   const dispatch = useDispatch();
 
-  const onClick = (profile: IUser) => dispatch(setToken(profile));
+  const onClick = async (provider: providerType) => {
+    const sign = await app.auth().signInWithPopup(provider)
+    const user = loginProcess(sign);
+    dispatch(setToken(user));
+  }
 
-  const loginEvent = async () => {
-    console.log(test);
-  };
-
-  const onClickGoogle = () => loginEvent();
-  const onClickFacebook = () => loginEvent();
-
-  return (
-    <SocialBox LoginEvent={onClick}>
-      <button className="GoogleButton" onClick={onClickGoogle}>
-        Login with Google
-      </button>
-      <button className="FacebookButton" onClick={onClickFacebook}>
-        Login with facebook
-      </button>
-    </SocialBox>
-  );
+  return <SocialBox LoginEvent={onClick} />
 };
-
-// const connect = withFirebase(socialContainer);
 
 export { socialContainer as SocialContainer };
