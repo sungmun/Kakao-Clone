@@ -7,7 +7,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 
 const render = () =>
-  ReactDOM.render(<Provider>      <RouteInitSetting /></Provider>, document.getElementById('root') as HTMLElement);
+  ReactDOM.render(<Provider><RouteInitSetting /></Provider>, document.getElementById('root') as HTMLElement);
 
 render();
 

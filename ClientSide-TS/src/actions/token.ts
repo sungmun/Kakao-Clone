@@ -1,7 +1,7 @@
-import { failure } from './module';
 import { Dispatch } from 'redux';
 import { profileServiceInstance } from 'service/profile';
 import { IUnLoadUser } from 'src/interface/user.interface';
+import { failure } from './module';
 
 export const TOKEN_DATA = 'TOKEN/TOKEN-DATA';
 

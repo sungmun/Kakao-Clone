@@ -1,1 +1,1 @@
-export { default } from './TalkList';
+export { TalkListComponent } from './TalkList';
