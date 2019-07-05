@@ -22,7 +22,11 @@ body {
   border-style: solid;
   border-color: rgb(230, 230, 230);
 }
-
+li {
+  list-style: none;
+  margin-left: 10px;
+  padding-left: unset;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
