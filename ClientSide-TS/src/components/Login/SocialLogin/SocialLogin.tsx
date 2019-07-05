@@ -1,13 +1,27 @@
 import * as React from 'react';
-import { IUser } from 'src/interface/user.interface';
+import { facebookProvider, googleProvider, providerType } from 'src/firebase/Firebase';
 import './app.css';
 
 interface IProps {
-  LoginEvent: (user: IUser) => void;
+  LoginEvent: (provider: providerType) => void;
 }
 
-const socialBox: React.SFC<IProps> = ({ LoginEvent, children }) => {
-  return <div className="SocialLoginBox">{children}</div>;
+const socialBox: React.SFC<IProps> = ({ LoginEvent }) => {
+
+  const onClickGoogle = () => LoginEvent(googleProvider);
+  const onClickFacebook = () => LoginEvent(facebookProvider);
+
+  return (
+    <div className="SocialLoginBox">
+      <button className="GoogleButton" onClick={onClickGoogle}>
+        Login with Google
+        </button>
+      <button className="FacebookButton" onClick={onClickFacebook}>
+        Login with facebook
+      </button>
+    </div>
+  );
 };
 
 export { socialBox as SocialBox };
+

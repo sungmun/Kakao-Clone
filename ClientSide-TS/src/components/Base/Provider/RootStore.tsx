@@ -5,7 +5,7 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reduxThunk from 'redux-thunk';
 
-export const rootStore: React.SFC = ({ children }) => {
+const rootStore: React.SFC = ({ children }) => {
   const store = createStore(
     reducer,
     composeWithDevTools(applyMiddleware(reduxThunk)),
@@ -13,3 +13,6 @@ export const rootStore: React.SFC = ({ children }) => {
 
   return <Provider store={store}>{children}</Provider>;
 };
+
+
+export { rootStore as Provider }

@@ -1,0 +1,40 @@
+.Talk {
+  word-break: break-all;
+  position: relative;
+  margin-left: 25px;
+  max-width: 200px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+.user {
+  text-align: right;
+  margin-right: 25px;
+  float: right;
+  background: yellow; }
+
+.friend::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 9px 19px 9px 0px;
+  border-color: transparent white;
+  display: block;
+  width: 0;
+  z-index: 1;
+  left: -19px;
+  top: 12px; }
+
+.user::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 9px 0 9px 19px;
+  border-color: transparent yellow;
+  display: block;
+  width: 0;
+  z-index: 1;
+  right: -19px;
+  top: 12px; }
