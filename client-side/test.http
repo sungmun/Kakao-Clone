@@ -1,4 +1,5 @@
-@endpoint =http://mydirectory.ipdisk.co.kr:5000
+# @endpoint =http://mydirectory.ipdisk.co.kr:5000
+@endpoint =http://localhost:5000
 
 # @name login
 POST {{endpoint}}/user HTTP/1.1
@@ -17,6 +18,13 @@ content-type: application/json
 
 # @name getTalkRoomList
 GET {{endpoint}}/talk-room HTTP/1.1
+content-type: application/json
+x-access-token: {{token}}
+
+###
+
+# @name getTalkRoomList
+GET {{endpoint}}/talk-room/1 HTTP/1.1
 content-type: application/json
 x-access-token: {{token}}
 
