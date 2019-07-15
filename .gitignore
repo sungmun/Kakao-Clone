@@ -62,3 +62,7 @@ typings/
 # next.js build output
 
 ClientSide-TS/.firebase/
+RestfulAPI-TS/build/
+RestfulAPI-TS/config/
+RestfulAPI-TS/private-key.json
+ClientSide-TS/src/api-key.json
