@@ -4,5 +4,11 @@ export interface ITalkRoom {
   id: number;
   createdAt: Date;
   updatedAt: Date;
+  userList: number[];
+}
+export interface ITalkRoomServer {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
   userList: IUser[];
 }
