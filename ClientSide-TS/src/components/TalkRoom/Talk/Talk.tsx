@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { ITalkAddProfile } from 'src/interface/talk.interface';
 import './Talk.css';
-import { ITalkAddProfile } from './Talk.interface';
+
 interface IProps {
   talkData: ITalkAddProfile;
 }
@@ -14,3 +15,4 @@ const talk: React.SFC<IProps> = ({ talkData }) => {
 };
 
 export { talk as Talk };
+
