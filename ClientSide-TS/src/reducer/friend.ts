@@ -2,9 +2,8 @@ import { FRIEND_DATA, IFriendData } from 'src/actions/friend/add';
 import { FRIEND_LIST_DATA, IFriendListData } from 'src/actions/friend/list';
 import { ERROR_MESSAGE, IErrorMessage } from 'src/actions/module';
 import { IState } from 'src/interface/redux.interface';
-import { IUser } from 'src/interface/user.interface';
 
-export interface IFriendState extends IState<IUser[]> {}
+export interface IFriendState extends IState<number[]> {}
 
 const initState: IFriendState = {
   error: undefined,
