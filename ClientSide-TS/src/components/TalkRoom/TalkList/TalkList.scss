@@ -1,5 +1,9 @@
 .TalkList {
   list-style: none;
-  margin-left: 10px;
+  margin: 0px;
   padding-left: unset;
+
+  .talkItem {
+    overflow: hidden;
+  }
 }
