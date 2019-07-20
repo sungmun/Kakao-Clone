@@ -1,8 +1,10 @@
 import { Dispatch } from 'redux';
 import { listTalkRoom } from 'service/talkRoom';
-import { ITalkRoom } from 'src/interface/talkRoom.interface';
+import { addUserListSuccess } from 'src/actions/userList';
+import { ITalkRoom, ITalkRoomServer } from 'src/interface/talkRoom.interface';
 import { IState } from 'src/reducer';
 import { failure } from './module';
+import { IUser } from 'src/interface/user.interface';
 
 export const TALKROOM_LIST_DATA = 'TALKROOM/LIST';
 export const TALKROOM_ADD_DATA = 'TALKROOM/ADD';
@@ -46,15 +48,17 @@ export const listTalkroom = () => async (
 ) => {
   const { profile, token } = getState();
   try {
-    const talkRoomList = await listTalkRoom(token.data);
+    if (!profile.data) throw Error('로그인이 이루어지지 않았습니다');
 
-    const filterTalkRoom = await talkRoomList.map((talkRoom: ITalkRoom) => {
-      const userList = talkRoom.userList.filter(user => {
-        if (!profile.data) throw Error('로그인이 이루어지지 않았습니다');
-        return user.id !== profile.data.id;
-      });
-      return { ...talkRoom, userList };
-    });
+    const talkRoomList = await listTalkRoom(token.data);
+    const filterTalkRoom = await talkRoomList.map(
+      (talkRoom: ITalkRoomServer) => {
+        const userList = new Map(talkRoom.userList.map(val => [val.id, val]));
+        userList.delete((profile.data as IUser).id);
+        dispatch(addUserListSuccess([...userList.values()]));
+        return { ...talkRoom, userList: [...userList.keys()] };
+      },
+    );
     dispatch(listTalkroomSuccess(filterTalkRoom));
   } catch (error) {
     dispatch(failure(error));
