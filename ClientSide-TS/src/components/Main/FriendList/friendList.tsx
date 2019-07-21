@@ -1,9 +1,8 @@
-import { Profile } from 'components/Main/Profile';
 import * as React from 'react';
-import { IUser } from 'src/interface/user.interface';
+import { UserContainer } from 'src/containers/Main/UserContainer';
 
 interface IProps {
-  Friends: IUser[];
+  Friends: number[];
 }
 
 const friendList: React.SFC<IProps> = ({ Friends }) => {
@@ -18,3 +17,4 @@ const friendList: React.SFC<IProps> = ({ Friends }) => {
 };
 
 export { friendList as FriendList };
+
