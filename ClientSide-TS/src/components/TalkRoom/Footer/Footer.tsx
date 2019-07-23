@@ -12,20 +12,18 @@ const footer: React.SFC<IProps> = ({ sendEvent }) => {
 
   const onTextCheck = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(target.value);
-    if (target.value.length > 0) {
-      setIsChange(true);
-    } else {
-      setIsChange(false);
-    }
+    setIsChange(target.value.length > 0)
   };
 
   const sendText = () => {
+    setText('')
+    setIsChange(false);
     sendEvent(text);
   };
 
   return (
     <footer className="Footer">
-      <textarea name="talkArea" className="Textarea" onChange={onTextCheck} />
+      <textarea name="talkArea" className="Textarea" onChange={onTextCheck} value={text} />
       <SendButton ischange={isChange} sendEvent={sendText} />
     </footer>
   );
