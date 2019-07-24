@@ -1,12 +1,15 @@
-export interface ITalk {
+export interface ITalk extends IUnLoadTalk {
   id: number;
-  message: string;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: number;
   talkRoomId: number;
 }
 
 export interface ITalkAddProfile extends ITalk {
   isUser: boolean;
+}
+
+export interface IUnLoadTalk {
+  message: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: number;
 }
