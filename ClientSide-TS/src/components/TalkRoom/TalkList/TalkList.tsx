@@ -1,23 +1,25 @@
-import { Talk } from 'components/TalkRoom/Talk';
 import * as React from 'react';
-import { ITalkAddProfile } from '../Talk/Talk.interface';
-import './TalkList.scss';
+import { TalkContainer } from 'src/containers/TalkRoom/TalkContainer';
+import { ITalk } from 'src/interface/talk.interface';
+import './TalkList.css';
 
 interface IProps {
-  talkList: ITalkAddProfile[];
+  talkList: ITalk[];
 }
 
-const talkListComponent: React.SFC<IProps> = ({ talkList }) => {
-  return (
+const talkListComponent: React.SFC<IProps> = ({ talkList }) => (
+  <section className="TalkList">
     <ul>
-      {talkList.map(talk => {
-        return (
-          <li key={talk.id} className="TalkList">
-            <Talk talkData={talk} />
+      {talkList.map(talk =>
+        (
+          <li key={talk.id} className="talkItem">
+            <TalkContainer key={talk.id} talkData={talk} />
           </li>
-        );
-      })}
+        )
+      )}
     </ul>
-  );
-};
+  </section>
+);
+
 export { talkListComponent as TalkListComponent };
+

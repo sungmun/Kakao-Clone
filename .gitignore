@@ -66,3 +66,4 @@ RestfulAPI-TS/build/
 RestfulAPI-TS/config/
 RestfulAPI-TS/private-key.json
 ClientSide-TS/src/api-key.json
+*.css

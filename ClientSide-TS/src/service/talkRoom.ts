@@ -6,5 +6,9 @@ export const listTalkRoom = async (token: string) => {
 };
 
 export const talkRoom = async (token: string, id: number) => {
-  return { token, id };
+  const { data } = await axios(
+    { method: 'get', url: `/talk-room/${id}` },
+    { token },
+  );
+  return data;
 };
