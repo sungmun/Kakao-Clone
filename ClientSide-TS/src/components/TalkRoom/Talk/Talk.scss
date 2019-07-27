@@ -1,3 +1,12 @@
+@mixin after() {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  display: block;
+  width: 0;
+  z-index: 1;
+  top: 12px;
+}
 .Talk {
   word-break: break-all;
   position: relative;
@@ -8,34 +17,22 @@
   padding: 14px;
   margin-top: 10px;
   margin-bottom: 10px;
-}
-.user {
-  text-align: right;
-  margin-right: 25px;
-  float: right;
-  background: yellow;
-}
-.friend::after {
-  content: '';
-  position: absolute;
-  border-style: solid;
-  border-width: 9px 19px 9px 0px;
-  border-color: transparent white;
-  display: block;
-  width: 0;
-  z-index: 1;
-  left: -19px;
-  top: 12px;
-}
-.user::after {
-  content: '';
-  position: absolute;
-  border-style: solid;
-  border-width: 9px 0 9px 19px;
-  border-color: transparent yellow;
-  display: block;
-  width: 0;
-  z-index: 1;
-  right: -19px;
-  top: 12px;
+  &.user {
+    text-align: right;
+    margin-right: 25px;
+    float: right;
+    background: yellow;
+    &::after {
+      @include after();
+      border-width: 9px 0 9px 19px;
+      border-color: transparent yellow;
+      right: -19px;
+    }
+  }
+  &.friend::after {
+    @include after();
+    border-width: 9px 19px 9px 0px;
+    border-color: transparent white;
+    left: -19px;
+  }
 }

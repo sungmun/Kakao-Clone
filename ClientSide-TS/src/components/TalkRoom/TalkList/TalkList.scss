@@ -1,5 +1,13 @@
 .TalkList {
-  list-style: none;
-  margin-left: 10px;
-  padding-left: unset;
+  background-color: rgb(178, 199, 217);
+  flex: 1;
+  overflow: auto;
+  ul {
+    list-style: none;
+    margin: 0px;
+    padding-left: unset;
+    .talkItem {
+      overflow: hidden;
+    }
+  }
 }
