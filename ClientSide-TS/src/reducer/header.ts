@@ -1,23 +1,32 @@
-import { BASE, Mode, SET_MODE } from 'actions/header';
+import {
+  createActionCreators,
+  createReducerFunction,
+  ImmerReducer,
+} from 'immer-reducer';
 
-export interface IHeaderState {
-  mode: Mode;
+export enum HeaderMode {
+  BASE,
+  NONE,
+  SLIM,
 }
 
-const initState: IHeaderState = {
-  mode: BASE,
+const initHeadState = {
+  mode: HeaderMode.NONE,
 };
 
-interface IAction {
-  mode: Mode;
-  type: typeof SET_MODE;
-}
+export type HeaderState = typeof initHeadState;
 
-export default (state = initState, action: IAction): IHeaderState => {
-  switch (action.type) {
-    case SET_MODE:
-      return { ...state, mode: action.mode };
-    default:
-      return state;
+class HeadReducer extends ImmerReducer<HeaderState> {
+  public setBaseMode() {
+    this.draftState.mode = HeaderMode.BASE;
   }
-};
+  public setNoneMode() {
+    this.draftState.mode = HeaderMode.NONE;
+  }
+  public setSlimMode() {
+    this.draftState.mode = HeaderMode.SLIM;
+  }
+}
+
+export const headActions = createActionCreators(HeadReducer);
+export default createReducerFunction(HeadReducer, initHeadState);

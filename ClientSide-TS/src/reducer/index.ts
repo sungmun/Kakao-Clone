@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
-import friend, { IFriendState } from './friend';
-import header, { IHeaderState } from './header';
 import profile, { IProfileState } from './profile';
 import talkRoom, { ITalkroomState } from './talkRoom';
 import token, { ITokenState } from './token';
+import friend, { FriendState } from './friend';
+import header, { HeaderState } from './header';
 
 export interface IState {
   token: ITokenState;
   profile: IProfileState;
-  header: IHeaderState;
-  friendList: IFriendState;
   talkRoomList: ITalkroomState;
+  header: HeaderState;
+  friendList: FriendState;
 }
 
 export default combineReducers<IState>({
