@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import token, { ITokenState } from './token';
 import friend, { FriendState } from './friend';
 import header, { HeaderState } from './header';
 import profile, { ProfileState } from './profile';
 import talkRoom, { TalkRoomState } from './talkRoom';
+import token, { TokenState } from './token';
 
 export interface IState {
-  token: ITokenState;
+  token: TokenState;
   header: HeaderState;
   profile: ProfileState;
   friendList: FriendState;
