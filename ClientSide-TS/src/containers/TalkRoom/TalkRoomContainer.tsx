@@ -1,32 +1,36 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { Header } from 'src/components/TalkRoom/Header';
-import { TalkListComponent } from 'src/components/TalkRoom/TalkList';
 import { talkLoad } from 'src/hooks/TalkLoad';
+import { IUser } from 'src/interface/user.interface';
 import { IState } from 'src/reducer';
+import { TalkListContainer } from './TalkListContainer';
 import { TalkRoomFooterContainer } from './TalkRoomFooterContainer';
 
 interface IProps {
   id: number;
 }
 
-const talkRoomContainer: React.SFC<IProps> = ({ id, children }) => {
-  const { talkRoomList, token } = useSelector((state: IState) => state);
-  const findData = talkRoomList.data.find(talkroom => talkroom.id === id);
-  const talkList = talkLoad(id, token.data)
+const talkRoomContainer: React.SFC<IProps> = ({ id }) => {
+  const [findTalkRoomUserList, setFindTalkRoomUserList] = React.useState<IUser[]>([])
+  const { talkRoomList } = useSelector((state: IState) => state);
 
-  if (!findData || !talkList) return <div>Loading...</div>;
+  talkLoad(id)
 
-  const sectionStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: "column"
-  }
+  React.useEffect(() => {
+    if (!talkRoomList.data) return
+    const findData = talkRoomList.data.find(talkroom => talkroom.id === id);
+    if (findData) setFindTalkRoomUserList(findData.userList)
+  }, [talkRoomList.data])
 
   return (
-    <section className="layout container" style={sectionStyle}>
-      <Header userlist={findData.userList} />
-      <TalkListComponent talkList={talkList} />
-      <TalkRoomFooterContainer />
+    <section style={{
+      display: 'flex',
+      flexDirection: "column"
+    }}>
+      <Header userlist={findTalkRoomUserList} />
+      <TalkListContainer id={id} />
+      <TalkRoomFooterContainer roomId={id} />
     </section>
   );
 };
