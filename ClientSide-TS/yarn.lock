@@ -371,13 +371,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-facebook-login@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@types/react-facebook-login/-/react-facebook-login-4.1.0.tgz#c1cf7d5c6f97f0be1619124601fd5e1cfd70c206"
-  integrity sha512-R+qgwBQ/tCGSXK1txCu679wWanMLLrF9dG1Z1DvjeRbvKILQkDA+yETg9qNvhk7zjYRNNTfu2PO+IaS9bLPTdA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-fontawesome@^1.6.4":
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/@types/react-fontawesome/-/react-fontawesome-1.6.4.tgz#95884bd8df906b423a254e00d5050f7fe75b3e76"
@@ -4349,7 +4342,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
@@ -4570,6 +4563,18 @@ ignore-walk@^3.0.1:
   integrity sha512-DTVlMx3IYPe0/JJcYP7Gxg7ttZZu3IInhuEhbchuqneY9wWe5Ojy2mXLBaQFUQmo0AW2r3qG7m1mg86js+gnlQ==
   dependencies:
     minimatch "^3.0.4"
+
+immer-reducer@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/immer-reducer/-/immer-reducer-0.7.6.tgz#caf623fc2ec3bf704ae521bb83177a1bb238cf59"
+  integrity sha512-EdSlcuMx42VwL+Wg1xLfgXnBf6qSqBLFgnDIby/sGDryRyimStW1dTbKkuhDFPA4wsvyBC8QR/7newF2LEXAkA==
+  dependencies:
+    immer "^1.4.0 || ^2.0.0 || ^3.0.0"
+
+"immer@^1.4.0 || ^2.0.0 || ^3.0.0":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-3.1.3.tgz#59bc742b2aab6e2c676445edb653e588a23c70fc"
+  integrity sha512-HG5SXTXTTVy9lGNwS075cNhQoV375jHsIJO3UtMjuUWJOuwlMr0u42FlsKTJcppt5AzsFAsmj9r4kHvsSHh3hQ==
 
 import-lazy@^2.1.0:
   version "2.1.0"
@@ -7578,7 +7583,7 @@ promise@8.0.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -7824,19 +7829,6 @@ react-error-overlay@^4.0.1:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.1.tgz#417addb0814a90f3a7082eacba7cee588d00da89"
   integrity sha512-xXUbDAZkU08aAkjtUvldqbvI04ogv+a1XdHxvYuHPYKIVk/42BIOD0zSKTHAWV4+gDy3yGm283z2072rA2gdtw==
 
-react-facebook-login@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
-  integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
-
-react-google-login@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-5.0.4.tgz#fa96ff374480d1c2b2b279310959754d5957cadb"
-  integrity sha512-XNgm3pNQMaZiHTeZ4Qa5cWfdj/p5ppwgI/adYQrjD6fj6CK6ut76CGlh2xo+4r3XRSIeaWanFjUxU9kmBCGXZQ==
-  dependencies:
-    "@types/react" "*"
-    prop-types "^15.6.0"
-
 react-hot-loader@^4.11.1:
   version "4.12.2"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.2.tgz#0f2859909f5843442f3da755f02e0a108abb7a86"
@@ -7861,15 +7853,6 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
-
-react-redux-firebase@3.0.0-alpha.7:
-  version "3.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/react-redux-firebase/-/react-redux-firebase-3.0.0-alpha.7.tgz#e05fe3316d3538363ea900ddd6d4464f9ef14313"
-  integrity sha512-Ddqdm09HSevWwkxeA1yiWs5sfsEj/8/fI+pgOZ0rB3YCM8tLKqM4Krbeho7UoYCpFgan9PDwYSuXKSi3zkRJbQ==
-  dependencies:
-    hoist-non-react-statics "^3.2.1"
-    lodash "^4.17.11"
-    prop-types "^15.6.2"
 
 react-redux@^7.1.0:
   version "7.1.0"

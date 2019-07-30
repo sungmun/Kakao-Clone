@@ -8,6 +8,6 @@ const friendListContainer: React.SFC = () => {
 
   if (friendList === null) return <div>Loading...</div>;
 
-  return <FriendList Friends={friendList.data} />;
+  return <FriendList Friends={Array.from(friendList.data.values())} />;
 };
 export { friendListContainer as FriendListContainer };

@@ -1,22 +1,18 @@
-import { Mode, NONE, SLIM } from 'actions/header';
+
 import { BaseHeader, SlimHeader } from 'components/Base/Header';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { IState } from 'src/reducer';
+import { HeaderMode } from 'src/reducer/header';
 import { SearchBarContainer } from './SearchBarContainer';
 
 const headerContainer: React.SFC = () => {
-  const { mode } = useSelector(
-    (state: {
-      header: {
-        mode: Mode;
-      };
-    }) => state.header,
-  );
+  const { mode } = useSelector(({ header }: IState) => header);
 
   switch (mode) {
-    case NONE:
+    case HeaderMode.NONE:
       return null;
-    case SLIM:
+    case HeaderMode.SLIM:
       return (
         <React.Fragment>
           <SlimHeader />
@@ -33,3 +29,4 @@ const headerContainer: React.SFC = () => {
   }
 };
 export { headerContainer as HeaderContainer };
+
