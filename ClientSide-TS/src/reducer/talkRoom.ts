@@ -1,50 +1,63 @@
-import { ERROR_MESSAGE, IErrorMessage } from 'src/actions/module';
 import {
-  ITalkRoomAddData,
-  ITalkRoomListData,
-  ITalkRoomRemoveData,
-  TALKROOM_ADD_DATA,
-  TALKROOM_LIST_DATA,
-  TALKROOM_REMOVE_DATA,
-} from 'src/actions/talkRoom';
-import { IState } from 'src/interface/redux.interface';
+  createActionCreators,
+  createReducerFunction,
+  ImmerReducer,
+} from 'immer-reducer';
+import { listTalkRoom } from 'service/talkRoom';
+import { IAsyncThunk, IBaseState } from 'src/interface/redux.interface';
 import { ITalkRoom } from 'src/interface/talkRoom.interface';
+import { SocketClient } from 'src/service/soket-io';
 
-export interface ITalkroomState extends IState<ITalkRoom[]> {}
+export const asyncTalkRoomList = (): IAsyncThunk => async (
+  dispatch,
+  getState,
+) => {
+  const { profile, token } = getState();
+  try {
+    if (!profile.data) throw Error('로그인이 이루어지지 않았습니다');
 
-type Action =
-  | IErrorMessage
-  | ITalkRoomAddData
-  | ITalkRoomListData
-  | ITalkRoomRemoveData;
+    const talkRoomList = await listTalkRoom(token.data);
 
-const initState: ITalkroomState = {
-  status: false,
-  data: [],
-  error: undefined,
-};
+    const filterTalkRoom = await talkRoomList.map((talkRoom: ITalkRoom) => ({
+      ...talkRoom,
+      userList: talkRoom.userList.filter(({ id }) => id !== profile.data.id),
+    }));
 
-export default (state = initState, action: Action): ITalkroomState => {
-  switch (action.type) {
-    case TALKROOM_ADD_DATA: {
-      if (!action.talkRoom) return state;
-      state.data.push(action.talkRoom);
-      return state;
-    }
-    case TALKROOM_REMOVE_DATA:
-      return {
-        ...state,
-      };
-    case TALKROOM_LIST_DATA:
-      return {
-        ...state,
-        data: action.talkRoomList,
-        error: undefined,
-        status: true,
-      };
-    case ERROR_MESSAGE:
-      return { ...state, error: action.error };
-    default:
-      return state;
+    SocketClient.instanse.loginTalkRoom(talkRoomList);
+
+    dispatch(talkRoomActions.setListData(filterTalkRoom));
+  } catch (error) {
+    dispatch(talkRoomActions.setError(error));
   }
 };
+
+const initTalkRoomState: IBaseState<ITalkRoom[]> = {
+  status: false,
+  data: [],
+  error: Error(''),
+};
+
+export type TalkRoomState = typeof initTalkRoomState;
+class TalkRoomReducer extends ImmerReducer<TalkRoomState> {
+  public setListData(list: ITalkRoom[]) {
+    this.draftState.data = list;
+    this.draftState.status = true;
+  }
+
+  public setAddData(talkRoom: ITalkRoom) {
+    this.draftState.data.push(talkRoom);
+  }
+
+  public removeData(talkRoom: ITalkRoom) {
+    this.draftState.data.filter(val => val.id !== talkRoom.id);
+  }
+
+  public setError(error: Error) {
+    this.draftState.error = error;
+    this.draftState.status = false;
+  }
+}
+
+export const talkRoomActions = createActionCreators(TalkRoomReducer);
+
+export default createReducerFunction(TalkRoomReducer, initTalkRoomState);

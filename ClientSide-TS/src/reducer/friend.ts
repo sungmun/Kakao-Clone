@@ -1,39 +1,56 @@
-import { FRIEND_DATA, IFriendData } from 'src/actions/friend/add';
-import { FRIEND_LIST_DATA, IFriendListData } from 'src/actions/friend/list';
-import { ERROR_MESSAGE, IErrorMessage } from 'src/actions/module';
-import { IState } from 'src/interface/redux.interface';
+import {
+  createActionCreators,
+  createReducerFunction,
+  ImmerReducer,
+} from 'immer-reducer';
+import { profileServiceInstance } from 'service/profile';
+import { IAsyncThunk, IBaseState } from 'src/interface/redux.interface';
 import { IUser } from 'src/interface/user.interface';
 
-export interface IFriendState extends IState<IUser[]> {}
-
-const initState: IFriendState = {
-  error: undefined,
-  status: false,
-  data: [],
-};
-
-type Action = IFriendData | IErrorMessage | IFriendListData;
-
-export default (state = initState, action: Action): IFriendState => {
-  switch (action.type) {
-    case FRIEND_LIST_DATA:
-      return {
-        ...state,
-        error: undefined,
-        status: true,
-        data: action.friendList,
-      };
-    case FRIEND_DATA: {
-      return {
-        ...state,
-        error: undefined,
-        status: true,
-        data: [...state.data, action.friend],
-      };
-    }
-    case ERROR_MESSAGE:
-      return { ...state, error: action.error };
-    default:
-      return state;
+export const asyncListRead = (): IAsyncThunk => async (dispatch, getState) => {
+  try {
+    const { token } = getState();
+    const friend = await profileServiceInstance.getFriend(token.data);
+    dispatch(friendActions.setListData(friend));
+  } catch (error) {
+    dispatch(friendActions.setError(error));
   }
 };
+
+export const asyncAdd = (user: IUser): IAsyncThunk => async (
+  dispatch,
+  getState,
+) => {
+  try {
+    const { token } = getState();
+    await profileServiceInstance.addFreind(token.data, user.id);
+    dispatch(friendActions.setAddData(user));
+  } catch (error) {
+    dispatch(friendActions.setError(error));
+  }
+};
+
+const initFriendState: IBaseState<IUser[]> = {
+  status: false,
+  data: [],
+  error: Error(''),
+};
+
+export type FriendState = typeof initFriendState;
+
+class FriendReducer extends ImmerReducer<FriendState> {
+  public setListData(list: IUser[]) {
+    this.draftState.data = list;
+    this.draftState.status = true;
+  }
+  public setAddData(friend: IUser) {
+    this.draftState.data.push(friend);
+  }
+  public setError(error: Error) {
+    this.draftState.error = error;
+    this.draftState.status = false;
+  }
+}
+
+export const friendActions = createActionCreators(FriendReducer);
+export default createReducerFunction(FriendReducer, initFriendState);
