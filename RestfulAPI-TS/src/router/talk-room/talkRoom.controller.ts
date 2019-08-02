@@ -11,6 +11,7 @@ export class TalkRoomController extends Controller<TalkRoomService> {
 
     this.router.get('/', this.asyncWarp(this.listRead)); // 목록
     this.router.get('/:id', this.asyncWarp(this.read)); // 내용
+    this.router.get('/:id/talk', this.asyncWarp(this.readTalk)); // talk만 추출
 
     this.router.delete('/:id', this.asyncWarp(this.remove)); // 유저나가기
   }
@@ -21,6 +22,11 @@ export class TalkRoomController extends Controller<TalkRoomService> {
       req.body.friends,
     );
     res.status(201).send({ talkRoom });
+  };
+  public readTalk = async (req: Request, res: Response) => {
+    const talkList = await this.service.getTalk(req.params.id);
+
+    res.status(200).json(talkList);
   };
 
   public read = async (req: Request, res: Response) => {
