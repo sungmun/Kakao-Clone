@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { Request, Response, NextFunction } from 'express';
-import { verify } from 'jsonwebtoken';
+import { verify, TokenExpiredError } from 'jsonwebtoken';
 import { createMocks, MockResponse, RequestMethod } from 'node-mocks-http';
 import { secret } from '../../private-key.json';
 import { User } from '../database/models/User.model';
@@ -9,16 +9,14 @@ import { CoustomError } from '../index';
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers['x-access-token'] || req.query.token;
-
     if (!token) throw new CoustomError('not logged in', 401);
 
     const profile = <User>verify(token, secret);
-
     const userLoad = <User>await User.findByPk(profile.id);
-
     req.body.profile = userLoad.get({ plain: true });
   } catch (error) {
-    next(error);
+    if (!(error instanceof TokenExpiredError)) next(error);
+    next(new CoustomError(error.message, 402));
   }
   next();
 };
