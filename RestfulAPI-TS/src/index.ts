@@ -1,31 +1,25 @@
-import { User } from './database/models/User.model';
 import { createServer } from 'http';
 import { Sequelize } from 'sequelize-typescript';
-import socket from 'socket.io';
+import * as socketIO from 'socket.io';
 import { development } from './../config/config.json';
-import express from './express';
 import { Friend } from './database/models/Friend.model';
 import { Talk } from './database/models/Talk.model';
 import { TalkRoom } from './database/models/TalkRoom.model';
+import { User } from './database/models/User.model';
 import { UserTalkRoom } from './database/models/UserTalkRoom.model';
+import express from './express';
+import { SocketServer } from './socket/index';
 
 const sequelize = new Sequelize({
   dialect: 'mariadb',
   database: development.database,
   host: development.host,
-  password: '',
+  password: development.password,
   logging: development.logging,
   username: development.username,
-  modelPaths: [__dirname + '/database/models/*.model.*'],
-  modelMatch: (filename, member) => {
-    return (
-      filename.substring(0, filename.indexOf('.model')).toLowerCase() ===
-      member.toLowerCase()
-    );
-  },
 });
 
-sequelize.addModels([Friend]);
+sequelize.addModels([Friend, TalkRoom, UserTalkRoom, Talk, User]);
 
 const port = 5000;
 
@@ -51,7 +45,7 @@ http.listen(port, () => {
   console.log('Express listening on port ', port);
 });
 
-export const socketIO = socket(http);
+export const socket = new SocketServer(socketIO.listen(http));
 
 export class CoustomError extends Error {
   status: number;

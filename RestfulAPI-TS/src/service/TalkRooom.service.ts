@@ -106,7 +106,7 @@ export class TalkRoomService {
       const plainTalkRoom = this.deleteAndPlainData(talkRoom);
       return {
         ...plainTalkRoom,
-        UserList: plainUserList,
+        userList: plainUserList,
       };
     });
 
@@ -150,5 +150,13 @@ export class TalkRoomService {
     talkroomLoad.$add('userList', friendLoad);
 
     return friendLoad.get({ plain: true });
+  };
+
+  public getTalk = async (talkRoomId?: number) => {
+    this.paramsErrorThrow(!talkRoomId);
+
+    const talkList = await Talk.findAll({ where: { talkRoomId } });
+
+    return talkList.map(talk => talk.toJSON());
   };
 }

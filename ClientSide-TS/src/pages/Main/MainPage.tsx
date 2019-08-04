@@ -6,12 +6,14 @@ import './app.css';
 
 const mainPage: React.SFC = () => {
   return (
-    <ul className="MainPage">
-      <ProfileContainer />
-      <hr className="Line" />
-      <FriendListContainer />
-      <AddButton url="/userList" />
-    </ul>
+    <section className="MainPage" >
+      <ul className="MainList" >
+        <ProfileContainer />
+        <hr className="Line" />
+        <FriendListContainer />
+        <AddButton url="/userList" />
+      </ul>
+    </section>
   );
 };
 

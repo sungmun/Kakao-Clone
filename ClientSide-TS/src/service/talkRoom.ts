@@ -12,3 +12,10 @@ export const talkRoom = async (token: string, id: number) => {
   );
   return data;
 };
+export const getTalkList = async (token: string, id: number) => {
+  const { data } = await axios(
+    { method: 'get', url: `/talk-room/${id}/talk` },
+    { token },
+  );
+  return data;
+};

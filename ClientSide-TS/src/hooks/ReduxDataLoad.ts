@@ -1,9 +1,10 @@
-import { list as listFriend } from 'actions/friend/list';
-import { getProfile } from 'actions/profile';
-import { listTalkroom } from 'actions/talkRoom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { IBase } from 'src/interface/redux.interface';
 import { IState } from 'src/reducer';
+import { asyncListRead } from 'src/reducer/friend';
+import { asyncProfile } from 'src/reducer/profile';
+import { asyncTalkRoomList } from 'src/reducer/talkRoom';
 
 export const reduxDataLoad = ({ pathname }: { pathname: string }) => {
   const { profile, talkRoomList, friendList } = useSelector(
@@ -11,23 +12,20 @@ export const reduxDataLoad = ({ pathname }: { pathname: string }) => {
   );
   const dispatch = useDispatch();
 
-  const dispatchHooks = (
-    { status }: { status: boolean },
-    event: () => void,
-  ) => {
+  const dispatchHooks = ({ status }: IBase, event: () => void) => {
     if (!status) dispatch(event());
   };
 
   useEffect(() => {
     if (pathname !== '/login') {
-      dispatchHooks(profile, getProfile);
-      dispatchHooks(friendList, listFriend);
+      dispatchHooks(profile, asyncProfile);
+      dispatchHooks(friendList, asyncListRead);
     }
   }, [pathname]);
 
   useEffect(() => {
     if (profile.status) {
-      dispatchHooks(talkRoomList, listTalkroom);
+      dispatchHooks(talkRoomList, asyncTalkRoomList);
     }
-  }, [profile]);
+  }, [profile.status]);
 };

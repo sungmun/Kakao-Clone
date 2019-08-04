@@ -17,12 +17,13 @@ const loginPage: React.SFC = () => {
   if (isLoginSuccess) return <Redirect to="/" />;
 
   return (
-    <div className="LoginBox">
+    <section className="LoginPage">
       <LogoBox />
       <SocialContainer />
       <div className="FooterBox">FooterBox</div>
-    </div>
+    </section>
   );
 };
 
 export { loginPage as LoginPage };
+

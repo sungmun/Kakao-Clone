@@ -8,7 +8,7 @@
   "scripts": {
     "start": "tsc && node build/src",
     "build": "tsc",
-    "buildrun": "node build/src",
+    "build:run": "node build/src",
     "test": "SET NODE_ENV=test&&mocha ./build/src/router/**/*.spec.js",
     "test:user": "SET NODE_ENV=test&&mocha ./build/src/router/user/*.spec.js",
     "test:friend": "SET NODE_ENV=test&&mocha ./build/src/router/friend/*.spec.js",
