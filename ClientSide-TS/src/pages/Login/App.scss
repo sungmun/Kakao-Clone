@@ -1,25 +1,10 @@
-.LoginBox {
+.LoginPage {
+  flex: 1;
   background-color: rgb(255, 243, 16);
-  height: 750px;
+  height: 100vh;
   padding: 80px;
-}
-
-.SocialButton {
-  box-sizing: border-box;
-  position: relative;
-  width: 20em;
-  margin: 0.2em;
-  padding: 0 15px 0 15px;
-  border: none;
-  text-align: center;
-  line-height: 50px;
-  white-space: nowrap;
-  border-radius: 0.2em;
-  font-size: 16px;
-  color: #fff;
-}
-
-.FooterBox {
-  border: 1px;
-  border-style: solid;
+  .FooterBox {
+    border: 1px;
+    border-style: solid;
+  }
 }

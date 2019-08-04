@@ -29,10 +29,18 @@
   //   opacity: 1;
 }
 #Benchmark {
-  position: relative;
   height: 100vh;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
+
 .up-down-exit-active {
   z-index: 0;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

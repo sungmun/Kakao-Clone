@@ -1,16 +1,18 @@
 .MainPage {
-  margin: 0.9vh;
-  padding-left: 0px;
-  margin-block-start: 0.2em;
+  flex: 1;
   position: relative;
-
-  .Profile {
-    color: gray;
-    font-size: small;
-  }
-  .Line {
-    background-color: #e6e6e6;
-    border: 0;
-    height: 0.2px;
+  .MainList {
+    margin: 0.9vh;
+    padding-left: 0px;
+    margin-block-start: 0.2em;
+    .Profile {
+      color: gray;
+      font-size: small;
+    }
+    .Line {
+      background-color: #e6e6e6;
+      border: 0;
+      height: 0.2px;
+    }
   }
 }
