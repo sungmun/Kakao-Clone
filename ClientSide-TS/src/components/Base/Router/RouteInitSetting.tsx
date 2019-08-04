@@ -9,7 +9,7 @@ import { Router } from './Router';
 const routeInitSetting: React.SFC = () => {
   const rightAndLeftAnimation = ({ location }: any) => {
     return (
-      <TransitionGroup id="Benchmark" className="container">
+      <TransitionGroup id="Benchmark" className="Container">
         <CSSTransition
           key={location.pathname}
           timeout={300}

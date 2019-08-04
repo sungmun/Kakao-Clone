@@ -8,26 +8,22 @@ export const userFilter = (userlist?: IUser[]) => {
 
   const { friendList, profile } = useSelector((state: IState) => state);
 
-  const filter = (): IUser[] => {
-    try {
-      const friend = friendList.data;
-      if (!userlist) return [];
-      return userlist.filter(({ id }) => {
-        if (profile.data === undefined) {
-          throw Error('로그인이 이루어지지 않았습니다');
-        }
-        return profile.data.id === id
-          ? false
-          : !friend.find(data => data.id === id);
-      });
-    } catch (error) {
-      console.log(error.message);
-      return [];
+  const filter = (data: IUser[]): IUser[] => {
+    const friend = friendList.data;
+    if (!profile.status) {
+      throw Error('로그인이 이루어지지 않았습니다');
     }
+    data.splice(data.findIndex(val => val.id === profile.data.id), 1);
+    friend.forEach(user =>
+      data.splice(data.findIndex(val => val.id === user.id), 1),
+    );
+    return data;
   };
 
   useEffect(() => {
-    (async () => setUserFilterList(await filter()))();
+    if (userlist) {
+      setUserFilterList(filter(userlist));
+    }
   }, [userlist, friendList]);
 
   return userFilterList;

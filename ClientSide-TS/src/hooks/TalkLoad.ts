@@ -1,17 +1,14 @@
-import { useEffect, useState } from 'react';
-import { ITalk } from 'src/interface/talk.interface';
-import { talkRoom } from 'src/service/talkRoom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { IState } from 'src/reducer';
+import { listAsync } from 'src/reducer/talk';
 
-export const talkLoad = (id: number, token: string) => {
-  const [talkList, setTalkList] = useState<ITalk[]>([]);
-
+export const talkLoad = (id: number) => {
+  const { talk } = useSelector((state: IState) => state);
+  const dispatch = useDispatch();
   useEffect(() => {
-    (async () => {
-      const talkRoomDetail = await talkRoom(token, id);
-      console.log(talkRoomDetail);
-      setTalkList(talkRoomDetail.TalkList);
-    })();
+    if (!talk.data.has(id)) {
+      (async () => dispatch(listAsync(id)))();
+    }
   }, [id]);
-
-  return talkList;
 };

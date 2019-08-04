@@ -1,6 +1,7 @@
 import { History } from 'history';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { IBase } from 'src/interface/redux.interface';
 import { IState } from 'src/reducer';
 
 export const errorCheck = ({ push }: History) => {
@@ -8,9 +9,8 @@ export const errorCheck = ({ push }: History) => {
     (state: IState) => state,
   );
 
-  // tslint:disable-next-line:prefer-array-literal
-  const isError = (...objs: Array<{ error?: Error }>) =>
-    objs.find(({ error }) => error !== undefined) !== undefined;
+  const isError = (...objs: IBase[]) =>
+    objs.find(({ error }) => error.message !== '') !== undefined;
 
   useEffect(() => {
     if (isError(profile, talkRoomList, friendList)) {
